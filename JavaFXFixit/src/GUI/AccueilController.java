@@ -65,7 +65,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
         MarkerOptions markerOptions2 = new MarkerOptions();
         markerOptions2.position(joshAndersonLocation);
-        markerOptions2.title("gfhdgfg");
+        markerOptions2.title("halim");
         markerOptions2.visible(true);
 
 
