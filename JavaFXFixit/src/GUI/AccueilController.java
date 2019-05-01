@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.sun.prism.PhongMaterial;
@@ -16,22 +17,35 @@ import com.lynden.gmapsfx.javascript.event.UIEventType;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import netscape.javascript.JSObject;
+
 public class AccueilController implements Initializable, MapComponentInitializedListener {
-    @FXML
-    private Button button;
 
     @FXML
     private GoogleMapView mapView;
 
     private GoogleMap map;
 
+    @FXML
+    private Pane panep;
+
+    @FXML
+    private JFXComboBox comboboxpays;
+    ObservableList<String> listLeagues = FXCollections.observableArrayList(
+            "Bundesliga", "La Liga", "Ligue 1", "Premier League", "Serie A", "Champions League", "Europa League");
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapView.setKey("AIzaSyCpBZ4AjkZIoLWHnYYF5qsdQO5CTnCpcko");
         mapView.addMapInializedListener(this);
+        comboboxpays.setItems(listLeagues);
 
     }
 
@@ -42,7 +56,6 @@ public class AccueilController implements Initializable, MapComponentInitialized
         LatLong bobUnderwoodLocation = new LatLong(47.6397, -122.3031);
         LatLong tomChoiceLocation = new LatLong(47.6497, -122.3325);
         LatLong fredWilkieLocation = new LatLong(47.6597, -122.3357);
-
 
         //Set the initial properties of the map.
         MapOptions mapOptions = new MapOptions();
@@ -68,7 +81,6 @@ public class AccueilController implements Initializable, MapComponentInitialized
         markerOptions2.title("halim");
         markerOptions2.visible(true);
 
-
         MarkerOptions markerOptions3 = new MarkerOptions();
         markerOptions3.position(bobUnderwoodLocation);
 
@@ -77,35 +89,41 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
         MarkerOptions markerOptions5 = new MarkerOptions();
         markerOptions5.position(fredWilkieLocation);
-        
+
         Marker joeSmithMarker = new Marker(markerOptions1);
         Marker joshAndersonMarker = new Marker(markerOptions2);
         Marker bobUnderwoodMarker = new Marker(markerOptions3);
-        Marker tomChoiceMarker= new Marker(markerOptions4);
+        Marker tomChoiceMarker = new Marker(markerOptions4);
         Marker fredWilkieMarker = new Marker(markerOptions5);
-        
-        map.addMarker( joeSmithMarker );
-        map.addMarker( joshAndersonMarker );
-        map.addMarker( bobUnderwoodMarker );
-        map.addMarker( tomChoiceMarker );
-        map.addMarker( fredWilkieMarker );
-        
+
+        map.addMarker(joeSmithMarker);
+        map.addMarker(joshAndersonMarker);
+        map.addMarker(bobUnderwoodMarker);
+        map.addMarker(tomChoiceMarker);
+        map.addMarker(fredWilkieMarker);
+
         InfoWindowOptions infoWindowOptions = new InfoWindowOptions();
         infoWindowOptions.content("<img src=\"IMG.jpg\" alt=Smiley face height=42 width=42>"
                 + "Current Location: Safeway<br>"
-                + "ETA: 45 minutes" );
+                + "ETA: 45 minutes");
 
         InfoWindow fredWilkeInfoWindow = new InfoWindow(infoWindowOptions);
         fredWilkeInfoWindow.open(map, fredWilkieMarker);
         fredWilkeInfoWindow.open(map, bobUnderwoodMarker);
         MarkerOptions markerOptions = new MarkerOptions();
 
-        markerOptions.position( new LatLong(47.6, -122.3) )
+        markerOptions.position(new LatLong(47.6, -122.3))
                 .visible(Boolean.TRUE)
                 .title("My Marker");
 
-        Marker marker = new Marker( markerOptions );
+        Marker marker = new Marker(markerOptions);
+        InfoWindowOptions myWindowOptions = new InfoWindowOptions();
+        myWindowOptions.content(marker.getTitle());
+        InfoWindow WilkeInfoWindow = new InfoWindow(myWindowOptions);
+        map.addUIEventHandler(marker, UIEventType.click, (JSObject obj) -> {
+            WilkeInfoWindow.open(map, marker);
+        });
         map.addMarker(marker);
-      
+
     }
 }
