@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -30,9 +31,14 @@ public class JavaFXFixit extends Application {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/GUI/Accueil.fxml"));
-            Scene scene = new Scene(root);
-            //primaryStage.setTitle("Hello World!");
+            Scene scene = new Scene(root, 1200, 660);
+
+            final ObservableList<String> stylesheets = scene.getStylesheets();
+            stylesheets.addAll(JavaFXFixit.class.getResource("/GUI/accueil.css").toExternalForm());
             primaryStage.setScene(scene);
+            primaryStage.setMinHeight(660);
+            primaryStage.setMinWidth(1200);
+
             primaryStage.show();
         } catch (IOException ex) {
             Logger.getLogger(JavaFXFixit.class.getName()).log(Level.SEVERE, null, ex);
