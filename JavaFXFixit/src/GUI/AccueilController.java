@@ -6,6 +6,7 @@
 package GUI;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.sun.prism.PhongMaterial;
@@ -14,17 +15,41 @@ import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.event.MouseEventHandler;
 import com.lynden.gmapsfx.javascript.event.UIEventType;
+import entity.Pays;
+import entity.Prestataire;
+import entity.Region;
+import entity.Ville;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.IntStream;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import netscape.javascript.JSObject;
+import service.PaysService;
+import service.PrestataireService;
+import service.RegionService;
+import service.VilleService;
 
 public class AccueilController implements Initializable, MapComponentInitializedListener {
 
@@ -38,14 +63,87 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @FXML
     private JFXComboBox comboboxpays;
-    ObservableList<String> listLeagues = FXCollections.observableArrayList(
-            "Bundesliga", "La Liga", "Ligue 1", "Premier League", "Serie A", "Champions League", "Europa League");
+
+    @FXML
+    private JFXComboBox comboboxregion;
+
+    @FXML
+    private JFXComboBox comboboxville;
+
+    @FXML
+    private GridPane GridAllUser;
+
+    @FXML
+    private JFXTextField motcle;
+
+    List<Pays> pays;
+    List<Region> region;
+    List<Ville> ville;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapView.setKey("AIzaSyCpBZ4AjkZIoLWHnYYF5qsdQO5CTnCpcko");
         mapView.addMapInializedListener(this);
-        comboboxpays.setItems(listLeagues);
+
+        PaysService paysService = new PaysService();
+        pays = paysService.getAllPays();
+        ArrayList<String> listp = new ArrayList<String>();
+        for (Pays p : pays) {
+            listp.add(p.getNom());
+        }
+        ObservableList<String> olist = FXCollections.observableArrayList(listp);
+        comboboxpays.setItems(olist);
+
+        comboboxpays.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+
+                int id = (int) pays.stream().filter(p -> p.getNom().equals(newValue)).mapToInt(p -> p.getId()).average().getAsDouble();
+                RegionService regionservice = new RegionService();
+                region = regionservice.getRegionByPays(id);
+                region.toString();
+                ArrayList<String> listr = new ArrayList<String>();
+                for (Region p : region) {
+                    listr.add(p.getNom());
+                }
+                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+                comboboxregion.setItems(olistregion);
+            }
+        });
+        comboboxpays.getSelectionModel().select(204);
+
+        comboboxregion.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+
+                int id = (int) region.stream().filter(r -> r.getNom().equals(newValue)).mapToInt(r -> r.getId()).average().getAsDouble();
+                VilleService villeService = new VilleService();
+                ville = villeService.getVilleByRegion(id);
+                ville.toString();
+                ArrayList<String> listr = new ArrayList<String>();
+                for (Ville v : ville) {
+                    listr.add(v.getNom());
+                }
+                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+                comboboxville.setItems(olistregion);
+            }
+        });
+
+        for (int i = 0; i < 5; i++) {
+            VBox vbox = new VBox(5);
+            vbox.setPrefSize(100, 100);
+            Button btn = new Button("1");
+            Button btn2 = new Button("2");
+            Label l = new Label("2");
+            final Pane cardsPane = new StackPane();
+
+            vbox.getChildren().addAll(btn, btn2, l);
+
+            GridAllUser.addColumn(i, vbox);
+
+        }
 
     }
 
@@ -125,5 +223,19 @@ public class AccueilController implements Initializable, MapComponentInitialized
         });
         map.addMarker(marker);
 
+    }
+
+    @FXML
+    private void recherchePrestataireByName(ActionEvent event) {
+        System.out.println(motcle.getText());
+    }
+
+    @FXML
+    private void recherchePrestataireByAdress(ActionEvent event) {
+        int id = (int) ville.stream().filter(r -> r.getNom().equals(comboboxville.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
+        System.out.println(id);
+        PrestataireService prestataireService  = new PrestataireService();
+        List<Prestataire> Prestataire = prestataireService.getPrestatairByVille();
+        System.out.println(Prestataire);
     }
 }
