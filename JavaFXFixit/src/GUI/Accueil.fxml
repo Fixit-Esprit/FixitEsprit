@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
@@ -35,7 +34,12 @@
                         <Image url="@img/fixit.png" />
                      </image>
                   </ImageView>
-                  <JFXTextField fx:id="motcle" focusColor="#ffffff00" layoutX="8.0" layoutY="232.0" prefHeight="37.0" prefWidth="286.0" promptText="Mots clé" style="-fx-background-color: #ffffff;" unFocusColor="#beb2ff00">
+                  <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="9.0" layoutY="187.0" prefHeight="37.0" prefWidth="286.0" promptText="Catégorie de votre besoin" unFocusColor="#ffffff00">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </JFXComboBox>
+                  <JFXTextField fx:id="motcle" focusColor="#ffffff00" layoutX="7.0" layoutY="253.0" prefHeight="37.0" prefWidth="286.0" promptText="Mots clé" style="-fx-background-color: #ffffff;" unFocusColor="#beb2ff00">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -43,7 +47,7 @@
                         <Insets left="20.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="282.0" onAction="#recherchePrestataireByName" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
+                  <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="296.0" onAction="#recherchePrestataireByName" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -82,13 +86,11 @@
                            <children>
                               <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="618.0" prefWidth="895.0" vbarPolicy="ALWAYS">
                                  <content>
-                                    <GridPane fx:id="GridAllUser" hgap="100.0" minHeight="200.0" minWidth="200.0" prefHeight="540.0" prefWidth="856.0" vgap="100.0">
+                                    <GridPane fx:id="GridAllUser">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                       </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
                                     </GridPane>
                                  </content>
                               </ScrollPane>

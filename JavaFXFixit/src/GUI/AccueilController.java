@@ -18,7 +18,9 @@ import com.lynden.gmapsfx.javascript.event.UIEventType;
 import entity.Pays;
 import entity.Prestataire;
 import entity.Region;
+import entity.Service;
 import entity.Ville;
+import java.io.File;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,10 +37,13 @@ import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -49,6 +54,7 @@ import netscape.javascript.JSObject;
 import service.PaysService;
 import service.PrestataireService;
 import service.RegionService;
+import service.ServiceService;
 import service.VilleService;
 
 public class AccueilController implements Initializable, MapComponentInitializedListener {
@@ -60,6 +66,9 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @FXML
     private Pane panep;
+
+    @FXML
+    private JFXComboBox comboboxservice;
 
     @FXML
     private JFXComboBox comboboxpays;
@@ -76,6 +85,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
     @FXML
     private JFXTextField motcle;
 
+    List<Service> service;
     List<Pays> pays;
     List<Region> region;
     List<Ville> ville;
@@ -84,6 +94,15 @@ public class AccueilController implements Initializable, MapComponentInitialized
     public void initialize(URL url, ResourceBundle rb) {
         mapView.setKey("AIzaSyCpBZ4AjkZIoLWHnYYF5qsdQO5CTnCpcko");
         mapView.addMapInializedListener(this);
+
+        ServiceService serviceService = new ServiceService();
+        service = serviceService.getAllService();
+        ArrayList<String> listservise = new ArrayList<String>();
+        for (Service s : service) {
+            listservise.add(s.getDescription());
+        }
+        ObservableList<String> olistservice = FXCollections.observableArrayList(listservise);
+        comboboxservice.setItems(olistservice);
 
         PaysService paysService = new PaysService();
         pays = paysService.getAllPays();
@@ -130,20 +149,6 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 comboboxville.setItems(olistregion);
             }
         });
-
-        for (int i = 0; i < 5; i++) {
-            VBox vbox = new VBox(5);
-            vbox.setPrefSize(100, 100);
-            Button btn = new Button("1");
-            Button btn2 = new Button("2");
-            Label l = new Label("2");
-            final Pane cardsPane = new StackPane();
-
-            vbox.getChildren().addAll(btn, btn2, l);
-
-            GridAllUser.addColumn(i, vbox);
-
-        }
 
     }
 
@@ -227,15 +232,101 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @FXML
     private void recherchePrestataireByName(ActionEvent event) {
-        System.out.println(motcle.getText());
+        GridAllUser.getChildren().clear();
+        try {
+            System.out.println(motcle.getText());
+            int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
+            System.out.println(idService);
+
+            PrestataireService prestataireService = new PrestataireService();
+            List<Prestataire> Prestataires = prestataireService.getPrestatairByService(idService);
+            System.out.println(Prestataires);
+
+            int Column = 0;
+            int Row = 0;
+            for (Prestataire prestataire : Prestataires) {
+                VBox vbox = new VBox(5);
+                vbox.setPrefSize(300, 300);
+                vbox.setAlignment(Pos.CENTER);
+                Button btn = new Button("Demande");
+                Button btn2 = new Button("2");
+                Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
+                final Pane cardsPane = new StackPane();
+                ImageView imageView;
+                if (prestataire.getImage() == null) {
+
+                    Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
+                    imageView = new ImageView(image);
+                    imageView.setFitHeight(100);
+                    imageView.setFitWidth(100);
+                    vbox.getChildren().addAll(imageView, lNom, btn);
+                } else {
+                    vbox.getChildren().addAll(btn, btn2, lNom);
+                }
+
+                GridAllUser.add(vbox, Column, Row);
+
+                if (Column < 2) {
+                    Column++;
+                } else {
+                    Row++;
+                    Column = 0;
+                }
+            }
+        } catch (Exception ex) {
+            System.out.print(ex.getMessage());
+        }
     }
 
     @FXML
     private void recherchePrestataireByAdress(ActionEvent event) {
-        int id = (int) ville.stream().filter(r -> r.getNom().equals(comboboxville.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
-        System.out.println(id);
-        PrestataireService prestataireService  = new PrestataireService();
-        List<Prestataire> Prestataire = prestataireService.getPrestatairByVille();
-        System.out.println(Prestataire);
+
+        GridAllUser.getChildren().clear();
+
+        try {
+            int idVille = (int) ville.stream().filter(r -> r.getNom().equals(comboboxville.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
+            System.out.println(idVille);
+            int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
+            System.out.println(idService);
+
+            PrestataireService prestataireService = new PrestataireService();
+            List<Prestataire> Prestataires = prestataireService.getPrestatairByVilleAndService(idVille, idService);
+            System.out.println(Prestataires);
+
+            int Column = 0;
+            int Row = 0;
+            for (Prestataire prestataire : Prestataires) {
+                VBox vbox = new VBox(5);
+                vbox.setPrefSize(300, 300);
+                vbox.setAlignment(Pos.CENTER);
+                Button btn = new Button("Demande");
+                Button btn2 = new Button("2");
+                Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
+                final Pane cardsPane = new StackPane();
+                ImageView imageView;
+                if (prestataire.getImage() == null) {
+
+                    Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
+                    imageView = new ImageView(image);
+                    imageView.setFitHeight(100);
+                    imageView.setFitWidth(100);
+                    vbox.getChildren().addAll(imageView, lNom, btn);
+                } else {
+                    vbox.getChildren().addAll(btn, btn2, lNom);
+                }
+
+                GridAllUser.add(vbox, Column, Row);
+
+                if (Column < 2) {
+                    Column++;
+                } else {
+                    Row++;
+                    Column = 0;
+                }
+            }
+
+        } catch (Exception ex) {
+            System.out.print(ex.getMessage());
+        }
     }
 }
