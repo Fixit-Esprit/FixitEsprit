@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
@@ -21,6 +22,7 @@ import entity.Region;
 import entity.Service;
 import entity.Ville;
 import java.io.File;
+import java.io.IOException;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,10 +39,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -50,6 +57,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafxfixit.JavaFXFixit;
 import netscape.javascript.JSObject;
 import service.PaysService;
 import service.PrestataireService;
@@ -248,7 +258,31 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 VBox vbox = new VBox(5);
                 vbox.setPrefSize(300, 300);
                 vbox.setAlignment(Pos.CENTER);
-                Button btn = new Button("Demande");
+                JFXButton btn = new JFXButton("Demande");
+                btn.getStyleClass().add("recherche");
+
+                /*stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(btn.getScene().getWindow());*/
+                btn.setOnAction((ActionEvent e) -> {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/DetailPrestataire.fxml"));
+                    Parent root;
+                    try {
+                        root = loader.load();
+
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root, 800, 600));
+                        DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
+                        controller.setData(prestataire);
+                        stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
+                        stage.show();
+                        stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
+
+                        });
+                    } catch (IOException ex) {
+                        Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+
                 Button btn2 = new Button("2");
                 Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
                 final Pane cardsPane = new StackPane();
@@ -263,7 +297,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 } else {
                     vbox.getChildren().addAll(btn, btn2, lNom);
                 }
-
+                GridAllUser.resize(5000, 1000);
                 GridAllUser.add(vbox, Column, Row);
 
                 if (Column < 2) {
