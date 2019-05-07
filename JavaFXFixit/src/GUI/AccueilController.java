@@ -17,6 +17,7 @@ import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.event.MouseEventHandler;
 import com.lynden.gmapsfx.javascript.event.UIEventType;
 import entity.Pays;
+import entity.Position;
 import entity.Prestataire;
 import entity.Region;
 import entity.Service;
@@ -43,6 +44,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -53,6 +55,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -164,16 +167,10 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @Override
     public void mapInitialized() {
-        LatLong joeSmithLocation = new LatLong(47.6197, -122.3231);
-        LatLong joshAndersonLocation = new LatLong(47.6297, -122.3431);
-        LatLong bobUnderwoodLocation = new LatLong(47.6397, -122.3031);
-        LatLong tomChoiceLocation = new LatLong(47.6497, -122.3325);
-        LatLong fredWilkieLocation = new LatLong(47.6597, -122.3357);
-
         //Set the initial properties of the map.
         MapOptions mapOptions = new MapOptions();
 
-        mapOptions.center(new LatLong(47.6097, -122.3331))
+        mapOptions.center(new LatLong(36.82, 10.17))
                 .mapType(MapTypeIdEnum.HYBRID)
                 .overviewMapControl(false)
                 .panControl(false)
@@ -181,68 +178,15 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 .scaleControl(false)
                 .streetViewControl(false)
                 .zoomControl(true)
-                .zoom(12);
+                .zoom(7);
 
         map = mapView.createMap(mapOptions);
-
-        //Add markers to the map
-        MarkerOptions markerOptions1 = new MarkerOptions();
-        markerOptions1.position(joeSmithLocation);
-
-        MarkerOptions markerOptions2 = new MarkerOptions();
-        markerOptions2.position(joshAndersonLocation);
-        markerOptions2.title("halim");
-        markerOptions2.visible(true);
-
-        MarkerOptions markerOptions3 = new MarkerOptions();
-        markerOptions3.position(bobUnderwoodLocation);
-
-        MarkerOptions markerOptions4 = new MarkerOptions();
-        markerOptions4.position(tomChoiceLocation);
-
-        MarkerOptions markerOptions5 = new MarkerOptions();
-        markerOptions5.position(fredWilkieLocation);
-
-        Marker joeSmithMarker = new Marker(markerOptions1);
-        Marker joshAndersonMarker = new Marker(markerOptions2);
-        Marker bobUnderwoodMarker = new Marker(markerOptions3);
-        Marker tomChoiceMarker = new Marker(markerOptions4);
-        Marker fredWilkieMarker = new Marker(markerOptions5);
-
-        map.addMarker(joeSmithMarker);
-        map.addMarker(joshAndersonMarker);
-        map.addMarker(bobUnderwoodMarker);
-        map.addMarker(tomChoiceMarker);
-        map.addMarker(fredWilkieMarker);
-
-        InfoWindowOptions infoWindowOptions = new InfoWindowOptions();
-        infoWindowOptions.content("<img src=\"IMG.jpg\" alt=Smiley face height=42 width=42>"
-                + "Current Location: Safeway<br>"
-                + "ETA: 45 minutes");
-
-        InfoWindow fredWilkeInfoWindow = new InfoWindow(infoWindowOptions);
-        fredWilkeInfoWindow.open(map, fredWilkieMarker);
-        fredWilkeInfoWindow.open(map, bobUnderwoodMarker);
-        MarkerOptions markerOptions = new MarkerOptions();
-
-        markerOptions.position(new LatLong(47.6, -122.3))
-                .visible(Boolean.TRUE)
-                .title("My Marker");
-
-        Marker marker = new Marker(markerOptions);
-        InfoWindowOptions myWindowOptions = new InfoWindowOptions();
-        myWindowOptions.content(marker.getTitle());
-        InfoWindow WilkeInfoWindow = new InfoWindow(myWindowOptions);
-        map.addUIEventHandler(marker, UIEventType.click, (JSObject obj) -> {
-            WilkeInfoWindow.open(map, marker);
-        });
-        map.addMarker(marker);
-
     }
 
     @FXML
     private void recherchePrestataireByName(ActionEvent event) {
         GridAllUser.getChildren().clear();
+        map.clearMarkers();
         try {
             System.out.println(motcle.getText());
             int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
@@ -255,22 +199,30 @@ public class AccueilController implements Initializable, MapComponentInitialized
             int Column = 0;
             int Row = 0;
             for (Prestataire prestataire : Prestataires) {
+                addpositions(prestataire);
                 VBox vbox = new VBox(5);
                 vbox.setPrefSize(300, 300);
+                HBox hbox = new HBox(2);
+
                 vbox.setAlignment(Pos.CENTER);
-                JFXButton btn = new JFXButton("Demande");
-                btn.getStyleClass().add("recherche");
+                hbox.setAlignment(Pos.CENTER);
+                hbox.setPadding(Insets.EMPTY);
+                JFXButton btndemande = new JFXButton("Demande");
+                btndemande.getStyleClass().add("detail");
+
+                JFXButton btndetail = new JFXButton("Detail");
+                btndetail.getStyleClass().add("detail");
 
                 /*stage.initModality(Modality.WINDOW_MODAL);
                 stage.initOwner(btn.getScene().getWindow());*/
-                btn.setOnAction((ActionEvent e) -> {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/DetailPrestataire.fxml"));
+                btndetail.setOnAction((ActionEvent e) -> {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Detailprestataire.fxml"));
                     Parent root;
                     try {
                         root = loader.load();
 
                         Stage stage = new Stage();
-                        stage.setScene(new Scene(root, 800, 600));
+                        stage.setScene(new Scene(root, 820, 480));
                         DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
                         controller.setData(prestataire);
                         stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
@@ -283,8 +235,14 @@ public class AccueilController implements Initializable, MapComponentInitialized
                     }
                 });
 
-                Button btn2 = new Button("2");
+                hbox.getChildren().addAll(btndemande, btndetail);
                 Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
+                lNom.getStyleClass().add("textd");
+                Label lEmail = new Label(prestataire.getEmail());
+                lEmail.getStyleClass().add("textd");
+                Label lTel = new Label(prestataire.getTel());
+                lTel.getStyleClass().add("textd");
+                
                 final Pane cardsPane = new StackPane();
                 ImageView imageView;
                 if (prestataire.getImage() == null) {
@@ -293,10 +251,11 @@ public class AccueilController implements Initializable, MapComponentInitialized
                     imageView = new ImageView(image);
                     imageView.setFitHeight(100);
                     imageView.setFitWidth(100);
-                    vbox.getChildren().addAll(imageView, lNom, btn);
+                    vbox.getChildren().addAll(imageView, lNom,lEmail,lTel, hbox);
                 } else {
-                    vbox.getChildren().addAll(btn, btn2, lNom);
+                    vbox.getChildren().addAll(lNom, hbox);
                 }
+                vbox.setPadding(new Insets(10, 20, 30, 30));
                 GridAllUser.resize(5000, 1000);
                 GridAllUser.add(vbox, Column, Row);
 
@@ -316,7 +275,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
     private void recherchePrestataireByAdress(ActionEvent event) {
 
         GridAllUser.getChildren().clear();
-
+        map.clearMarkers();
         try {
             int idVille = (int) ville.stream().filter(r -> r.getNom().equals(comboboxville.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
             System.out.println(idVille);
@@ -327,15 +286,53 @@ public class AccueilController implements Initializable, MapComponentInitialized
             List<Prestataire> Prestataires = prestataireService.getPrestatairByVilleAndService(idVille, idService);
             System.out.println(Prestataires);
 
-            int Column = 0;
+                        int Column = 0;
             int Row = 0;
             for (Prestataire prestataire : Prestataires) {
+                addpositions(prestataire);
                 VBox vbox = new VBox(5);
                 vbox.setPrefSize(300, 300);
+                HBox hbox = new HBox(2);
+
                 vbox.setAlignment(Pos.CENTER);
-                Button btn = new Button("Demande");
-                Button btn2 = new Button("2");
+                hbox.setAlignment(Pos.CENTER);
+                hbox.setPadding(Insets.EMPTY);
+                JFXButton btndemande = new JFXButton("Demande");
+                btndemande.getStyleClass().add("detail");
+
+                JFXButton btndetail = new JFXButton("Detail");
+                btndetail.getStyleClass().add("detail");
+
+                /*stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(btn.getScene().getWindow());*/
+                btndetail.setOnAction((ActionEvent e) -> {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Detailprestataire.fxml"));
+                    Parent root;
+                    try {
+                        root = loader.load();
+
+                        Stage stage = new Stage();
+                        stage.setScene(new Scene(root, 820, 480));
+                        DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
+                        controller.setData(prestataire);
+                        stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
+                        stage.show();
+                        stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
+
+                        });
+                    } catch (IOException ex) {
+                        Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+
+                hbox.getChildren().addAll(btndemande, btndetail);
                 Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
+                lNom.getStyleClass().add("textd");
+                Label lEmail = new Label(prestataire.getEmail());
+                lEmail.getStyleClass().add("textd");
+                Label lTel = new Label(prestataire.getTel());
+                lTel.getStyleClass().add("textd");
+                
                 final Pane cardsPane = new StackPane();
                 ImageView imageView;
                 if (prestataire.getImage() == null) {
@@ -344,11 +341,12 @@ public class AccueilController implements Initializable, MapComponentInitialized
                     imageView = new ImageView(image);
                     imageView.setFitHeight(100);
                     imageView.setFitWidth(100);
-                    vbox.getChildren().addAll(imageView, lNom, btn);
+                    vbox.getChildren().addAll(imageView, lNom,lEmail,lTel, hbox);
                 } else {
-                    vbox.getChildren().addAll(btn, btn2, lNom);
+                    vbox.getChildren().addAll(lNom, hbox);
                 }
-
+                vbox.setPadding(new Insets(10, 20, 30, 30));
+                GridAllUser.resize(5000, 1000);
                 GridAllUser.add(vbox, Column, Row);
 
                 if (Column < 2) {
@@ -361,6 +359,31 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
         } catch (Exception ex) {
             System.out.print(ex.getMessage());
+        }
+    }
+
+    private void addpositions(Prestataire prestataire) {
+        if (mapView.isVisible()) {
+            PrestataireService prestataireService = new PrestataireService();
+            Position position = prestataireService.getPrestatairPosition(prestataire.getId());
+            if (position != null) {
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(new LatLong(position.getLatitude(), position.getLongitude()))
+                        .visible(Boolean.TRUE)
+                        .title(prestataire.getNom() + " " + prestataire.getPrenom());
+
+                Marker marker = new Marker(markerOptions);
+                InfoWindowOptions myWindowOptions = new InfoWindowOptions();
+                myWindowOptions.content(marker.getTitle());
+                InfoWindow WilkeInfoWindow = new InfoWindow(myWindowOptions);
+                WilkeInfoWindow.open(map, marker);
+                map.addUIEventHandler(marker, UIEventType.click, (JSObject obj) -> {
+                    WilkeInfoWindow.open(map, marker);
+                });
+                map.addMarker(marker);
+                map.setCenter(new LatLong(position.getLatitude(), position.getLongitude()));
+
+            }
         }
     }
 }

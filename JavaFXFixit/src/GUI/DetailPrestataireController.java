@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import netscape.javascript.JSObject;
@@ -45,7 +46,17 @@ public class DetailPrestataireController implements Initializable, MapComponentI
     @FXML
     private ImageView imageprestataire;
 
+    @FXML
+    private Label nometprenom;
+
+    @FXML
+    private Label service;
+
+    @FXML
+    private Label adresse;
+
     Position position;
+    Prestataire prestataire;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -55,8 +66,11 @@ public class DetailPrestataireController implements Initializable, MapComponentI
     }
 
     public void setData(Prestataire prestataire) {
-
+        
+        this.prestataire = prestataire;
         System.out.println(prestataire);
+        nometprenom.setText(prestataire.getNom() + " " + prestataire.getPrenom());
+        service.setText(prestataire.getService());
         if (prestataire.getImage() == null) {
             Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
             imageprestataire.setImage(image);
@@ -66,6 +80,7 @@ public class DetailPrestataireController implements Initializable, MapComponentI
         PrestataireService prestataireService = new PrestataireService();
         position = prestataireService.getPrestatairPosition(prestataire.getId());
         System.out.println(position);
+        adresse.setText(position.getPays() + " -> " + position.getRegion() + " -> " + position.getVille());
     }
 
     @Override
@@ -81,29 +96,27 @@ public class DetailPrestataireController implements Initializable, MapComponentI
                 .scaleControl(false)
                 .streetViewControl(false)
                 .zoomControl(true)
-                .zoom(12);
+                .zoom(7);
 
         map2 = mapView2.createMap(mapOptions);
-
-        InfoWindowOptions infoWindowOptions = new InfoWindowOptions();
-        infoWindowOptions.content("<img src=\"IMG.jpg\" alt=Smiley face height=42 width=42>"
-                + "Current Location: Safeway<br>"
-                + "ETA: 45 minutes");
 
         MarkerOptions markerOptions = new MarkerOptions();
         if (position != null) {
             markerOptions.position(new LatLong(position.getLatitude(), position.getLongitude()))
                     .visible(Boolean.TRUE)
-                    .title("My Marker");
+                    .title(this.prestataire.getNom()+" "+this.prestataire.getPrenom());
 
             Marker marker = new Marker(markerOptions);
             InfoWindowOptions myWindowOptions = new InfoWindowOptions();
             myWindowOptions.content(marker.getTitle());
             InfoWindow WilkeInfoWindow = new InfoWindow(myWindowOptions);
+            WilkeInfoWindow.open(map2, marker);
             map2.addUIEventHandler(marker, UIEventType.click, (JSObject obj) -> {
                 WilkeInfoWindow.open(map2, marker);
             });
             map2.addMarker(marker);
+            map2.setCenter(new LatLong(position.getLatitude(), position.getLongitude()));
+
         }
 
     }

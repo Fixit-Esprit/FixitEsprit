@@ -43,7 +43,17 @@
     -fx-font-size: 16px;
     -fx-font-weight: 700;
 }
-
+.detail{
+    -fx-text-fill: #1976d2;
+    -fx-background-color:#ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+}
+.textd{
+    -fx-text-fill: #37474f;
+    -fx-font-size: 14px;
+    -fx-font-weight: 400;
+}
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
     -fx-text-fill: #ffffff;
