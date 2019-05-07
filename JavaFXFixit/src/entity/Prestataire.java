@@ -19,11 +19,12 @@ public class Prestataire {
     private String image;
     private int nbpiont;
     private String description;
+    private String service;
 
     public Prestataire() {
     }
 
-    public Prestataire(int id, int adresse_id, String nom, String prenom, String email, String tel, String image, int nbpiont, String description) {
+    public Prestataire(int id, int adresse_id, String nom, String prenom, String email, String tel, String image, int nbpiont, String description, String service) {
         this.id = id;
         this.adresse_id = adresse_id;
         this.nom = nom;
@@ -33,7 +34,9 @@ public class Prestataire {
         this.image = image;
         this.nbpiont = nbpiont;
         this.description = description;
+        this.service = service;
     }
+
 
     public int getId() {
         return id;
@@ -107,10 +110,19 @@ public class Prestataire {
         this.description = description;
     }
 
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
+
     @Override
     public String toString() {
-        return "Prestatair{" + "id=" + id + ", adresse_id=" + adresse_id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", tel=" + tel + ", image=" + image + ", nbpiont=" + nbpiont + ", description=" + description + '}';
+        return "Prestataire{" + "id=" + id + ", adresse_id=" + adresse_id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", tel=" + tel + ", image=" + image + ", nbpiont=" + nbpiont + ", description=" + description + ", service=" + service + '}';
     }
+
 
     @Override
     public int hashCode() {
