@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.lynden.gmapsfx.GoogleMapView?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="537.0" prefWidth="848.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.DetailPrestataireController">
+    <stylesheets>
+        <URL value="@detailprestataire.css" />
+    </stylesheets>
+   <children>
+      <ImageView fx:id="imageprestataire" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="33.0" layoutY="269.0" text="Service" textFill="#0d47a1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="33.0" layoutY="347.0" text="Adresse" textFill="#0d47a1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="33.0" layoutY="198.0" text="Nom et prenom" textFill="#0d47a1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <GoogleMapView fx:id="mapView2" layoutX="337.0" layoutY="42.0" prefHeight="379.0" prefWidth="454.0" />
+      <Label fx:id="nometprenom" layoutX="69.0" layoutY="232.0" textFill="#0d47a1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="service" layoutX="69.0" layoutY="309.0" textFill="#0d47a1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="adresse" layoutX="69.0" layoutY="387.0" textFill="#0d47a1">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="440.0" prefHeight="37.0" prefWidth="176.0" styleClass="demande" text="Demander le service" textFill="#0d47a1" />
+      <JFXButton layoutX="186.0" layoutY="440.0" prefHeight="27.0" prefWidth="128.0" text="Button" />
+   </children>
+</AnchorPane>
