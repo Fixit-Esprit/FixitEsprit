@@ -26,7 +26,7 @@ public class DaoConnection {
     private static Connection connect;
     private static DaoConnection daos;
     private final PreparedStatement pst = null;
-    private final String url = "jdbc:mysql://localhost:3306/Fixit";
+    private final String url = "jdbc:mysql://localhost:3306/fixit";
     private final String user = "root";
     private final String pass = "";
     ResultSet resultat = null;
