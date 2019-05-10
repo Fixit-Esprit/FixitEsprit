@@ -66,7 +66,7 @@ public class ServiceUser {
     }
     private Connection connect() {
         // SQLite connection string
-      String url = "jdbc:sqlite:C:/Users/EXTHONE-marwa/Documents/NetBeansProjects/FixitEsprit/JavaFXFixit/db/user.db";
+      String url = "jdbc:sqlite:./db/user.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -77,7 +77,7 @@ public class ServiceUser {
     }
     public static void createNewuser() {
         // SQLite connection string
-        String url = "jdbc:sqlite:C:/Users/EXTHONE-marwa/Documents/NetBeansProjects/FixitEsprit/JavaFXFixit/db/user.db";
+        String url = "jdbc:sqlite:./db/user.db";
 
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS user (\n"
