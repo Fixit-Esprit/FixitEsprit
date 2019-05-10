@@ -101,7 +101,7 @@ public class InscriptionController implements Initializable {
     }    
    public void upload(){
         INimage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-         System.out.println("img pressed ");
+         System.out.println("img cliqued");
          FileChooser fileChooser = new FileChooser();
          fileChooser.setTitle("Open Resource File");
          file =fileChooser.showOpenDialog(new Stage());
