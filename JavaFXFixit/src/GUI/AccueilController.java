@@ -7,22 +7,17 @@ package GUI;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 
 /**
  * FXML Controller class
  *
- * @author hphqlim
+ * @author EXTHONE-marwa
  */
 public class AccueilController implements Initializable {
-    @FXML
-    private Button button;
+
     /**
      * Initializes the controller class.
-     * @param url
-     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
