@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
 <?import com.jfoenix.controls.*?>
@@ -19,7 +20,7 @@
    <children>
       <Pane prefHeight="176.0" prefWidth="1024.0" style="-fx-background-color: #039BE5;">
          <children>
-            <ImageView fitHeight="91.0" fitWidth="159.0" layoutX="442.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="91.0" fitWidth="159.0" layoutX="442.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/logo.png" />
                </image>
@@ -29,20 +30,41 @@
             <DropShadow />
          </effect>
       </Pane>
-      <Pane layoutX="173.0" layoutY="98.0" prefHeight="494.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
+      <Pane layoutX="162.0" layoutY="106.0" prefHeight="486.0" prefWidth="700.0" style="-fx-background-color: #ffffff;">
          <children>
-            <TextField fx:id="INpnom" layoutX="358.0" layoutY="162.0" prefHeight="45.0" prefWidth="300.0" promptText="Prénom" />
-            <TextField fx:id="INphone" layoutX="358.0" layoutY="224.0" prefHeight="45.0" prefWidth="300.0" promptText="Téléphone" />
-            <TextField fx:id="INemail" layoutX="23.0" layoutY="224.0" prefHeight="45.0" prefWidth="300.0" promptText="E-mail" />
-            <TextField fx:id="INlogin" layoutX="23.0" layoutY="101.0" prefHeight="45.0" prefWidth="300.0" promptText="Login" />
-            <JFXButton buttonType="RAISED" layoutX="173.0" layoutY="435.0" onAction="#adduser" prefHeight="45.0" prefWidth="300.0" style="-fx-background-color: #007ac1;" text="Inscription !" textFill="WHITE" />
-            <TextField fx:id="INpwd" layoutX="358.0" layoutY="100.0" prefHeight="45.0" prefWidth="300.0" promptText="Mot de passe" />
-            <TextField fx:id="INnom" layoutX="23.0" layoutY="162.0" prefHeight="45.0" prefWidth="300.0" promptText="Nom" />
-            <ImageView fx:id="INimage" fitHeight="91.0" fitWidth="93.0" layoutX="296.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+            <TextField fx:id="INpnom" layoutX="358.0" layoutY="162.0" prefHeight="45.0" prefWidth="310.0" promptText="Prénom" />
+            <TextField fx:id="INphone" layoutX="358.0" layoutY="217.0" prefHeight="45.0" prefWidth="310.0" promptText="Téléphone" />
+            <TextField fx:id="INemail" layoutX="18.0" layoutY="217.0" prefHeight="45.0" prefWidth="310.0" promptText="E-mail" />
+            <TextField fx:id="INlogin" layoutX="18.0" layoutY="108.0" prefHeight="45.0" prefWidth="310.0" promptText="Login" />
+            <JFXButton buttonType="RAISED" layoutX="358.0" layoutY="379.0" onAction="#adduser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Inscription !" textFill="WHITE" />
+            <TextField fx:id="INpwd" layoutX="358.0" layoutY="108.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe" />
+            <TextField fx:id="INnom" layoutX="18.0" layoutY="162.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom" />
+            <ImageView fx:id="INimage" fitHeight="91.0" fitWidth="93.0" layoutX="307.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/avatar2.png" />
                </image>
             </ImageView>
+            <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="358.0" layoutY="323.0" prefHeight="45.0" prefWidth="310.0" promptText="  Ville" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="18.0" layoutY="323.0" prefHeight="45.0" prefWidth="310.0" promptText="  Region" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="358.0" layoutY="271.0" prefHeight="45.0" prefWidth="310.0" promptText="  Pays" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="18.0" layoutY="379.0" prefHeight="45.0" prefWidth="310.0" promptText="  Secteur" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <TextField fx:id="INAdresse" layoutX="18.0" layoutY="271.0" prefHeight="45.0" prefWidth="310.0" promptText="Adresse" />
          </children>
       </Pane>
    </children>

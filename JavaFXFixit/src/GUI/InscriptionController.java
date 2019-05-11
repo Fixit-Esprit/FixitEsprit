@@ -6,14 +6,24 @@
 package GUI;
 
 import com.jfoenix.controls.JFXComboBox;
+import entity.Pays;
+import entity.Region;
+import entity.Service;
 import entity.User;
+import entity.Ville;
 import service.ServiceUser;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,8 +35,8 @@ import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 import service.PaysService;
 import service.RegionService;
-import service.ServiceService;
 import service.VilleService;
+import service.ServiceService;
 
 /**
  * FXML Controller class
@@ -47,23 +57,80 @@ public class InscriptionController implements Initializable {
 @FXML
    private TextField INemail;
 @FXML
+   private TextField INAdresse;
+
+@FXML
  private ImageView INimage;
-   File file;
-    @FXML
-    private JFXComboBox comboboxpays;
+@FXML
+private JFXComboBox comboboxpays;
+@FXML
+private JFXComboBox comboboxregion;
+@FXML
+private JFXComboBox comboboxville;
+@FXML
+private JFXComboBox comboboxservice;
 
-    @FXML
-    private JFXComboBox comboboxregion;
+File file;
+List<Service> service;
+List<Pays> pays;
+List<Region> region;
+List<Ville> ville;
 
-    @FXML
-    private JFXComboBox comboboxville;
+    public TextField getINnom() {
+        return INnom;
+    }
 
+    public TextField getINpnom() {
+        return INpnom;
+    }
 
-    
+    public TextField getINlogin() {
+        return INlogin;
+    }
+
+    public TextField getINpwd() {
+        return INpwd;
+    }
+
+    public TextField getINphone() {
+        return INphone;
+    }
+
+    public TextField getINemail() {
+        return INemail;
+    }
+
+    public TextField getINAdresse() {
+        return INAdresse;
+    }
+
+    public ImageView getINimage() {
+        return INimage;
+    }
+
+    public JFXComboBox getComboboxpays() {
+        return comboboxpays;
+    }
+
+    public JFXComboBox getComboboxregion() {
+        return comboboxregion;
+    }
+
+    public JFXComboBox getComboboxville() {
+        return comboboxville;
+    }
+
+    public JFXComboBox getComboboxservice() {
+        return comboboxservice;
+    }
+
+    public File getFile() {
+        return file;
+    }
 
     public void setINnom(TextField INnom) {
         this.INnom = INnom;
-    }    
+    }
 
     public void setINpnom(TextField INpnom) {
         this.INpnom = INpnom;
@@ -85,19 +152,60 @@ public class InscriptionController implements Initializable {
         this.INemail = INemail;
     }
 
-    
-    
+    public void setINAdresse(TextField INAdresse) {
+        this.INAdresse = INAdresse;
+    }
+
+    public void setComboboxpays(JFXComboBox comboboxpays) {
+        this.comboboxpays = comboboxpays;
+    }
+
+    public void setComboboxregion(JFXComboBox comboboxregion) {
+        this.comboboxregion = comboboxregion;
+    }
+
+    public void setComboboxville(JFXComboBox comboboxville) {
+        this.comboboxville = comboboxville;
+    }
+
+    public void setComboboxservice(JFXComboBox comboboxservice) {
+        this.comboboxservice = comboboxservice;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public void setService(List<Service> service) {
+        this.service = service;
+    }
+
+    public void setPays(List<Pays> pays) {
+        this.pays = pays;
+    }
+
+    public void setRegion(List<Region> region) {
+        this.region = region;
+    }
+
+    public void setVille(List<Ville> ville) {
+        this.ville = ville;
+    }
+        public void setINimage(ImageView INimage) {
+        this.INimage = INimage;
+    }
+
+ 
     
     /**
      * Initializes the controller class.
      */
-    public void setINimage(ImageView INimage) {
-        this.INimage = INimage;
-    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.upload();
+        this.loadinfo();
     }    
    public void upload(){
         INimage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -123,14 +231,69 @@ public class InscriptionController implements Initializable {
      });
    } 
      
-   
+   public void loadinfo(){
+    ServiceService serviceService = new ServiceService();
+        service = serviceService.getAllService();
+        ArrayList<String> listservise = new ArrayList<String>();
+        for (Service s : service) {
+            listservise.add(s.getDescription());
+        }
+        ObservableList<String> olistservice = FXCollections.observableArrayList(listservise);
+         comboboxservice.setItems(olistservice);
+        
+        PaysService paysService = new PaysService();
+        pays = paysService.getAllPays();
+        ArrayList<String> listp = new ArrayList<String>();
+        for (Pays p : pays) {
+            listp.add(p.getNom());
+        }
+        ObservableList<String> olist = FXCollections.observableArrayList(listp);
+        comboboxpays.setItems(olist);
+        comboboxpays.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+
+                int id = (int) pays.stream().filter(p -> p.getNom().equals(newValue)).mapToInt(p -> p.getId()).average().getAsDouble();
+                RegionService regionservice = new RegionService();
+                region = regionservice.getRegionByPays(id);
+                region.toString();
+                ArrayList<String> listr = new ArrayList<String>();
+                for (Region p : region) {
+                    listr.add(p.getNom());
+                }
+                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+                comboboxregion.setItems(olistregion);
+            }
+        });
+        comboboxpays.getSelectionModel().select(204);
+
+        comboboxregion.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+
+                int id = (int) region.stream().filter(r -> r.getNom().equals(newValue)).mapToInt(r -> r.getId()).average().getAsDouble();
+                VilleService villeService = new VilleService();
+                ville = villeService.getVilleByRegion(id);
+                ville.toString();
+                ArrayList<String> listr = new ArrayList<String>();
+                for (Ville v : ville) {
+                    listr.add(v.getNom());
+                }
+                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+                comboboxville.setItems(olistregion);
+            }
+        });
+}
    
     @FXML
     private void adduser(ActionEvent event) {
-       
-        User u= new User(INnom.getText(),INpnom.getText(),1,INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), file.getName(), 500);
-        ServiceUser srv = new ServiceUser();
-        srv.ajouterutilisateur(u);
+         ServiceUser srv = new ServiceUser();       
+         int idville =srv.getIDVille((String) comboboxville.getValue());
+         System.out.println("\n valeur"+INAdresse.getText());
+         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), file.getName(), 500,idville);
+         srv.ajouterutilisateur(u);
     
     }
     

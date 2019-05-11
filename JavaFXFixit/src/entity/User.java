@@ -11,10 +11,10 @@ package entity;
  */
 public class User {
     
-    private int id,nbPoint, adresse;
-    private String nom, prenom, login,pwd,telephone,email,image;
+    private int id,nbPoint, ville,pays,region;
+    private String nom, prenom, login,pwd,telephone,email,image,adresse;
 
-    public User(int id, int nbPoint, String nom, String prenom, int adresse, String login, String pwd, String telephone, String email, String image) {
+    public User(int id, int nbPoint, String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int ville,int pays,int region) {
         this.id = id;
         this.nbPoint = nbPoint;
         this.nom = nom;
@@ -25,8 +25,11 @@ public class User {
         this.telephone = telephone;
         this.email = email;
         this.image = image;
+        this.ville = ville;
+        this.pays = pays;
+        this.region = region;
     }
-    public User(String nom, String prenom, int adresse, String login, String pwd, String telephone, String email, String image,int nbPoint) {
+    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int ville) {
         
         this.nbPoint = nbPoint;
         this.nom = nom;
@@ -36,7 +39,8 @@ public class User {
         this.pwd = pwd;
         this.telephone = telephone;
         this.email = email;
-        this.image = image;
+        this.image = image;        
+        this.ville = ville;
     }
 
     public User(String login, String pwd) {
@@ -61,7 +65,7 @@ public class User {
         return prenom;
     }
 
-    public int getAdresse() {
+    public String getAdresse() {
         return adresse;
     }
 
@@ -101,8 +105,20 @@ public class User {
         this.prenom = prenom;
     }
 
-    public void setAdresse(int adresse) {
+    public void setAdresse(String adresse) {
         this.adresse = adresse;
+    }
+
+    public int getVille() {
+        return ville;
+    }
+
+    public int getPays() {
+        return pays;
+    }
+
+    public int getRegion() {
+        return region;
     }
 
     public void setLogin(String login) {

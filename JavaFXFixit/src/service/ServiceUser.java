@@ -103,17 +103,32 @@ public class ServiceUser {
         }
     }
     public void ajouterutilisateur(User u1){
-        
-        try {
-            Statement st = Conn.createStatement();                        
-            String req ="insert into utilisateur (Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint) values ( '"+u1.getAdresse()+"','"+ u1.getNom()+"', '"+u1.getPrenom()+"', '"+u1.getLogin()+"','"+u1.getPwd()+"','"+u1.getTelephone()+"','"+u1.getEmail()+"','"+u1.getImage()+"','"+u1.getNbPoint()+"')";
-                        st.executeUpdate(req);
-        } catch (SQLException ex) {
+         try {
+            
+            Statement st = Conn.createStatement();   
+                                
+            String req ="insert into adresse (Vil_id,description) values ( '"+ u1.getVille()+"','"+ u1.getAdresse()+"')";
+            st.executeUpdate(req);
+             ResultSet rs = st.executeQuery("select last_insert_id() as id from adresse");             
+            if(rs.next())
+            {
+            int lastid = rs.getInt(1);
+            try {      
+            String req2 ="insert into utilisateur (Adr_id,nom,prenom,login,motdepasse,telephone,email,image,nbPoint) values ( '"+lastid+"','"+ u1.getNom()+"', '"+u1.getPrenom()+"', '"+u1.getLogin()+"','"+u1.getPwd()+"','"+u1.getTelephone()+"','"+u1.getEmail()+"','"+u1.getImage()+"','"+u1.getNbPoint()+"' )";
+            System.out.println("req"+req);
+            st.executeUpdate(req2);
+            } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
-        }                    
+             }
+            }
+            } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                          
         
         
     }
+ 
       public void Updateutilisateur(User u1){
         
         try {
@@ -126,5 +141,25 @@ public class ServiceUser {
         
         
     } 
-    
+     public int getIDVille(String ville){  
+      
+  try {
+        
+        Statement   st = Conn.createStatement();    
+        String req ="Select * from `ville` where nom LIKE '"+ville+"'  ";
+        st.execute(req);
+        ResultSet rs = st.executeQuery(req);   
+            if (!rs.next() )             
+            return 0;
+           
+            return rs.getInt("id");
+           
+             } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+     return 0;
+         }
+     
+     
+     
 }

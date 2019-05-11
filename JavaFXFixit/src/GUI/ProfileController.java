@@ -49,7 +49,6 @@ import org.apache.commons.io.FileUtils;
 import service.PaysService;
 import service.RegionService;
 import service.VilleService;
-import service.PrestataireService;
 import service.ServiceService;
 
 /**
@@ -236,7 +235,7 @@ String hos = ".\\src\\GUI\\img\\";
         @FXML
     private void updateuser(ActionEvent event) {
        
-        User u= new User(LBnom.getText(),LBpnom.getText(),1,LBlogin.getText(),LBpwd.getText(),LBphone.getText(),LBemail.getText(), file.getName(), 500);
+        User u= new User(LBnom.getText(),LBpnom.getText(),"adresse",LBlogin.getText(),LBpwd.getText(),LBphone.getText(),LBemail.getText(), file.getName(), 500,1);
         ServiceUser srv = new ServiceUser();
         srv.Updateutilisateur(u);
     
