@@ -23,9 +23,9 @@
       <Pane blendMode="SRC_ATOP" cacheHint="SCALE" prefHeight="600.0" prefWidth="290.0" style="-fx-background-color: #039BE5;">
          <children>
             <JFXButton fx:id="BTNlog" buttonType="RAISED" layoutX="33.0" layoutY="362.0" onAction="#LoginUser" prefHeight="39.0" prefWidth="222.0" style="-fx-background-color: #007ac1;" text="Connexion" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
-            <ImageView fitHeight="198.0" fitWidth="241.0" layoutX="26.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="21.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/Logo.png" />
+                  <Image url="@img/logo.png" />
                </image>
             </ImageView>
             <TextField fx:id="TXFlogin" layoutX="35.0" layoutY="261.0" prefHeight="39.0" prefWidth="222.0" promptText="Login" style="-fx-background-color: #fff;" />
@@ -35,13 +35,13 @@
                   <Font size="10.0" />
                </font>
             </Text>
-            <Line endX="100.0" fill="WHITE" layoutX="140.0" layoutY="454.0" startX="-100.0" stroke="#67daff" strokeMiterLimit="2.0" strokeType="OUTSIDE" />
+            <Line endX="100.0" fill="WHITE" layoutX="140.0" layoutY="454.0" startX="-100.0" stroke="WHITE" strokeMiterLimit="2.0" strokeType="OUTSIDE" />
             <Text fill="WHITE" layoutX="39.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous n'avez pas encore de compte ?">
                <font>
                   <Font size="9.0" />
                </font>
             </Text>
-            <Label fx:id="inc" layoutX="187.0" layoutY="468.0" onMouseClicked="#InscriptionUser" text="Créez-en un !" textFill="#03588a">
+            <Label fx:id="inc" layoutX="187.0" layoutY="468.0" onMouseClicked="#InscriptionUser" text="Créez-en un !" textFill="#007ac1">
                <font>
                   <Font size="10.0" />
                </font>

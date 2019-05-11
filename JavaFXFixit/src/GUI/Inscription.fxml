@@ -19,9 +19,9 @@
    <children>
       <Pane prefHeight="176.0" prefWidth="1024.0" style="-fx-background-color: #039BE5;">
          <children>
-            <ImageView fitHeight="78.0" fitWidth="162.0" layoutX="431.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="91.0" fitWidth="159.0" layoutX="442.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/Logo.png" />
+                  <Image url="@img/logo.png" />
                </image>
             </ImageView>
          </children>
