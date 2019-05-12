@@ -70,6 +70,8 @@ public class ProfileController implements Initializable {
 @FXML
    private TextField LBemail;
 @FXML
+   private TextField LBAdresse;
+@FXML
  private ImageView LBimage;
 @FXML
  private TextField LBnbPoint;
@@ -111,8 +113,51 @@ List<Ville> ville;
     public void setLBemail(String LBemail) {
         this.LBemail.setText(LBemail);
     }
+ 
+     public void setLBAdresse(String LBAdresse) {
+        this.LBAdresse.setText(LBAdresse);
+    }
+
+     
+/****************************/
+     public TextField getLBnom() {
+        return LBnom;
+    }
+
+    public TextField getLBpnom() {
+        return LBpnom;
+    }
+
+    public TextField getLBlogin() {
+        return LBlogin;
+    }
+
+    public TextField getLBpwd() {
+        return LBpwd;
+    }
+
+    public TextField getLBphone() {
+        return LBphone;
+    }
+
+    public TextField getLBemail() {
+        return LBemail;
+    }
+
+    public TextField getLBAdresse() {
+        return LBAdresse;
+    }
+
+    public ImageView getLBimage() {
+        return LBimage;
+    }
+
+  
 
     
+
+   
+       
     
     
     
@@ -234,10 +279,18 @@ String hos = ".\\src\\GUI\\img\\";
      
         @FXML
     private void updateuser(ActionEvent event) {
-       
-        User u= new User(LBnom.getText(),LBpnom.getText(),"adresse",LBlogin.getText(),LBpwd.getText(),LBphone.getText(),LBemail.getText(), file.getName(), 500,1);
-        ServiceUser srv = new ServiceUser();
-        srv.Updateutilisateur(u);
+          String fileName;
+             if(file!=null) 
+                     fileName=".\\src\\GUI\\img\\"+file.getName(); 
+               else 
+                   fileName=null;
+        ServiceUser srv = new ServiceUser();       
+         int idville =srv.getIDVille((String) comboboxville.getValue());
+         System.out.println("\n valeur de combo"+comboboxpays.getSelectionModel().getSelectedIndex());
+         int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
+         int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;         
+         User u= new User(2,LBnom.getText(),LBpnom.getText(),LBAdresse.getText(),LBlogin.getText(),LBpwd.getText(),LBphone.getText(),LBemail.getText(), fileName, 500,idpays,idregion,idville);
+         srv.Updateutilisateur(u);
     
     }
        @FXML

@@ -225,7 +225,8 @@ List<Ville> ville;
              } catch (IOException ex) {
               Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
              }
-             }else{              
+             }else{  
+         
                  System.out.println("Cancelled");
               }
      });
@@ -238,7 +239,7 @@ List<Ville> ville;
         for (Service s : service) {
             listservise.add(s.getDescription());
         }
-        ObservableList<String> olistservice = FXCollections.observableArrayList(listservise);
+        ObservableList<String> olistservice = FXCollections.observableArrayList(listservise);        
          comboboxservice.setItems(olistservice);
         
         PaysService paysService = new PaysService();
@@ -250,7 +251,7 @@ List<Ville> ville;
         ObservableList<String> olist = FXCollections.observableArrayList(listp);
         comboboxpays.setItems(olist);
         comboboxpays.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener() {
+            new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 
@@ -261,9 +262,11 @@ List<Ville> ville;
                 ArrayList<String> listr = new ArrayList<String>();
                 for (Region p : region) {
                     listr.add(p.getNom());
+                     
                 }
                 ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
                 comboboxregion.setItems(olistregion);
+               
             }
         });
         comboboxpays.getSelectionModel().select(204);
@@ -289,10 +292,19 @@ List<Ville> ville;
    
     @FXML
     private void adduser(ActionEvent event) {
+        String fileName;
+             if(file!=null) 
+                     fileName=".\\src\\GUI\\img\\"+file.getName(); 
+               else 
+                   fileName=null;
          ServiceUser srv = new ServiceUser();       
          int idville =srv.getIDVille((String) comboboxville.getValue());
-         System.out.println("\n valeur"+INAdresse.getText());
-         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), file.getName(), 500,idville);
+       
+         int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
+         int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;
+           System.out.println("\n valeur de combo"+idville);   
+          
+         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville);
          srv.ajouterutilisateur(u);
     
     }

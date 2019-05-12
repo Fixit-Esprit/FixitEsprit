@@ -107,7 +107,7 @@ public class ServiceUser {
             
             Statement st = Conn.createStatement();   
                                 
-            String req ="insert into adresse (Vil_id,description) values ( '"+ u1.getVille()+"','"+ u1.getAdresse()+"')";
+            String req ="insert into adresse (Pay_id,Reg_id,Vil_id,description) values (  '"+ u1.getPays()+"', '"+ u1.getRegion()+"','"+ u1.getVille()+"','"+ u1.getAdresse()+"')";
             st.executeUpdate(req);
              ResultSet rs = st.executeQuery("select last_insert_id() as id from adresse");             
             if(rs.next())
@@ -115,7 +115,7 @@ public class ServiceUser {
             int lastid = rs.getInt(1);
             try {      
             String req2 ="insert into utilisateur (Adr_id,nom,prenom,login,motdepasse,telephone,email,image,nbPoint) values ( '"+lastid+"','"+ u1.getNom()+"', '"+u1.getPrenom()+"', '"+u1.getLogin()+"','"+u1.getPwd()+"','"+u1.getTelephone()+"','"+u1.getEmail()+"','"+u1.getImage()+"','"+u1.getNbPoint()+"' )";
-            System.out.println("req"+req);
+             
             st.executeUpdate(req2);
             } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,13 +131,25 @@ public class ServiceUser {
  
       public void Updateutilisateur(User u1){
         
-        try {
-            Statement st = Conn.createStatement();                        
-            String req ="insert into utilisateur (Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint) values ( '"+u1.getAdresse()+"','"+ u1.getNom()+"', '"+u1.getPrenom()+"', '"+u1.getLogin()+"','"+u1.getPwd()+"','"+u1.getTelephone()+"','"+u1.getEmail()+"','"+u1.getImage()+"','"+u1.getNbPoint()+"')";
-                        st.executeUpdate(req);
-        } catch (SQLException ex) {
+    try {
+            
+            Statement st = Conn.createStatement();  
+                                
+            String req ="UPDATE adresse SET `Pay_id` = '"+u1.getPays()+"', Reg_id = '"+u1.getRegion()+"',Vil_id  = '"+u1.getRegion()+"' ,description = '"+u1.getAdresse()+"' ";
+            st.executeUpdate(req);          
+             
+            try {      
+            String req2 ="UPDATE `utilisateur` SET `nom` = '"+u1.getNom()+"', `prenom` = '"+u1.getPrenom()+"', `login` = '"+u1.getLogin()+"', `motdepasse` = '"+u1.getPwd()+"', `telephone` = '"+u1.getTelephone()+"', `email` = '"+u1.getEmail()+"',`image` = '"+u1.getImage()+"' WHERE `utilisateur`.`id` = "+u1.getId()+" ";
+            System.out.println("req"+req2);
+            st.executeUpdate(req2);
+            } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
-        }                    
+             }
+           
+            } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                          
         
         
     } 

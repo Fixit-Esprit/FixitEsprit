@@ -14,7 +14,8 @@ public class User {
     private int id,nbPoint, ville,pays,region;
     private String nom, prenom, login,pwd,telephone,email,image,adresse;
 
-    public User(int id, int nbPoint, String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int ville,int pays,int region) {
+   
+        public User(int id,String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville) {
         this.id = id;
         this.nbPoint = nbPoint;
         this.nom = nom;
@@ -29,7 +30,7 @@ public class User {
         this.pays = pays;
         this.region = region;
     }
-    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int ville) {
+    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville) {
         
         this.nbPoint = nbPoint;
         this.nom = nom;
@@ -41,6 +42,8 @@ public class User {
         this.email = email;
         this.image = image;        
         this.ville = ville;
+        this.pays = pays;
+        this.region = region;
     }
 
     public User(String login, String pwd) {
