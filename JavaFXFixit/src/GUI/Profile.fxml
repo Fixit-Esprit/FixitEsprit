@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import de.jensd.fx.glyphs.*?>
+<?import javafx.scene.shape.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ProfileController">
+    <stylesheets>
+        <URL value="@profile.css" />
+    </stylesheets>
+   <children>
+      <Pane prefHeight="412.0" prefWidth="238.0">
+         <children>
+            <Pane prefHeight="600.0" prefWidth="300.0" style="-fx-background-color: #039BE5;">
+               <children>
+                  <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="27.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/logo.png" />
+                     </image>
+                  </ImageView>
+                  <JFXButton buttonType="RAISED" layoutX="167.0" layoutY="406.0" prefHeight="41.0" prefWidth="116.0" style="-fx-background-color: #007ac1;" text="Rechercher" textFill="WHITE" />
+                  <JFXTextField fx:id="motcle" focusColor="#ffffff00" layoutX="19.0" layoutY="345.0" prefHeight="45.0" prefWidth="265.0" promptText="Recherche par mots clé" style="-fx-background-color: #ffffff;" unFocusColor="#beb2ff00">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </JFXTextField>
+                  <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="19.0" layoutY="291.0" prefHeight="45.0" prefWidth="265.0" promptText="  Secteur" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </JFXComboBox>
+               </children>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Pane>
+         </children></Pane>
+      <JFXTabPane layoutX="300.0" prefHeight="600.0" prefWidth="724.0">
+         <tabs>
+            <Tab text="Mon Profil">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="LBnom" layoutX="40.0" layoutY="178.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom" />
+                        <TextField fx:id="LBpnom" layoutX="377.0" layoutY="178.0" prefHeight="45.0" prefWidth="310.0" promptText="Prénom" />
+                        <TextField fx:id="LBemail" layoutX="40.0" layoutY="230.0" prefHeight="45.0" prefWidth="310.0" promptText="E-mail" />
+                        <TextField fx:id="LBphone" layoutX="377.0" layoutY="231.0" prefHeight="45.0" prefWidth="310.0" promptText="Téléphone" />
+                        <TextField fx:id="LBlogin" layoutX="40.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Login" />
+                        <TextField fx:id="LBpwd" layoutX="377.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe" />
+                        <JFXButton buttonType="RAISED" layoutX="377.0" layoutY="400.0" onAction="#updateuser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Modifier" textFill="WHITE" />
+                        <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="377.0" layoutY="285.0" prefHeight="45.0" prefWidth="310.0" promptText="  Pays" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="40.0" layoutY="337.0" prefHeight="45.0" prefWidth="310.0" promptText="  Region" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="377.0" layoutY="338.0" prefHeight="45.0" prefWidth="310.0" promptText="  Ville" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXComboBox>
+                        <ImageView fx:id="LBimage" fitHeight="89.0" fitWidth="174.0" layoutX="290.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                        <TextField fx:id="LBAdresse" layoutX="40.0" layoutY="283.0" prefHeight="45.0" prefWidth="310.0" promptText="Adresse" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Consulter Mes Points">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+      <JFXButton layoutX="930.0" layoutY="3.0" onAction="#goHome" prefHeight="21.0" prefWidth="84.0" style="-fx-background-color: #007ac1;" text="Accueil" textFill="WHITE" />
+   </children>
+</AnchorPane>

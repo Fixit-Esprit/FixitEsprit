@@ -6,6 +6,11 @@
 package javafxfixit;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -28,8 +33,38 @@ public class JavaFXFixit extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
-        try {
+try {
+             createNewuser();
+             String sql = "SELECT COUNT(*) as nb  FROM user";        
+             try (Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+           rs.next();
+           int count = rs.getInt(1);
+           System.out.println("nbr de row dans sqllit "+count);
+           if(count!=0){               
+           Parent root = FXMLLoader.load(getClass().getResource("/GUI/Profile.fxml"));                
+           
+            Scene scene = new Scene(root);                     
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            System.out.println("nom user " +rs.getString(4));
+           }else{
+            Parent root = FXMLLoader.load(getClass().getResource("/GUI/InterfaceUser.fxml"));       
+            Scene scene = new Scene(root);                     
+            primaryStage.setScene(scene);
+            primaryStage.show();
+           }
+           
+             
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+                        
+        } catch (IOException ex) {
+            Logger.getLogger(JavaFXFixit.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      /*  try {
             Parent root = FXMLLoader.load(getClass().getResource("/GUI/Accueil.fxml"));
             Scene scene = new Scene(root, 1200, 660);
 
@@ -42,9 +77,46 @@ public class JavaFXFixit extends Application {
             primaryStage.show();
         } catch (IOException ex) {
             Logger.getLogger(JavaFXFixit.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+    }
+ public static void createNewuser() {
+        // SQLite connection string
+        String url = "jdbc:sqlite:./db/user.db";
+        // SQL statement for creating a new table
+        
+        String sql = "CREATE TABLE IF NOT EXISTS user (\n"
+                + "	id integer PRIMARY KEY,\n"
+                + "	id_user integer,\n"
+                + "	Adr_id integer NOT NULL,\n"
+                + "	nom varchar(100) ,\n"
+                + "	prenom varchar(100) ,\n"
+                + "	login varchar(100) ,\n"
+                + "	pwd varchar(100) ,\n"
+                + "	telephone varchar(100) ,\n"
+                + "	email varchar(255) ,\n"
+                + "	image varchar(255) ,\n"
+                + "	nbPoint integer\n"
+                + ");";
+        
+        try (Connection conn = DriverManager.getConnection(url);
+            Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
-
+     private Connection connect() {
+        // SQLite connection string
+      String url = "jdbc:sqlite:./db/user.db";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return conn;
+    } 
     /**
      * @param args the command line arguments
      */
