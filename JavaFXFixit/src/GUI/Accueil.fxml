@@ -31,10 +31,10 @@
                   </JFXComboBox>
                   <ImageView fitHeight="117.0" fitWidth="251.0" layoutX="26.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@img/fixit.png" />
+                        <Image url="@img/Logo.png" />
                      </image>
                   </ImageView>
-                  <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="9.0" layoutY="187.0" prefHeight="37.0" prefWidth="286.0" promptText="Catégorie de votre besoin" unFocusColor="#ffffff00">
+                  <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="9.0" layoutY="207.0" prefHeight="37.0" prefWidth="286.0" promptText="Catégorie de votre besoin" unFocusColor="#ffffff00">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -65,16 +65,6 @@
                   <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="432.0" onAction="#recherchePrestataireByAdress" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
                      <font>
                         <Font size="18.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutY="612.0" prefHeight="30.0" prefWidth="198.0" ripplerFill="WHITE" text="Créer un compte" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutX="219.0" layoutY="612.0" prefHeight="15.0" prefWidth="74.0" style="-fx-background-color: #64b5f6;" text="Login" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
                      </font>
                   </JFXButton>
                </children></Pane>

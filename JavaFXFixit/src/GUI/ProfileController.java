@@ -300,7 +300,9 @@ String hos = ".\\src\\GUI\\img\\";
            
           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));             
            Parent root = loader.load();          
-           AccueilController irc = loader.getController();          
+           AccueilController irc = loader.getController();
+           LBnom.getScene().getWindow().setWidth(1200);
+           LBnom.getScene().getWindow().setHeight(700);
            LBnom.getScene().setRoot(root);
         } catch (IOException ex) {
             Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);

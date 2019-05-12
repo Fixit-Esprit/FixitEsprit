@@ -216,7 +216,10 @@ public class AccueilController implements Initializable, MapComponentInitialized
             int Column = 0;
             int Row = 0;
             for (Prestataire prestataire : Prestataires) {
-                addpositions(prestataire);
+                try {
+                    addpositions(prestataire);
+                } catch (Exception e) {
+                }
                 VBox vbox = new VBox(5);
                 vbox.setPrefSize(200, 300);
                 vbox.getStyleClass().add("vbox");
@@ -313,7 +316,10 @@ public class AccueilController implements Initializable, MapComponentInitialized
             int Column = 0;
             int Row = 0;
             for (Prestataire prestataire : Prestataires) {
-                addpositions(prestataire);
+                try {
+                    addpositions(prestataire);
+                } catch (Exception e) {
+                }
                 VBox vbox = new VBox(5);
                 vbox.setPrefSize(200, 300);
                 vbox.getStyleClass().add("vbox");
