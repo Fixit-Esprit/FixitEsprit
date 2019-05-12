@@ -245,7 +245,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                         root = loader.load();
 
                         Stage stage = new Stage();
-                        stage.setScene(new Scene(root, 820, 480));
+                        stage.setScene(new Scene(root, 820, 520));
                         DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
                         controller.setData(prestataire);
                         stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
@@ -345,7 +345,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                         root = loader.load();
 
                         Stage stage = new Stage();
-                        stage.setScene(new Scene(root, 820, 480));
+                        stage.setScene(new Scene(root, 820, 520));
                         DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
                         controller.setData(prestataire);
                         stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
