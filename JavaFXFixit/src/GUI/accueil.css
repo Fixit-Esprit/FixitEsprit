@@ -44,10 +44,19 @@
     -fx-font-weight: 700;
 }
 .detail{
-    -fx-text-fill: #1976d2;
-    -fx-background-color:#ffffff;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color:#1e88e5;
     -fx-font-size: 14px;
     -fx-font-weight: 400;
+}
+.vbox{
+    -fx-background-color:#ffffff;
+    -fx-background-radius: 32px;
+
+    -fx-border-radius: 32px;
+    -fx-border-width: 2px;
+    -fx-border-color: #1e88e5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 10, 0, 0, 0);
 }
 .textd{
     -fx-text-fill: #37474f;

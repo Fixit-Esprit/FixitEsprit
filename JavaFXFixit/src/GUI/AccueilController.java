@@ -28,9 +28,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
@@ -69,6 +73,7 @@ import service.PrestataireService;
 import service.RegionService;
 import service.ServiceService;
 import service.VilleService;
+import utilis.Utilis;
 
 public class AccueilController implements Initializable, MapComponentInitializedListener {
 
@@ -100,8 +105,11 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     List<Service> service;
     List<Pays> pays;
+    Map<Integer, String> paysMap;
     List<Region> region;
+    Map<Integer, String> regionMap;
     List<Ville> ville;
+    Map<Integer, String> villeMap;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -119,11 +127,13 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
         PaysService paysService = new PaysService();
         pays = paysService.getAllPays();
-        ArrayList<String> listp = new ArrayList<String>();
+
+        paysMap = new HashMap<>();
         for (Pays p : pays) {
-            listp.add(p.getNom());
+            paysMap.put(p.getId(), p.getNom());
         }
-        ObservableList<String> olist = FXCollections.observableArrayList(listp);
+
+        ObservableList<String> olist = FXCollections.observableArrayList(new TreeSet(paysMap.values()));
         comboboxpays.setItems(olist);
 
         comboboxpays.getSelectionModel().selectedItemProperty().addListener(
@@ -131,34 +141,37 @@ public class AccueilController implements Initializable, MapComponentInitialized
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 
-                int id = (int) pays.stream().filter(p -> p.getNom().equals(newValue)).mapToInt(p -> p.getId()).average().getAsDouble();
                 RegionService regionservice = new RegionService();
-                region = regionservice.getRegionByPays(id);
+                region = regionservice.getRegionByPays(Utilis.getKeys(paysMap, newValue));
                 region.toString();
-                ArrayList<String> listr = new ArrayList<String>();
-                for (Region p : region) {
-                    listr.add(p.getNom());
+
+                regionMap = new HashMap<>();
+                for (Region r : region) {
+                    regionMap.put(r.getId(), r.getNom());
                 }
-                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+
+                ObservableList<String> olistregion = FXCollections.observableArrayList(new TreeSet(regionMap.values()));
                 comboboxregion.setItems(olistregion);
             }
+
         });
-        comboboxpays.getSelectionModel().select(204);
+        comboboxpays.getSelectionModel().select(208);
 
         comboboxregion.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 
-                int id = (int) region.stream().filter(r -> r.getNom().equals(newValue)).mapToInt(r -> r.getId()).average().getAsDouble();
                 VilleService villeService = new VilleService();
-                ville = villeService.getVilleByRegion(id);
+                ville = villeService.getVilleByRegion(Utilis.getKeys(regionMap, newValue));
                 ville.toString();
-                ArrayList<String> listr = new ArrayList<String>();
+                villeMap = new HashMap<>();
+
                 for (Ville v : ville) {
-                    listr.add(v.getNom());
+                    villeMap.put(v.getId(), v.getNom());
                 }
-                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+
+                ObservableList<String> olistregion = FXCollections.observableArrayList(new TreeSet(villeMap.values()));
                 comboboxville.setItems(olistregion);
             }
         });
@@ -186,7 +199,10 @@ public class AccueilController implements Initializable, MapComponentInitialized
     @FXML
     private void recherchePrestataireByName(ActionEvent event) {
         GridAllUser.getChildren().clear();
-        map.clearMarkers();
+        try {
+            map.clearMarkers();
+        } catch (Exception e) {
+        }
         try {
             System.out.println(motcle.getText());
             int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
@@ -201,7 +217,10 @@ public class AccueilController implements Initializable, MapComponentInitialized
             for (Prestataire prestataire : Prestataires) {
                 addpositions(prestataire);
                 VBox vbox = new VBox(5);
-                vbox.setPrefSize(300, 300);
+                vbox.setPrefSize(200, 300);
+                vbox.getStyleClass().add("vbox");
+                vbox.setMaxHeight(300);
+                vbox.setMaxWidth(200);
                 HBox hbox = new HBox(2);
 
                 vbox.setAlignment(Pos.CENTER);
@@ -242,7 +261,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 lEmail.getStyleClass().add("textd");
                 Label lTel = new Label(prestataire.getTel());
                 lTel.getStyleClass().add("textd");
-                
+
                 final Pane cardsPane = new StackPane();
                 ImageView imageView;
                 if (prestataire.getImage() == null) {
@@ -251,11 +270,13 @@ public class AccueilController implements Initializable, MapComponentInitialized
                     imageView = new ImageView(image);
                     imageView.setFitHeight(100);
                     imageView.setFitWidth(100);
-                    vbox.getChildren().addAll(imageView, lNom,lEmail,lTel, hbox);
+                    vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
                 } else {
                     vbox.getChildren().addAll(lNom, hbox);
                 }
-                vbox.setPadding(new Insets(10, 20, 30, 30));
+                GridAllUser.setPadding(new Insets(40, 40, 40, 40));
+                GridAllUser.setHgap(20);
+                GridAllUser.setVgap(30);
                 GridAllUser.resize(5000, 1000);
                 GridAllUser.add(vbox, Column, Row);
 
@@ -275,23 +296,28 @@ public class AccueilController implements Initializable, MapComponentInitialized
     private void recherchePrestataireByAdress(ActionEvent event) {
 
         GridAllUser.getChildren().clear();
-        map.clearMarkers();
         try {
-            int idVille = (int) ville.stream().filter(r -> r.getNom().equals(comboboxville.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
-            System.out.println(idVille);
+            map.clearMarkers();
+        } catch (Exception e) {
+        }
+        try {
+
             int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
             System.out.println(idService);
 
             PrestataireService prestataireService = new PrestataireService();
-            List<Prestataire> Prestataires = prestataireService.getPrestatairByVilleAndService(idVille, idService);
+            List<Prestataire> Prestataires = prestataireService.getPrestatairByVilleAndService(Utilis.getKeys(villeMap, comboboxville.getValue()), idService);
             System.out.println(Prestataires);
 
-                        int Column = 0;
+            int Column = 0;
             int Row = 0;
             for (Prestataire prestataire : Prestataires) {
                 addpositions(prestataire);
                 VBox vbox = new VBox(5);
-                vbox.setPrefSize(300, 300);
+                vbox.setPrefSize(200, 300);
+                vbox.getStyleClass().add("vbox");
+                vbox.setMaxHeight(300);
+                vbox.setMaxWidth(200);
                 HBox hbox = new HBox(2);
 
                 vbox.setAlignment(Pos.CENTER);
@@ -332,7 +358,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 lEmail.getStyleClass().add("textd");
                 Label lTel = new Label(prestataire.getTel());
                 lTel.getStyleClass().add("textd");
-                
+
                 final Pane cardsPane = new StackPane();
                 ImageView imageView;
                 if (prestataire.getImage() == null) {
@@ -341,11 +367,13 @@ public class AccueilController implements Initializable, MapComponentInitialized
                     imageView = new ImageView(image);
                     imageView.setFitHeight(100);
                     imageView.setFitWidth(100);
-                    vbox.getChildren().addAll(imageView, lNom,lEmail,lTel, hbox);
+                    vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
                 } else {
                     vbox.getChildren().addAll(lNom, hbox);
                 }
-                vbox.setPadding(new Insets(10, 20, 30, 30));
+                GridAllUser.setPadding(new Insets(40, 40, 40, 40));
+                GridAllUser.setHgap(20);
+                GridAllUser.setVgap(30);
                 GridAllUser.resize(5000, 1000);
                 GridAllUser.add(vbox, Column, Row);
 
@@ -386,4 +414,5 @@ public class AccueilController implements Initializable, MapComponentInitialized
             }
         }
     }
+
 }

@@ -30,7 +30,7 @@ public class RegionService {
         try {
             Statement st;
             st = conx.createStatement();
-            ResultSet resultat = st.executeQuery("Select * from region where Pay_id ="+payid);
+            ResultSet resultat = st.executeQuery("Select * from region where Pay_id ="+payid+" order by nom");
             while (resultat.next()) {
                 Region region = new Region();
                 region.setId(resultat.getInt("id"));
