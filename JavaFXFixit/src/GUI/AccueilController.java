@@ -401,6 +401,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
         if (mapView.isVisible()) {
             PrestataireService prestataireService = new PrestataireService();
             Position position = prestataireService.getPrestatairPosition(prestataire.getId());
+            System.out.println(position);
             if (position != null) {
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(new LatLong(position.getLatitude(), position.getLongitude()))

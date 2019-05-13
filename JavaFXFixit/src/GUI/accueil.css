@@ -44,6 +44,10 @@
     -fx-font-size: 16px;
     -fx-font-weight: 700;
 }
+.annence{
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+}
 .detail{
     -fx-text-fill: #FFFFFF;
     -fx-background-color:#1e88e5;
@@ -89,8 +93,8 @@
 }
 .jfx-combo-box > .list-cell > .text,
 .jfx-combo-box > .list-cell > .label{
-	-fx-text-fill:#0d47a1;
-	-fx-fill: #0d47a1;
+    -fx-text-fill:#0d47a1;
+    -fx-fill: #0d47a1;
 }
 
 .jfx-combo-box .label {
