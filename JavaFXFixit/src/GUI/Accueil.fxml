@@ -67,6 +67,7 @@
                         <Font size="18.0" />
                      </font>
                   </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="523.0" prefHeight="46.0" prefWidth="228.0" ripplerFill="WHITE" styleClass="annence" text="Annoncer votre besoin" textAlignment="CENTER" />
                </children></Pane>
             <JFXTabPane id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1200.0" stylesheets="@accueil.css" tabMaxHeight="Infinity" tabMaxWidth="Infinity">
                <tabs>

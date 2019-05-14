@@ -277,7 +277,7 @@ String hos = ".\\src\\GUI\\img\\";
      });
    } 
      
-        @FXML
+    @FXML
     private void updateuser(ActionEvent event) {
           String fileName;
              if(file!=null) 
