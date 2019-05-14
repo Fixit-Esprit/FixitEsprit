@@ -47,6 +47,7 @@
 .annence{
     -fx-font-size: 16px;
     -fx-font-weight: 700;
+    -fx-text-fill: #ffffff;
 }
 .detail{
     -fx-text-fill: #FFFFFF;
