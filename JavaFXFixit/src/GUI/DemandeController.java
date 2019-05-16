@@ -29,6 +29,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import service.DemandeService;
 import service.PrestataireService;
 import service.ServiceService;
@@ -45,7 +46,7 @@ public class DemandeController implements Initializable {
      */
     @FXML
     private JFXComboBox comboboxdisponiblites;
-    
+
     @FXML
     private JFXTextArea description;
 
@@ -88,12 +89,16 @@ public class DemandeController implements Initializable {
         }
         if (client.getId() != 0) {
             Demande demande;
-            demande = new Demande(prestataire.getId(), client.getId(),description.getText(),null,new Date(),comboboxdisponiblites.getValue().toString());
+            demande = new Demande(prestataire.getId(), client.getId(), description.getText(), null, new Date(), comboboxdisponiblites.getValue().toString());
             DemandeService demandeService = new DemandeService();
             int result = demandeService.ajouterDemande(demande);
-            System.out.println(result);
+            if (result == 1) {
+                Stage stage = (Stage) comboboxdisponiblites.getScene().getWindow();
+                // do what you have to do
+                stage.close();
+            }
         }
-        
+
     }
 
     private Connection connect() {

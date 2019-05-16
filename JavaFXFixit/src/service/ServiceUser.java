@@ -5,6 +5,7 @@
  */
 package service;
 
+import entity.Position;
 import entity.User;
 import utilis.*;
 
@@ -12,61 +13,60 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author bhk
  */
 public class ServiceUser {
-    
- private Connection Conn = DaoConnection.getInstance().getConnect();
-    
-    public int login(User u1){  
-      
-  try {
-        
-        Statement   st = Conn.createStatement();    
-        String req ="Select * from `utilisateur` where login='"+u1.getLogin()+"' and  motdepasse='"+u1.getPwd()+"' ";
-        st.execute(req);
-        ResultSet rs = st.executeQuery(req);   
-            if (!rs.next() ) {
-            System.out.println("no data");
-            return 0;
-            }else{ 
-         createNewuser();
-          //  rs.next();
-            String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint)VALUES(?,?,?,?,?,?,?,?,?,?)";
-            try (Connection conn = this.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sqlA)) {         
-            pstmt.setInt(1, rs.getInt("id"));
-            pstmt.setInt(2, rs.getInt("Adr_id"));
-            pstmt.setString(3, rs.getString("nom"));
-            pstmt.setString(4, rs.getString("prenom"));
-            pstmt.setString(5, rs.getString("telephone"));
-            pstmt.setString(6, rs.getString("login"));
-            pstmt.setString(7, rs.getString("motdepasse"));
-            pstmt.setString(8, rs.getString("email"));
-            pstmt.setString(9, rs.getString("image"));
-            pstmt.setInt(10, rs.getInt("nbPoint"));
-            pstmt.executeUpdate();
-             return 1;
-        } catch (SQLException e) {
-            System.out.println("execute stement for insert ne marche pas ici");
-            System.out.println(e.getMessage());
-        }    
-        }            
-    
+
+    private Connection Conn = DaoConnection.getInstance().getConnect();
+
+    public int login(User u1) {
+
+        try {
+
+            Statement st = Conn.createStatement();
+            String req = "Select * from `utilisateur` where login='" + u1.getLogin() + "' and  motdepasse='" + u1.getPwd() + "' ";
+            st.execute(req);
+            ResultSet rs = st.executeQuery(req);
+            if (!rs.next()) {
+                System.out.println("no data");
+                return 0;
+            } else {
+                createNewuser();
+                //  rs.next();
+                String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint)VALUES(?,?,?,?,?,?,?,?,?,?)";
+                try (Connection conn = this.connect();
+                        PreparedStatement pstmt = conn.prepareStatement(sqlA)) {
+                    pstmt.setInt(1, rs.getInt("id"));
+                    pstmt.setInt(2, rs.getInt("Adr_id"));
+                    pstmt.setString(3, rs.getString("nom"));
+                    pstmt.setString(4, rs.getString("prenom"));
+                    pstmt.setString(5, rs.getString("telephone"));
+                    pstmt.setString(6, rs.getString("login"));
+                    pstmt.setString(7, rs.getString("motdepasse"));
+                    pstmt.setString(8, rs.getString("email"));
+                    pstmt.setString(9, rs.getString("image"));
+                    pstmt.setInt(10, rs.getInt("nbPoint"));
+                    pstmt.executeUpdate();
+                    return 1;
+                } catch (SQLException e) {
+                    System.out.println("execute stement for insert ne marche pas ici");
+                    System.out.println(e.getMessage());
+                }
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-          return 0;      
-        
-        
+
+        return 0;
+
     }
+
     private Connection connect() {
         // SQLite connection string
-      String url = "jdbc:sqlite:./db/user.db";
+        String url = "jdbc:sqlite:./db/user.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -75,6 +75,7 @@ public class ServiceUser {
         }
         return conn;
     }
+
     public static void createNewuser() {
         // SQLite connection string
         String url = "jdbc:sqlite:./db/user.db";
@@ -87,13 +88,13 @@ public class ServiceUser {
                 + "	nom varchar(100) ,\n"
                 + "	prenom varchar(100) ,\n"
                 + "	login varchar(100) ,\n"
-                 + "	pwd varchar(100) ,\n"
+                + "	pwd varchar(100) ,\n"
                 + "	telephone varchar(100) ,\n"
                 + "	email varchar(255) ,\n"
                 + "	image varchar(255) ,\n"
                 + "	nbPoint integer\n"
                 + ");";
-        
+
         try (Connection conn = DriverManager.getConnection(url);
                 Statement stmt = conn.createStatement()) {
             // create a new table
@@ -102,76 +103,91 @@ public class ServiceUser {
             System.out.println(e.getMessage());
         }
     }
-    public void ajouterutilisateur(User u1){
-         try {
-            
-            Statement st = Conn.createStatement();   
-                                
-            String req ="insert into adresse (Pay_id,Reg_id,Vil_id,description) values (  '"+ u1.getPays()+"', '"+ u1.getRegion()+"','"+ u1.getVille()+"','"+ u1.getAdresse()+"')";
+
+    public void ajouterutilisateur(User u1) {
+        try {
+
+            Statement st = Conn.createStatement();
+
+            String req = "insert into adresse (Pay_id,Reg_id,Vil_id,description) values (  '" + u1.getPays() + "', '" + u1.getRegion() + "','" + u1.getVille() + "','" + u1.getAdresse() + "')";
             st.executeUpdate(req);
-             ResultSet rs = st.executeQuery("select last_insert_id() as id from adresse");             
-            if(rs.next())
-            {
-            int lastid = rs.getInt(1);
-            try {      
-            String req2 ="insert into utilisateur (Adr_id,nom,prenom,login,motdepasse,telephone,email,image,nbPoint) values ( '"+lastid+"','"+ u1.getNom()+"', '"+u1.getPrenom()+"', '"+u1.getLogin()+"','"+u1.getPwd()+"','"+u1.getTelephone()+"','"+u1.getEmail()+"','"+u1.getImage()+"','"+u1.getNbPoint()+"' )";
-             
-            st.executeUpdate(req2);
-            } catch (SQLException ex) {
-            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
-             }
+            ResultSet rs = st.executeQuery("select last_insert_id() as id from adresse");
+            if (rs.next()) {
+                int lastid = rs.getInt(1);
+                try {
+                    String req2 = "insert into utilisateur (Adr_id,nom,prenom,login,motdepasse,telephone,email,image,nbPoint) values ( '" + lastid + "','" + u1.getNom() + "', '" + u1.getPrenom() + "', '" + u1.getLogin() + "','" + u1.getPwd() + "','" + u1.getTelephone() + "','" + u1.getEmail() + "','" + u1.getImage() + "','" + u1.getNbPoint() + "' )";
+
+                    st.executeUpdate(req2);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            } catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-                          
-        
-        
+
     }
- 
-      public void Updateutilisateur(User u1){
-        
-    try {
-            
-            Statement st = Conn.createStatement();  
-                                
-            String req ="UPDATE adresse SET `Pay_id` = '"+u1.getPays()+"', Reg_id = '"+u1.getRegion()+"',Vil_id  = '"+u1.getRegion()+"' ,description = '"+u1.getAdresse()+"' ";
-            st.executeUpdate(req);          
-             
-            try {      
-            String req2 ="UPDATE `utilisateur` SET `nom` = '"+u1.getNom()+"', `prenom` = '"+u1.getPrenom()+"', `login` = '"+u1.getLogin()+"', `motdepasse` = '"+u1.getPwd()+"', `telephone` = '"+u1.getTelephone()+"', `email` = '"+u1.getEmail()+"',`image` = '"+u1.getImage()+"' WHERE `utilisateur`.`id` = "+u1.getId()+" ";
-            System.out.println("req"+req2);
-            st.executeUpdate(req2);
+
+    public void Updateutilisateur(User u1) {
+
+        try {
+
+            Statement st = Conn.createStatement();
+
+            String req = "UPDATE adresse SET `Pay_id` = '" + u1.getPays() + "', Reg_id = '" + u1.getRegion() + "',Vil_id  = '" + u1.getRegion() + "' ,description = '" + u1.getAdresse() + "' ";
+            st.executeUpdate(req);
+
+            try {
+                String req2 = "UPDATE `utilisateur` SET `nom` = '" + u1.getNom() + "', `prenom` = '" + u1.getPrenom() + "', `login` = '" + u1.getLogin() + "', `motdepasse` = '" + u1.getPwd() + "', `telephone` = '" + u1.getTelephone() + "', `email` = '" + u1.getEmail() + "',`image` = '" + u1.getImage() + "' WHERE `utilisateur`.`id` = " + u1.getId() + " ";
+                System.out.println("req" + req2);
+                st.executeUpdate(req2);
             } catch (SQLException ex) {
-            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
-             }
-           
-            } catch (SQLException ex) {
+                Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-                          
-        
-        
-    } 
-     public int getIDVille(String ville){  
-      
-  try {
-        
-        Statement   st = Conn.createStatement();    
-        String req ="Select * from `ville` where nom LIKE '"+ville+"'  ";
-        st.execute(req);
-        ResultSet rs = st.executeQuery(req);   
-            if (!rs.next() )             
-            return 0;
-           
+
+    }
+
+    public int getIDVille(String ville) {
+
+        try {
+
+            Statement st = Conn.createStatement();
+            String req = "Select * from `ville` where nom LIKE '" + ville + "'  ";
+            st.execute(req);
+            ResultSet rs = st.executeQuery(req);
+            if (!rs.next()) {
+                return 0;
+            }
+
             return rs.getInt("id");
-           
-             } catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
-        }    
-     return 0;
-         }
-     
-     
-     
+        }
+        return 0;
+    }
+    public Position getPosition(int id) {
+        Position position = new Position();
+        try {
+            Statement st;
+            st = Conn.createStatement();
+            ResultSet resultat
+                    = st.executeQuery("Select v.nom ville,r.nom region ,p.nom pays,v.latitude,v.longitude from utilisateur u INNER JOIN adresse a INNER JOIN ville v INNER JOIN region r INNER JOIN pays p where v.Reg_id = r.id and v.Pay_id = p.id and u.Adr_id = a.id and a.Vil_id = v.id and u.id =" + id);
+            while (resultat.next()) {
+                position.setVille(resultat.getString("ville"));
+                position.setRegion(resultat.getString("region"));
+                position.setPays(resultat.getString("pays"));
+                position.setLatitude(resultat.getDouble("latitude"));
+                position.setLongitude(resultat.getDouble("longitude"));
+                System.out.println(position);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PaysService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return position;
+    }
 }

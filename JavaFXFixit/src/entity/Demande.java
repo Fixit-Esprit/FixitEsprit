@@ -18,6 +18,8 @@ public class Demande {
     private int idpristataire;
     private String nomprestataire;
     private int idclient;
+    private String nomclient;
+    private String adresseclient;
     private String description;
     private String service;
     private String image;
@@ -144,6 +146,22 @@ public class Demande {
         this.nomprestataire = nomprestataire;
     }
 
+    public String getNomclient() {
+        return nomclient;
+    }
+
+    public void setNomclient(String nomclient) {
+        this.nomclient = nomclient;
+    }
+
+    public String getAdresseclient() {
+        return adresseclient;
+    }
+
+    public void setAdresseclient(String adresseclient) {
+        this.adresseclient = adresseclient;
+    }
+    
     @Override
     public String toString() {
         return "Demande{" + "id=" + id + ", idpristataire=" + idpristataire + ", idclient=" + idclient + ", description=" + description + ", image=" + image + ", dateDemande=" + dateDemande + ", dateFunction=" + dateFunction + ", acceptation_prestataire=" + acceptation_prestataire + ", dateAcceptation=" + dateAcceptation + ", acceptation_client=" + acceptation_client + ", prix=" + prix + '}';

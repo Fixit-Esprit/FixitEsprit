@@ -55,6 +55,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -67,12 +68,16 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -86,6 +91,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.NumberStringConverter;
 import javafxfixit.JavaFXFixit;
 import netscape.javascript.JSObject;
 import service.DemandeService;
@@ -97,6 +104,9 @@ import service.VilleService;
 import utilis.Utilis;
 
 public class AccueilController implements Initializable, MapComponentInitializedListener {
+
+    @FXML
+    private Tab tabdemande;
 
     @FXML
     private GoogleMapView mapView;
@@ -125,8 +135,17 @@ public class AccueilController implements Initializable, MapComponentInitialized
     private JFXTextField motcle;
 
     @FXML
-    private TableColumn colmunimage;
-
+    private TableColumn colmunservice;
+    @FXML
+    private TableColumn colmunprestataire;
+    @FXML
+    private TableColumn colmundate;
+    @FXML
+    private TableColumn colmunprix;
+    @FXML
+    private TableColumn colmundescription;
+    @FXML
+    private TableColumn<Demande, Void> colmunpayer;
     @FXML
     private TableView TableView;
 
@@ -138,12 +157,13 @@ public class AccueilController implements Initializable, MapComponentInitialized
     List<Ville> ville;
     Map<Integer, String> villeMap;
 
+    ObservableList<Demande> ObservableListDemande;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapView.setKey("AIzaSyCpBZ4AjkZIoLWHnYYF5qsdQO5CTnCpcko");
         mapView.addMapInializedListener(this);
-        
-        getAllDemandeAccepter();
+
         ServiceService serviceService = new ServiceService();
         service = serviceService.getAllService();
         ArrayList<String> listservise = new ArrayList<String>();
@@ -203,15 +223,6 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 comboboxville.setItems(olistregion);
             }
         });
-        Demande demande = new Demande(1, 1, "", null, new Date(), "d");
-
-        Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
-
-        final ObservableList<Demande> tvObservableList = FXCollections.observableArrayList();
-        tvObservableList.add(demande);
-        colmunimage.setCellValueFactory(new PropertyValueFactory<>("idpristataire"));
-        TableView.setItems(tvObservableList);
-        addButtonToTable();
 
     }
 
@@ -494,10 +505,10 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 map.setCenter(new LatLong(position.getLatitude(), position.getLongitude()));
 
             }
-            
+
         }
     }
-    
+
     private void getAllDemandeAccepter() {
         Client client = new Client();
         String sql = "SELECT * FROM user";
@@ -515,11 +526,24 @@ public class AccueilController implements Initializable, MapComponentInitialized
             DemandeService demandeService = new DemandeService();
             List<Demande> result = demandeService.getAllDemandeAccepter(client.getId());
             System.out.println(result);
+            Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
+
+            TableView.setEditable(true);
+            ObservableListDemande = FXCollections.observableArrayList();
+            ObservableListDemande.addAll(result);
+
+            colmunservice.setCellValueFactory(new PropertyValueFactory<>("service"));
+            colmundescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+            colmunprestataire.setCellValueFactory(new PropertyValueFactory<>("nomprestataire"));
+            colmundate.setCellValueFactory(new PropertyValueFactory<>("dateFunction"));
+            colmunprix.setCellValueFactory(new PropertyValueFactory<>("prix"));
+            TableView.setItems(ObservableListDemande);
+            addButtonToTable(colmunpayer);
         }
-        
+
     }
-    private void addButtonToTable() {
-        TableColumn<Demande, Void> colBtn = new TableColumn("");
+
+    private void addButtonToTable(TableColumn<Demande, Void> colmunpayer) {
 
         Callback<TableColumn<Demande, Void>, TableCell<Demande, Void>> cellFactory = new Callback<TableColumn<Demande, Void>, TableCell<Demande, Void>>() {
             @Override
@@ -527,7 +551,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 final TableCell<Demande, Void> cell = new TableCell<Demande, Void>() {
 
                     private final JFXButton btn = new JFXButton("Payer");
-                    
+
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Demande data = getTableView().getItems().get(getIndex());
@@ -550,13 +574,33 @@ public class AccueilController implements Initializable, MapComponentInitialized
             }
         };
 
-        colBtn.setCellFactory(cellFactory);
-
-        TableView.getColumns().add(colBtn);
-
+        colmunpayer.setCellFactory(cellFactory);
     }
-    
-        private Connection connect() {
+
+    @FXML
+    private void goprestataire(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AccueilPrestataire.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 1200, 600));
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    void eventTab3(Event ev) {
+        if (tabdemande.isSelected()) {
+            getAllDemandeAccepter();
+        }
+    }
+
+    private Connection connect() {
         // SQLite connection string
         String url = "jdbc:sqlite:./db/user.db";
         Connection conn = null;
