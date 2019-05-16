@@ -95,7 +95,8 @@ try {
                 + "	telephone varchar(100) ,\n"
                 + "	email varchar(255) ,\n"
                 + "	image varchar(255) ,\n"
-                + "	nbPoint integer\n"
+                + "	nbPoint integer,\n"
+                + "	type integer\n"                
                 + ");";
         
         try (Connection conn = DriverManager.getConnection(url);

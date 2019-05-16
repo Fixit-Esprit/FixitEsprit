@@ -141,7 +141,7 @@ public class ControleSaisie {
 
         matcher = pattern1.matcher(hex);
 
-        return matcher.matches();
+        return matcher.matches(); 
 
     }
 
