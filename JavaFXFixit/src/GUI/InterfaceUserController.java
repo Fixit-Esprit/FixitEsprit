@@ -63,6 +63,10 @@ public class InterfaceUserController implements Initializable {
            ProfileController irc = loader.getController();
            irc.setLBnom(TXFlogin.getText()); 
            TXFlogin.getScene().setRoot(root);
+            }else if(rs==2){      
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));             
+           Parent root = loader.load();                    
+           TXFlogin.getScene().setRoot(root);
             }else{
               
                message.setVisible(true);
