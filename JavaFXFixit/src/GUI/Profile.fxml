@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import de.jensd.fx.glyphs.*?>
 <?import javafx.scene.shape.*?>
 <?import com.jfoenix.controls.*?>
 <?import javafx.scene.text.*?>
@@ -59,7 +58,7 @@
                         <TextField fx:id="LBemail" layoutX="40.0" layoutY="230.0" prefHeight="45.0" prefWidth="310.0" promptText="E-mail" />
                         <TextField fx:id="LBphone" layoutX="377.0" layoutY="231.0" prefHeight="45.0" prefWidth="310.0" promptText="Téléphone" />
                         <TextField fx:id="LBlogin" layoutX="40.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Login" />
-                        <TextField fx:id="LBpwd" layoutX="377.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe" />
+                        <PasswordField fx:id="LBpwd" layoutX="377.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe" />
                         <JFXButton buttonType="RAISED" layoutX="377.0" layoutY="400.0" onAction="#updateuser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Modifier" textFill="WHITE" />
                         <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="377.0" layoutY="285.0" prefHeight="45.0" prefWidth="310.0" promptText="  Pays" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
                            <opaqueInsets>

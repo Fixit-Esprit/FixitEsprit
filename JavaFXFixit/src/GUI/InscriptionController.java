@@ -293,10 +293,11 @@ List<Ville> ville;
     @FXML
     private void adduser(ActionEvent event) {
         String fileName;
-             if(file!=null) 
-                     fileName=".\\src\\GUI\\img\\"+file.getName(); 
+         String hos = ".\\src\\GUI\\img\\";
+             if(file!=null)                  
+                fileName=hos+file.getName(); 
                else 
-                   fileName=null;
+                fileName=null;
          ServiceUser srv = new ServiceUser();       
          int idville =srv.getIDVille((String) comboboxville.getValue());
        

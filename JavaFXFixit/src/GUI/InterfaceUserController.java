@@ -56,8 +56,8 @@ public class InterfaceUserController implements Initializable {
             User u= new User( TXFlogin.getText(), TXFpwd.getText());
             
             ServiceUser srv = new ServiceUser();              
-           rs= srv.login(u);         
-             if(rs==1){      
+            rs= srv.login(u);         
+            if(rs==1){      
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Profile.fxml"));             
            Parent root = loader.load();          
            ProfileController irc = loader.getController();

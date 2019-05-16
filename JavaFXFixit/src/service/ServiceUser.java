@@ -91,8 +91,9 @@ public class ServiceUser {
                 + "	telephone varchar(100) ,\n"
                 + "	email varchar(255) ,\n"
                 + "	image varchar(255) ,\n"
-                + "	nbPoint integer\n"
+                + "	nbPoint integer\n" 
                 + ");";
+        //Ajouter champs de test
         
         try (Connection conn = DriverManager.getConnection(url);
                 Statement stmt = conn.createStatement()) {
