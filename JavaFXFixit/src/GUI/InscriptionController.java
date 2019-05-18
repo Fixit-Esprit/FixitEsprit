@@ -89,6 +89,13 @@ public Text message_INphone;
 public Text message_INemail;
 @FXML
 public Text message_INcin;
+@FXML
+public Text message_pays;
+@FXML
+public Text message_region;
+@FXML
+public Text message_ville;
+
 File file;
 List<Service> service;
 List<Pays> pays;
@@ -231,6 +238,10 @@ List<Ville> ville;
          message_INpwd.setVisible(false);
          message_INphone.setVisible(false);
          message_INemail.setVisible(false);
+         message_pays.setVisible(false);
+         message_region.setVisible(false);
+         message_ville.setVisible(false);
+         
     }    
    public void upload(){
         INimage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -258,8 +269,8 @@ List<Ville> ville;
    } 
      
    public void loadinfo(){
-    ServiceService serviceService = new ServiceService();
-        service = serviceService.getAllService();
+    ServiceService ServiceService = new ServiceService();
+        service = ServiceService.getAllService();
         ArrayList<String> listservise = new ArrayList<String>();
         for (Service s : service) {
             listservise.add(s.getDescription());
@@ -380,7 +391,7 @@ List<Ville> ville;
               message_INphone.setVisible(false);
               
          }
-        if (INemail.getText() == null ||  INemail.getText().isEmpty())
+        if (INemail.getText() == null ||  INemail.getText().isEmpty()|| !Cs.valiemail(INemail.getText()))
         {
              message_INemail.setVisible(true);
              return 0;

@@ -85,12 +85,12 @@
                   <Font size="9.0" />
                </font>
             </Text>
-            <Text fx:id="message_INemail" fill="RED" layoutX="20.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+            <Text fx:id="message_INemail" fill="RED" layoutX="20.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire (exemple@gmail.com) !">
                <font>
                   <Font size="9.0" />
                </font>
             </Text>
-            <Text fx:id="message_INphone" fill="RED" layoutX="360.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+            <Text fx:id="message_INphone" fill="RED" layoutX="360.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire (8 chiffres) !">
                <font>
                   <Font size="9.0" />
                </font>
