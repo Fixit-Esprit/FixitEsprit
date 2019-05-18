@@ -60,7 +60,7 @@ public class LoginUserController implements Initializable {
             ServiceUser srv = new ServiceUser();              
             rs= srv.login(u);         
             if(rs==1){      
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Profile.fxml"));             
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ProfileUser.fxml"));             
            Parent root = loader.load();          
            ProfileController irc = loader.getController();
            irc.setLBnom(TXFlogin.getText()); 
@@ -83,7 +83,7 @@ public class LoginUserController implements Initializable {
   private void InscriptionUser(MouseEvent  event) {
             try {              
                    
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Inscription.fxml"));             
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionUser.fxml"));             
            Parent root = loader.load();          
            InscriptionController irc = loader.getController();           
            TXFlogin.getScene().setRoot(root);

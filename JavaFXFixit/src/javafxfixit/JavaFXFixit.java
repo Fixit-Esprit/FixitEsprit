@@ -43,7 +43,7 @@ try {
            int count = rs.getInt(1);
            System.out.println("nbr de row dans sqllit "+count);
            if(count!=0){               
-           Parent root = FXMLLoader.load(getClass().getResource("/GUI/Profile.fxml"));                
+           Parent root = FXMLLoader.load(getClass().getResource("/GUI/ProfileUser.fxml"));                
            
             Scene scene = new Scene(root);                     
             primaryStage.setScene(scene);

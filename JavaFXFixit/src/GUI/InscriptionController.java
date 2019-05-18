@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package GUI;
-
+ 
 import com.jfoenix.controls.JFXComboBox;
 import entity.Pays;
 import entity.Region;
@@ -26,7 +26,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
@@ -313,7 +315,24 @@ List<Ville> ville;
     
     }
     
- //************************Validation
+
+    
+@FXML
+  private void retour() {    
+        
+              try {                 
+                   
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUser.fxml"));             
+           Parent root = loader.load(); 
+           LoginUserController irc = loader.getController();           
+           INnom.getScene().setRoot(root);           
+        } catch (IOException ex) {
+            Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    } 
+  
+   //************************Validation
     
     public int validation(){                
 
