@@ -34,9 +34,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
+import service.ControleSaisie;
 import service.PaysService;
 import service.RegionService;
 import service.VilleService;
@@ -73,7 +75,20 @@ private JFXComboBox comboboxregion;
 private JFXComboBox comboboxville;
 @FXML
 private JFXComboBox comboboxservice;
-
+@FXML
+public Text message_INnom;
+@FXML
+public Text message_INpnom;
+@FXML
+public Text message_INlogin;
+@FXML
+public Text message_INpwd;
+@FXML
+public Text message_INphone;
+@FXML
+public Text message_INemail;
+@FXML
+public Text message_INcin;
 File file;
 List<Service> service;
 List<Pays> pays;
@@ -210,6 +225,12 @@ List<Ville> ville;
     public void initialize(URL url, ResourceBundle rb) {
         this.upload();
         this.loadinfo();
+         message_INnom.setVisible(false);
+         message_INpnom.setVisible(false);
+         message_INlogin.setVisible(false);
+         message_INpwd.setVisible(false);
+         message_INphone.setVisible(false);
+         message_INemail.setVisible(false);
     }    
    public void upload(){
         INimage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -296,9 +317,9 @@ List<Ville> ville;
    
     @FXML
     private void adduser(ActionEvent event) {
-        validation();
-       /* String fileName;
-        String hos = ".\\src\\GUI\\img\\";
+        if(validation()==1){
+       String fileName;
+       String hos = ".\\src\\GUI\\img\\";
              if(file!=null)                  
                 fileName=hos+file.getName(); 
                else 
@@ -306,21 +327,77 @@ List<Ville> ville;
          ServiceUser srv = new ServiceUser();       
          int idville =srv.getIDVille((String) comboboxville.getValue());
        
-         int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
+          int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
+        
          int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;
            System.out.println("\n valeur de combo"+idville);   
           
          User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville);
-         srv.ajouterutilisateur(u);*/
+         srv.ajouterutilisateur(u);
+         }
     
     }
-    
-
+   private int validation() {
+          int var ;
+   ControleSaisie Cs =new ControleSaisie();
+         if (INlogin.getText() == null ||  INlogin.getText().isEmpty())
+        {
+             message_INlogin.setVisible(true);
+             return 0;
+                    
+        }else {
+              message_INlogin.setVisible(false);
+           
+         }
+         if (INpwd.getText() == null ||  INpwd.getText().isEmpty())
+        {
+             
+             message_INpwd.setVisible(true);
+             return 0;
+         }else {
+              message_INpwd.setVisible(false);
+         }
+         if  (INpnom.getText() == null ||  INpnom.getText().isEmpty())
+        {
+            
+             message_INpnom.setVisible(true);
+             return 0;
+        }else {
+              message_INpnom.setVisible(false);
+         }
+         if (INnom.getText() == null ||  INnom.getText().isEmpty())
+        {
+             message_INnom.setVisible(true);
+          return 0;
+        }else {
+              message_INnom.setVisible(false);
+         }
+         if (INphone.getText() == null || INphone.getText().isEmpty() || !Cs.isTel(INphone.getText()))
+        {
+             message_INphone.setVisible(true);
+              return 0;
+        }else {
+              message_INphone.setVisible(false);
+              
+         }
+        if (INemail.getText() == null ||  INemail.getText().isEmpty())
+        {
+             message_INemail.setVisible(true);
+             return 0;
+        }else{
+         
+         message_INemail.setVisible(false); 
+         
+        }
+     return 1;
+        
+          
+   }   
     
 @FXML
   private void retour() {    
         
-              try {                 
+           try {                
                    
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUser.fxml"));             
            Parent root = loader.load(); 
@@ -332,23 +409,4 @@ List<Ville> ville;
     
     } 
   
-   //************************Validation
-    
-    public int validation(){                
-
-    
-     if (INnom.getText() == null || INnom.getText().trim().isEmpty()) {
-        Alert fail= new Alert(AlertType.INFORMATION);
-        fail.setHeaderText("failure");
-        fail.setContentText("you havent typed something");
-        fail.showAndWait();
-        return 0;
-    } else {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setHeaderText("Succes");
-        alert.setContentText("Account succesfully created!");
-        alert.showAndWait();
-        return 1;
-    }
-}
 }

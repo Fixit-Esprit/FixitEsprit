@@ -8,6 +8,7 @@ package service;
 import entity.Region;
 import entity.Service;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,8 +23,8 @@ import utilis.DaoConnection;
  * @author hphqlim
  */
 public class ServiceService {
-         private Connection conx = DaoConnection.getInstance().getConnect();
-
+    private Connection conx = DaoConnection.getInstance().getConnect();
+     private PreparedStatement ps;
     public List<Service> getAllService() {
         List<Service> setservice = new ArrayList();
         try {
@@ -42,4 +43,6 @@ public class ServiceService {
         }
         return setservice;
     }
+    
+    
 }
