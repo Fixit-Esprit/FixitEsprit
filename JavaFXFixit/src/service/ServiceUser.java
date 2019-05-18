@@ -203,6 +203,75 @@ public class ServiceUser {
      return 0;
          }
      
+      public int check_email(String email){  
+      
+  try {
+        
+        Statement   st = Conn.createStatement();    
+        String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id where email  LIKE '"+email+"'   ";
+        st.execute(req);
+        ResultSet rs = st.executeQuery(req);   
+        if (!rs.next() ) {
+        System.out.println("no data for normale user");            
+        String req2 ="Select * from `utilisateur`  INNER JOIN prestataire ON prestataire.id = utilisateur.id where email  LIKE '"+email+"'  ";
+        st.execute(req2);
+        ResultSet rs2 = st.executeQuery(req2);
+        if (!rs2.next() ) {
+        System.out.println("no data for prestataire2"); 
+        return 0;   
+        }else{
+        return 2; 
+        }       
+            }else{        
+             return 1;         
+            }    
+        } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+          return 0;       
+        
+    }
      
-     
+  public String get_passe_Paremail(String mail) throws SQLException {
+         String motdepasse="";
+        PreparedStatement pst;
+        ResultSet res;
+        System.out.println(mail);
+        pst = Conn.prepareStatement("select * from `utilisateur` INNER JOIN client ON client.id = utilisateur.id where `email`=?");
+        pst.setString(1, mail);
+        res = pst.executeQuery();
+        System.out.println(res);
+        
+        if (res.next()) {
+              motdepasse = res.getString("motdepasse");
+        }else{
+        pst = Conn.prepareStatement("select * from `utilisateur` INNER JOIN prestataire ON prestataire.id = utilisateur.id where `email`=?");
+        pst.setString(1, mail);
+        res = pst.executeQuery();
+        System.out.println(res);
+           motdepasse = res.getString("motdepasse");
+        }
+        return motdepasse;
+    }
+   public String get_login_Paremail(String mail) throws SQLException {
+         String login="" ;
+        PreparedStatement pst;
+        ResultSet res;
+        System.out.println(mail);
+        pst = Conn.prepareStatement("select * from `utilisateur` INNER JOIN client ON client.id = utilisateur.id where `email`=?");
+        pst.setString(1, mail);
+        res = pst.executeQuery();
+        System.out.println(res);
+        
+        if (res.next()) {
+              login = res.getString("login");
+        }else{
+        pst = Conn.prepareStatement("select * from `utilisateur` INNER JOIN prestataire ON prestataire.id = utilisateur.id where `email`=?");
+        pst.setString(1, mail);
+        res = pst.executeQuery();
+        System.out.println(res);
+           login = res.getString("login");
+        }
+        return login;
+    }
 }

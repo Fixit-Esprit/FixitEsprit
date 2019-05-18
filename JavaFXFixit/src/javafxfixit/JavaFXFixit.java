@@ -50,7 +50,7 @@ try {
             primaryStage.show();
             System.out.println("nom user " +rs.getString(4));
            }else{
-            Parent root = FXMLLoader.load(getClass().getResource("/GUI/InterfaceUser.fxml"));       
+            Parent root = FXMLLoader.load(getClass().getResource("/GUI/LoginUser.fxml"));       
             Scene scene = new Scene(root);                     
             primaryStage.setScene(scene);
             primaryStage.show();

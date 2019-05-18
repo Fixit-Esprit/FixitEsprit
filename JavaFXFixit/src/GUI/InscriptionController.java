@@ -27,6 +27,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -292,8 +294,9 @@ List<Ville> ville;
    
     @FXML
     private void adduser(ActionEvent event) {
-        String fileName;
-         String hos = ".\\src\\GUI\\img\\";
+        validation();
+       /* String fileName;
+        String hos = ".\\src\\GUI\\img\\";
              if(file!=null)                  
                 fileName=hos+file.getName(); 
                else 
@@ -306,9 +309,27 @@ List<Ville> ville;
            System.out.println("\n valeur de combo"+idville);   
           
          User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville);
-         srv.ajouterutilisateur(u);
+         srv.ajouterutilisateur(u);*/
     
     }
     
- 
+ //************************Validation
+    
+    public int validation(){                
+
+    
+     if (INnom.getText() == null || INnom.getText().trim().isEmpty()) {
+        Alert fail= new Alert(AlertType.INFORMATION);
+        fail.setHeaderText("failure");
+        fail.setContentText("you havent typed something");
+        fail.showAndWait();
+        return 0;
+    } else {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setHeaderText("Succes");
+        alert.setContentText("Account succesfully created!");
+        alert.showAndWait();
+        return 1;
+    }
+}
 }

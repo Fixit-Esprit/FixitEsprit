@@ -261,7 +261,7 @@ List<Ville> ville;
          file =fileChooser.showOpenDialog(new Stage());
          if(file!=null){      
  String fileName=file.getName();
-String hos = ".\\src\\GUI\\img\\"; 
+ String hos = ".\\src\\GUI\\img\\"; 
  System.out.println("home dir path is"+hos);
  String windPath=hos.replaceAll("\\\\", "/");                    
  System.out.println("windows path for copy is"+windPath);
@@ -281,7 +281,7 @@ String hos = ".\\src\\GUI\\img\\";
     private void updateuser(ActionEvent event) {
           String fileName;
              if(file!=null) 
-                     fileName=".\\src\\GUI\\img\\"+file.getName(); 
+                   fileName=".\\src\\GUI\\img\\"+file.getName(); 
                else 
                    fileName=null;
         ServiceUser srv = new ServiceUser();       

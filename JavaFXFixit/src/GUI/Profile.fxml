@@ -27,7 +27,10 @@
                         <Image url="@img/logo.png" />
                      </image>
                   </ImageView>
-                  <JFXButton buttonType="RAISED" layoutX="167.0" layoutY="406.0" prefHeight="41.0" prefWidth="116.0" style="-fx-background-color: #007ac1;" text="Rechercher" textFill="WHITE" />
+                  <JFXButton buttonType="RAISED" layoutX="167.0" layoutY="406.0" prefHeight="41.0" prefWidth="116.0" style="-fx-background-color: #007ac1;" text="Rechercher" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></JFXButton>
                   <JFXTextField fx:id="motcle" focusColor="#ffffff00" layoutX="19.0" layoutY="345.0" prefHeight="45.0" prefWidth="265.0" promptText="Recherche par mots clé" style="-fx-background-color: #ffffff;" unFocusColor="#beb2ff00">
                      <font>
                         <Font size="16.0" />
