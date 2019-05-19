@@ -54,7 +54,7 @@
          <tabs>
             <Tab text="Mon Profil">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#goHome" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#goHome" prefHeight="180.0" prefWidth="310.0">
                      <children>
                         <TextField fx:id="LBnom" layoutX="40.0" layoutY="178.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom" />
                         <TextField fx:id="LBpnom" layoutX="377.0" layoutY="178.0" prefHeight="45.0" prefWidth="310.0" promptText="Prénom" />
@@ -63,23 +63,24 @@
                         <TextField fx:id="LBlogin" layoutX="40.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Login" />
                         <PasswordField fx:id="LBpwd" layoutX="377.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe" />
                         <JFXButton buttonType="RAISED" layoutX="377.0" layoutY="400.0" onAction="#updateuser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Modifier" textFill="WHITE" />
-                        <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="377.0" layoutY="285.0" prefHeight="45.0" prefWidth="310.0" promptText="  Pays" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                        <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="40.0" layoutY="339.0" prefHeight="45.0" prefWidth="310.0" promptText="  Pays" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="40.0" layoutY="337.0" prefHeight="45.0" prefWidth="310.0" promptText="  Region" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                        <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="377.0" layoutY="339.0" prefHeight="45.0" prefWidth="310.0" promptText="  Region" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="377.0" layoutY="338.0" prefHeight="45.0" prefWidth="310.0" promptText="  Ville" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                        <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="40.0" layoutY="400.0" prefHeight="45.0" prefWidth="310.0" promptText="  Ville" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </JFXComboBox>
                         <ImageView fx:id="LBimage" fitHeight="89.0" fitWidth="174.0" layoutX="290.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                         <TextField fx:id="LBAdresse" layoutX="40.0" layoutY="283.0" prefHeight="45.0" prefWidth="310.0" promptText="Adresse" />
+                        <TextField fx:id="LBcin" layoutX="377.0" layoutY="283.0" prefHeight="45.0" prefWidth="310.0" promptText="CIN" />
                      </children>
                   </AnchorPane>
               </content>

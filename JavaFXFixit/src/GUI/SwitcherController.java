@@ -6,7 +6,6 @@
 package GUI;
 
 import entity.User;
-import service.ServiceUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,17 +19,15 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import service.ServiceUser;
 
 /**
  * FXML Controller class
  *
  * @author Marwa
  */
-public class LoginUserController implements Initializable {
-
+public class SwitcherController implements Initializable {
    private int rs;
     @FXML
     private TextField TXFlogin;
@@ -42,14 +39,13 @@ public class LoginUserController implements Initializable {
     private Label inc;
     @FXML
     public Label message;
-
     /**
      * Initializes the controller class.
-    */
-    @Override
+     */
+ @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        message.setVisible(false);
+      message.setVisible(false);
     }    
 
     @FXML
@@ -75,7 +71,7 @@ public class LoginUserController implements Initializable {
 
             }
         } catch (IOException ex) {
-            Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SwitcherController.class.getName()).log(Level.SEVERE, null, ex);
         }
     
     }
@@ -89,7 +85,7 @@ public class LoginUserController implements Initializable {
            TXFlogin.getScene().setRoot(root);
             
         } catch (IOException ex) {
-            Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SwitcherController.class.getName()).log(Level.SEVERE, null, ex);
         }
     
     }  
@@ -102,9 +98,32 @@ public class LoginUserController implements Initializable {
            ForgetPasswordController irc = loader.getController();           
            TXFlogin.getScene().setRoot(root);           
         } catch (IOException ex) {
-            Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SwitcherController.class.getName()).log(Level.SEVERE, null, ex);
         }
     
-    }
+    }   
     
+  @FXML
+  private void gouser() {
+     try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionUser.fxml"));             
+        Parent root = loader.load();          
+           InscriptionController irc = loader.getController();           
+           TXFlogin.getScene().setRoot(root);           
+        } catch (IOException ex) {
+            Logger.getLogger(SwitcherController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+  }
+  @FXML
+    private void goprestataire() {
+       try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionP.fxml"));             
+        Parent root = loader.load();          
+        InscriptionPController irc = loader.getController();           
+          TXFlogin.getScene().setRoot(root);
+        } catch (IOException ex) {
+            Logger.getLogger(SwitcherController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+  }
+  
 }

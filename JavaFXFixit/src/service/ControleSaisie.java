@@ -129,7 +129,7 @@ public class ControleSaisie {
 
         private static Pattern pattern1 = Pattern.compile(pwd);
 
-     public static boolean valiemail(final String hex) {
+     public static boolean validemail(final String hex) {
 
         matcher = pattern.matcher(hex);
 

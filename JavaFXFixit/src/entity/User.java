@@ -12,10 +12,10 @@ package entity;
 public class User {
     
     private int id,nbPoint, ville,pays,region;
-    private String nom, prenom, login,pwd,telephone,email,image,adresse;
+    private String nom, prenom, login,pwd,telephone,email,image,adresse,cin;
 
    
-        public User(int id,String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville) {
+        public User(int id,String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville, String cin) {
         this.id = id;
         this.nbPoint = nbPoint;
         this.nom = nom;
@@ -29,8 +29,9 @@ public class User {
         this.ville = ville;
         this.pays = pays;
         this.region = region;
+        this.cin =cin;
     }
-    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville) {
+    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville,String cin) {
         
         this.nbPoint = nbPoint;
         this.nom = nom;
@@ -44,6 +45,7 @@ public class User {
         this.ville = ville;
         this.pays = pays;
         this.region = region;
+        this.cin =cin;
     }
 
     public User(String login, String pwd) {
@@ -124,6 +126,26 @@ public class User {
         return region;
     }
 
+    public void setVille(int ville) {
+        this.ville = ville;
+    }
+
+    public void setPays(int pays) {
+        this.pays = pays;
+    }
+
+    public void setRegion(int region) {
+        this.region = region;
+    }
+
+    public void setCin(String cin) {
+        this.cin = cin;
+    }
+
+    public String getCin() {
+        return cin;
+    }
+
     public void setLogin(String login) {
         this.login = login;
     }
@@ -143,13 +165,14 @@ public class User {
     public void setImage(String image) {
         this.image = image;
     }
- 
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse + '}';
+        return "User{" + "id=" + id + ", nbPoint=" + nbPoint + ", ville=" + ville + ", pays=" + pays + ", region=" + region + ", cin=" + cin + ", nom=" + nom + ", prenom=" + prenom + ", login=" + login + ", pwd=" + pwd + ", telephone=" + telephone + ", email=" + email + ", image=" + image + ", adresse=" + adresse + '}';
     }
-    
+ 
+
+ 
     
     
     
