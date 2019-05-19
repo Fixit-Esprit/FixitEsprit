@@ -5,6 +5,7 @@
  */
 package service;
 
+import entity.Disponiblite;
 import entity.Pays;
 import entity.Position;
 import entity.Prestataire;
@@ -12,7 +13,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -98,5 +101,29 @@ public class PrestataireService {
             Logger.getLogger(PaysService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return position;
+    }
+
+    public List<Disponiblite> getDisponiblite(int id) {
+        List<Disponiblite> listdisponiblite = new ArrayList();
+        Disponiblite disponiblite ;
+        SimpleDateFormat Format = new SimpleDateFormat("yyyy-MM-dd");
+        String dateDebut = Format.format(new Date());
+        try {
+            Statement st;
+            st = conx.createStatement();
+            ResultSet resultat
+                    = st.executeQuery("Select * from disponiblite where disponible = 1 and  "+dateDebut+" < dateJour  and  Uti_id = " + id);
+            while (resultat.next()) {
+                disponiblite = new Disponiblite();
+                disponiblite.setId(resultat.getInt("id"));
+                disponiblite.setIdPrestataire(resultat.getInt("Uti_id"));
+                disponiblite.setDate(Format.format(resultat.getDate("dateJour")));
+                disponiblite.setDisponible(resultat.getInt("disponible"));
+                listdisponiblite.add(disponiblite);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PaysService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listdisponiblite;
     }
 }
