@@ -43,14 +43,14 @@ try {
            int count = rs.getInt(1);
            System.out.println("nbr de row dans sqllit "+count);
            if(count!=0){               
-           Parent root = FXMLLoader.load(getClass().getResource("/GUI/Profile.fxml"));                
+           Parent root = FXMLLoader.load(getClass().getResource("/GUI/ProfileUser.fxml"));                
            
             Scene scene = new Scene(root);                     
             primaryStage.setScene(scene);
             primaryStage.show();
             System.out.println("nom user " +rs.getString(4));
            }else{
-            Parent root = FXMLLoader.load(getClass().getResource("/GUI/InterfaceUser.fxml"));       
+            Parent root = FXMLLoader.load(getClass().getResource("/GUI/LoginUser.fxml"));       
             Scene scene = new Scene(root);                     
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -95,7 +95,13 @@ try {
                 + "	telephone varchar(100) ,\n"
                 + "	email varchar(255) ,\n"
                 + "	image varchar(255) ,\n"
-                + "	nbPoint integer\n"
+                + "	nbPoint integer,\n"
+                + "	type integer,\n"
+                + "	cin varchar(255),\n"
+                + "	Pay_id integer,\n"
+                + "	Reg_id integer,\n"
+                + "	Vil_id integer,\n"
+                + "	description varchar(255)\n"
                 + ");";
         
         try (Connection conn = DriverManager.getConnection(url);

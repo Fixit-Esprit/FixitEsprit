@@ -36,15 +36,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable; 
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent; 
-import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafxfixit.JavaFXFixit;
 import org.apache.commons.io.FileUtils;
 import service.PaysService;
 import service.RegionService;
@@ -74,7 +71,12 @@ public class ProfileController implements Initializable {
 @FXML
  private ImageView LBimage;
 @FXML
+ private ImageView home;
+@FXML
  private TextField LBnbPoint;
+@FXML
+ private TextField LBcin;
+
 @FXML
 private JFXComboBox comboboxpays;
 @FXML
@@ -117,7 +119,9 @@ List<Ville> ville;
      public void setLBAdresse(String LBAdresse) {
         this.LBAdresse.setText(LBAdresse);
     }
-
+ public void setLBcin(String LBcin) {
+        this.LBcin.setText(LBcin);
+    }
      
 /****************************/
      public TextField getLBnom() {
@@ -151,7 +155,9 @@ List<Ville> ville;
     public ImageView getLBimage() {
         return LBimage;
     }
-
+public TextField getLBcin() {
+        return LBcin;
+    }
   
 
     
@@ -178,14 +184,15 @@ List<Ville> ville;
              setLBlogin(rs.getString(7)); 
              setLBpwd(rs.getString(8));
              setLBemail(rs.getString(9));
-            // setLBimg(rs.getString(10));  
+             setLBcin(rs.getString(13));  
+             setLBAdresse(rs.getString(17)); 
             File file = new File(rs.getString(10));
             Image image = new Image(file.toURI().toString());             
             LBimage.setImage(image);
             }catch (SQLException e) {
             System.out.println(e.getMessage());
         } 
-         this.upload();
+        this.upload();
         ServiceService serviceService = new ServiceService();
         service = serviceService.getAllService();
         ArrayList<String> listservise = new ArrayList<String>();
@@ -261,7 +268,7 @@ List<Ville> ville;
          file =fileChooser.showOpenDialog(new Stage());
          if(file!=null){      
  String fileName=file.getName();
-String hos = ".\\src\\GUI\\img\\"; 
+ String hos = ".\\src\\GUI\\img\\"; 
  System.out.println("home dir path is"+hos);
  String windPath=hos.replaceAll("\\\\", "/");                    
  System.out.println("windows path for copy is"+windPath);
@@ -281,7 +288,7 @@ String hos = ".\\src\\GUI\\img\\";
     private void updateuser(ActionEvent event) {
           String fileName;
              if(file!=null) 
-                     fileName=".\\src\\GUI\\img\\"+file.getName(); 
+                   fileName=".\\src\\GUI\\img\\"+file.getName(); 
                else 
                    fileName=null;
         ServiceUser srv = new ServiceUser();       
@@ -289,15 +296,13 @@ String hos = ".\\src\\GUI\\img\\";
          System.out.println("\n valeur de combo"+comboboxpays.getSelectionModel().getSelectedIndex());
          int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
          int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;         
-         User u= new User(2,LBnom.getText(),LBpnom.getText(),LBAdresse.getText(),LBlogin.getText(),LBpwd.getText(),LBphone.getText(),LBemail.getText(), fileName, 500,idpays,idregion,idville);
+         User u= new User(2,LBnom.getText(),LBpnom.getText(),LBAdresse.getText(),LBlogin.getText(),LBpwd.getText(),LBphone.getText(),LBemail.getText(), fileName, 500,idpays,idregion,idville,LBcin.getText());
          srv.Updateutilisateur(u);
     
     }
        @FXML
-    private void goHome(ActionEvent event) {
-       
-        try {
-           
+    private void goHome( ) {
+         try {           
           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));             
            Parent root = loader.load();          
            AccueilController irc = loader.getController();
@@ -309,6 +314,32 @@ String hos = ".\\src\\GUI\\img\\";
         }
     
     }
+     @FXML
+  private void logout() {    
+          Dropuser();
+        try {
+           
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUser.fxml"));             
+           Parent root = loader.load();          
+           LoginUserController irc = loader.getController();          
+           LBnom.getScene().setRoot(root);
+        } catch (IOException ex) {
+            Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     
-    
+    } 
+  public static void Dropuser() {
+        // SQLite connection string
+        String url = "jdbc:sqlite:./db/user.db";
+        // SQL statement for creating a new table
+        
+        String sql = "DROP TABLE IF EXISTS user ";
+        
+        try (Connection conn = DriverManager.getConnection(url);
+            Statement stmt = conn.createStatement()) {            
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

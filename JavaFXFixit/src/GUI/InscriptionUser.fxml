@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #f5f5f5;" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.InscriptionController">
+    <stylesheets>
+        <URL value="@inscription.css" />
+    </stylesheets>
+   <children>
+      <Pane prefHeight="176.0" prefWidth="1024.0" style="-fx-background-color: #039BE5;">
+         <children>
+            <ImageView fitHeight="91.0" fitWidth="159.0" layoutX="442.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/logo.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="988.0" layoutY="8.0" onMouseClicked="#retour" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+               <image>
+                  <Image url="@img/back.png" />
+               </image>
+            </ImageView>
+         </children>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Pane>
+      <Pane layoutX="162.0" layoutY="106.0" prefHeight="486.0" prefWidth="700.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <TextField fx:id="INlogin" layoutX="18.0" layoutY="108.0" prefHeight="45.0" prefWidth="310.0" promptText="Login*" />
+            <TextField fx:id="INpnom" layoutX="358.0" layoutY="175.0" prefHeight="45.0" prefWidth="310.0" promptText="Prénom*" />
+            <TextField fx:id="INphone" layoutX="358.0" layoutY="239.0" prefHeight="45.0" prefWidth="310.0" promptText="Téléphone*" />
+            <TextField fx:id="INemail" layoutX="18.0" layoutY="239.0" prefHeight="45.0" prefWidth="310.0" promptText="E-mail*" />
+            <JFXButton buttonType="RAISED" layoutX="358.0" layoutY="424.0" onAction="#adduser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Inscription !" textFill="WHITE" />
+            <PasswordField fx:id="INpwd" layoutX="358.0" layoutY="108.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe*" />
+            <TextField fx:id="INnom" layoutX="18.0" layoutY="175.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom*" />
+            <ImageView fx:id="INimage" fitHeight="91.0" fitWidth="93.0" layoutX="307.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/avatar1.png" />
+               </image>
+            </ImageView>
+            <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="18.0" layoutY="424.0" prefHeight="45.0" prefWidth="310.0" promptText="  Ville*" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="358.0" layoutY="362.0" prefHeight="45.0" prefWidth="310.0" promptText="  Region*" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="18.0" layoutY="362.0" prefHeight="45.0" prefWidth="310.0" promptText="  Pays*" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </JFXComboBox>
+            <TextField fx:id="INAdresse" layoutX="18.0" layoutY="301.0" prefHeight="45.0" prefWidth="310.0" promptText="Adresse" />
+            <Text fx:id="message_INlogin" fill="RED" layoutX="20.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INnom" fill="RED" layoutX="20.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INpnom" fill="RED" layoutX="360.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INemail" fill="RED" layoutX="20.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire (exemple@gmail.com) !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INphone" fill="RED" layoutX="360.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire (8 chiffres) !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INpwd" fill="RED" layoutX="360.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_pays" fill="RED" layoutX="18.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_region" fill="RED" layoutX="360.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_ville" fill="RED" layoutX="19.0" layoutY="479.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INcin" fill="RED" layoutX="359.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire ( 8 chiffres) !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <TextField fx:id="INcin" layoutX="358.0" layoutY="301.0" prefHeight="45.0" prefWidth="310.0" promptText="CIN" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

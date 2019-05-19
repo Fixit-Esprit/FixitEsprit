@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import com.jfoenix.validation.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #fff;" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SwitcherController">
+    <stylesheets>
+        <URL value="@switcher.css" />
+    </stylesheets>
+   <children>
+      <Pane blendMode="SRC_ATOP" cacheHint="SCALE" layoutY="-1.0" prefHeight="600.0" prefWidth="290.0" style="-fx-background-color: #039BE5;">
+         <children>
+            <JFXButton fx:id="BTNlog" buttonType="RAISED" layoutX="33.0" layoutY="362.0" onAction="#LoginUser" prefHeight="39.0" prefWidth="222.0" style="-fx-background-color: #007ac1;" text="Connexion" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+            <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="21.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/logo.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="TXFlogin" layoutX="35.0" layoutY="261.0" prefHeight="39.0" prefWidth="222.0" promptText="Login" style="-fx-background-color: #fff;" />
+            <Text fill="WHITE" layoutX="93.0" layoutY="439.0" onMouseClicked="#ForgetPassword" strokeType="OUTSIDE" strokeWidth="0.0" text="Mot de passe oublié ?">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Line endX="100.0" fill="WHITE" layoutX="140.0" layoutY="454.0" startX="-100.0" stroke="WHITE" strokeMiterLimit="2.0" strokeType="OUTSIDE" />
+            <Text fill="WHITE" layoutX="39.0" layoutY="477.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous n'avez pas encore de compte ?">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Label fx:id="inc" layoutX="187.0" layoutY="468.0" onMouseClicked="#InscriptionUser" text="Créez-en un !" textFill="#007ac1">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="message" layoutX="35.0" layoutY="234.0" text="Entrez un identifiant et mot de passe valide !" textFill="#fbffbe">
+               <font>
+                  <Font name="System Italic" size="11.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="TXFpwd" layoutX="35.0" layoutY="312.0" prefHeight="39.0" prefWidth="222.0" promptText="Password" />
+         </children>
+         <effect>
+            <DropShadow blurType="GAUSSIAN" height="0.0" offsetX="-0.6" radius="4.0075" width="18.03" />
+         </effect>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Pane>
+      <JFXButton buttonType="RAISED" layoutX="372.0" layoutY="205.0" onAction="#goprestataire" prefHeight="260.0" prefWidth="222.0" style="-fx-background-color: #fff; -fx-cursor: hand;" textFill="WHITE" />
+      <ImageView fx:id="prestataire" fitHeight="150.0" fitWidth="200.0" layoutX="420.0" layoutY="230.0" onMouseClicked="#goprestataire" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+         <image>
+            <Image url="@img/prestataire.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="378.0" layoutY="411.0" onMouseClicked="#goprestataire" style="-fx-cursor: hand;" text="PRESTATAIRE DE SERVICE" textFill="#007ac1">
+         <font>
+            <Font name="Calibri Bold" size="20.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="703.0" layoutY="205.0" onAction="#gouser" prefHeight="260.0" prefWidth="222.0" style="-fx-background-color: #fff; -fx-cursor: hand;" textFill="WHITE" />
+      <ImageView fx:id="user" fitHeight="150.0" fitWidth="200.0" layoutX="741.0" layoutY="230.0" onMouseClicked="#gouser" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+         <image>
+            <Image url="@img/userBloc.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="738.0" layoutY="411.0" onMouseClicked="#gouser" style="-fx-cursor: hand;" text="UTILISATEUR FIXIT" textFill="#007ac1">
+         <font>
+            <Font name="Calibri Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="464.0" layoutY="67.0" text="CREER UN COMPTE" textFill="#007ac1">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

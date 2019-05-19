@@ -4,20 +4,19 @@
  * and open the template in the editor.
  */
 package GUI;
- 
+
 import com.jfoenix.controls.JFXComboBox;
 import entity.Pays;
 import entity.Region;
 import entity.Service;
 import entity.User;
 import entity.Ville;
-import service.ServiceUser;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
@@ -28,7 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent; 
+import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -39,15 +38,16 @@ import org.apache.commons.io.FileUtils;
 import service.ControleSaisie;
 import service.PaysService;
 import service.RegionService;
-import service.VilleService;
 import service.ServiceService;
+import service.ServiceUser;
+import service.VilleService;
 
 /**
  * FXML Controller class
  *
- * @author EXTHONE-marwa
+ * @author Marwa
  */
-public class InscriptionController implements Initializable {
+public class InscriptionPController implements Initializable {
 @FXML
    private TextField INnom;
 @FXML
@@ -62,8 +62,7 @@ public class InscriptionController implements Initializable {
    private TextField INemail;
 @FXML
    private TextField INAdresse;
-@FXML
-   private TextField INcin;
+
 @FXML
  private ImageView INimage;
 @FXML
@@ -94,7 +93,8 @@ public Text message_pays;
 public Text message_region;
 @FXML
 public Text message_ville;
-
+@FXML
+public Text message_secteur;
 File file;
 List<Service> service;
 List<Pays> pays;
@@ -221,15 +221,12 @@ List<Ville> ville;
     }
 
  
-    
     /**
      * Initializes the controller class.
      */
-
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.upload();
+               this.upload();
         this.loadinfo();
          message_INnom.setVisible(false);
          message_INpnom.setVisible(false);
@@ -240,10 +237,9 @@ List<Ville> ville;
          message_pays.setVisible(false);
          message_region.setVisible(false);
          message_ville.setVisible(false);
-         message_INcin.setVisible(false);
-         
+         message_secteur.setVisible(false);
     }    
-   public void upload(){
+    public void upload(){
         INimage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
          System.out.println("img cliqued");
          FileChooser fileChooser = new FileChooser();
@@ -269,7 +265,14 @@ List<Ville> ville;
    } 
      
    public void loadinfo(){
-     
+    ServiceService ServiceService = new ServiceService();
+        service = ServiceService.getAllService();
+        ArrayList<String> listservise = new ArrayList<String>();
+        for (Service s : service) {
+            listservise.add(s.getDescription());
+        }
+        ObservableList<String> olistservice = FXCollections.observableArrayList(listservise);        
+         comboboxservice.setItems(olistservice);
         
         PaysService paysService = new PaysService();
         pays = paysService.getAllPays();
@@ -336,13 +339,13 @@ List<Ville> ville;
          int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;
            System.out.println("\n valeur de combo"+idville);   
           
-         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville,INcin.getText());
-         srv.ajouterutilisateur(u);
+        // User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville);
+        // srv.ajouterutilisateur(u);
          }
     
     }
    private int validation() {
-         
+          int var ;
    ControleSaisie Cs =new ControleSaisie();
          if (INlogin.getText() == null ||  INlogin.getText().isEmpty())
         {
@@ -376,15 +379,6 @@ List<Ville> ville;
         }else {
               message_INnom.setVisible(false);
          }
-          if (INemail.getText() == null ||  INemail.getText().isEmpty()|| !Cs.validemail(INemail.getText()))
-        {
-             message_INemail.setVisible(true);
-             return 0;
-        }else{
-         
-         message_INemail.setVisible(false); 
-         
-        }
          if (INphone.getText() == null || INphone.getText().isEmpty() || !Cs.isTel(INphone.getText()))
         {
              message_INphone.setVisible(true);
@@ -393,15 +387,15 @@ List<Ville> ville;
               message_INphone.setVisible(false);
               
          }
-         if (INcin.getText() == null || INcin.getText().isEmpty() || !Cs.iscin(INcin.getText()))
+        if (INemail.getText() == null ||  INemail.getText().isEmpty()|| !Cs.validemail(INemail.getText()))
         {
-             message_INcin.setVisible(true);
-              return 0;
-        }else {
-              message_INcin.setVisible(false);
-              
-         }
-       
+             message_INemail.setVisible(true);
+             return 0;
+        }else{
+         
+         message_INemail.setVisible(false); 
+         
+        }
      return 1;
         
           
@@ -421,5 +415,4 @@ List<Ville> ville;
         }
     
     } 
-  
 }
