@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import entity.BCrypt;
 import entity.User;
 import service.ServiceUser;
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class LoginUserController implements Initializable {
     @FXML
     private void LoginUser(ActionEvent event) {
             try {
-            User u= new User( TXFlogin.getText(), TXFpwd.getText());
+            User u= new User( TXFlogin.getText(),TXFpwd.getText());
             
             ServiceUser srv = new ServiceUser();              
             rs= srv.login(u);         
@@ -105,6 +106,15 @@ public class LoginUserController implements Initializable {
             Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
     
+    }
+  private static int workload = 12;
+
+    public static String hashPassword(String password_plaintext) {
+        String salt = BCrypt.gensalt(workload);
+        System.out.println(salt);
+        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
+        return (hashed_password);
     }
     
 }

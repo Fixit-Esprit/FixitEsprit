@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import entity.BCrypt;
 import entity.User;
 import java.io.IOException;
 import java.net.URL;
@@ -63,7 +64,15 @@ public class ForgetPasswordController implements Initializable {
          message_su.setVisible(false);
          message.setVisible(false);
     } 
-    
+         private static int workload = 12;
+
+    public static String hashPassword(String password_plaintext) {
+        String salt = BCrypt.gensalt(workload);
+        System.out.println(salt);
+        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
+        return (hashed_password);
+    }
     @FXML
     private void sendPassword(ActionEvent event) throws SQLException {
      final  String emailto  =FGemail.getText();
@@ -78,7 +87,7 @@ public class ForgetPasswordController implements Initializable {
         int codePWD = r.nextInt(999999);
         System.out.println("code pwd"+codePWD);
         String NewPWD ="Fixit"+codePWD ;
-        srv.update_passe_Paremail(NewPWD,emailto);
+        srv.update_passe_Paremail(hashPassword(NewPWD),emailto);
         //String PWD=srv.get_passe_Paremail(emailto);
         String PWD=NewPWD;
         String login=srv.get_login_Paremail(emailto);
@@ -122,26 +131,28 @@ public class ForgetPasswordController implements Initializable {
         }
        }
     }
-    @FXML
+        @FXML
     private void LoginUser(ActionEvent event) {
             try {
-            User u= new User( TXFlogin.getText(), TXFpwd.getText());
+            User u= new User( TXFlogin.getText(),TXFpwd.getText());
             
             ServiceUser srv = new ServiceUser();              
             rs= srv.login(u);         
-           if(rs==1){      
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Profile.fxml"));             
+            if(rs==1){      
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ProfileUser.fxml"));             
            Parent root = loader.load();          
            ProfileController irc = loader.getController();
            irc.setLBnom(TXFlogin.getText()); 
            TXFlogin.getScene().setRoot(root);
-           }else if(rs==2){      
+            }else if(rs==2){      
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));             
            Parent root = loader.load();                    
            TXFlogin.getScene().setRoot(root);
-           }else{
-           message.setVisible(true);
-           }
+            }else{
+              
+               message.setVisible(true);
+
+            }
         } catch (IOException ex) {
             Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
         }

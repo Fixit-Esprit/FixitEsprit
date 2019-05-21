@@ -5,6 +5,7 @@
  */
 package service;
 
+import entity.BCrypt;
 import entity.User;
 import utilis.*;
 
@@ -26,20 +27,22 @@ public class ServiceUser {
   try {
         
         Statement   st = Conn.createStatement();    
-        String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='"+u1.getLogin()+"' and  motdepasse='"+u1.getPwd()+"'   ";
-        st.execute(req);
-       System.out.println("reqqq"+req);
+        String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='"+u1.getLogin()+"'    ";
+        System.out.println("r111"+req);
+        st.execute(req);        
         ResultSet rs = st.executeQuery(req);   
         if (!rs.next() ) {
         System.out.println("no data for normale user");            
-        String req2 ="Select * from `utilisateur` INNER JOIN client ON client.id = utilisateur.id INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='"+u1.getLogin()+"' and  motdepasse='"+u1.getPwd()+"'   ";
+        String req2 ="Select * from `utilisateur` INNER JOIN client ON client.id = utilisateur.id  INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='"+u1.getLogin()+"'    ";
         st.execute(req2);
         ResultSet rs2 = st.executeQuery(req2);
         if (!rs2.next() ) {
         System.out.println("no data for prestataire2"); 
         return 0;   
         }else{
-             createNewuser();
+           
+            if (checkPassword(u1.getPwd(), rs2.getString("motdepasse"))) {
+            createNewuser();
             String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint,type,cin,Pay_id,Reg_id,Vil_id,description)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
              
             try (Connection conn = this.connect();
@@ -67,9 +70,12 @@ public class ServiceUser {
             System.out.println("execute stement for insert ne marche pas ici");
             System.out.println(e.getMessage());
         }  
+            }else{  return 0;    }
             }
           
             }else{
+             System.out.println("pwd/****"+ rs.getString("motdepasse"));
+            if (checkPassword(u1.getPwd(), rs.getString("motdepasse"))) {
             createNewuser();
             String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint,type,cin,Pay_id,Reg_id,Vil_id,description)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             try (Connection conn = this.connect();
@@ -97,6 +103,7 @@ public class ServiceUser {
             System.out.println("execute stement for insert ne marche pas ici");
             System.out.println(e.getMessage());
         }  
+             }else{  return 0;    }
             }
     
         } catch (SQLException ex) {
@@ -158,7 +165,9 @@ public class ServiceUser {
             Statement st = Conn.createStatement();   
                                 
             String req ="insert into adresse (Pay_id,Reg_id,Vil_id,description) values (  '"+ u1.getPays()+"', '"+ u1.getRegion()+"','"+ u1.getVille()+"','"+ u1.getAdresse()+"')";
+            // System.out.println("requette"+req);
             st.executeUpdate(req);
+           
              ResultSet rs = st.executeQuery("select last_insert_id() as id from adresse");             
             if(rs.next())
             {
@@ -235,11 +244,12 @@ public class ServiceUser {
         
         Statement   st = Conn.createStatement();    
         String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id where email  LIKE '"+email+"'   ";
+        System.out.println("rqPsw oublier:"+req);
         st.execute(req);
         ResultSet rs = st.executeQuery(req);   
         if (!rs.next() ) {
         System.out.println("no data for normale user");            
-        String req2 ="Select * from `utilisateur`  INNER JOIN prestataire ON prestataire.id = utilisateur.id where email  LIKE '"+email+"'  ";
+        String req2 ="Select * from `utilisateur`  INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id where email  LIKE '"+email+"'  ";
         st.execute(req2);
         ResultSet rs2 = st.executeQuery(req2);
         if (!rs2.next() ) {
@@ -313,7 +323,17 @@ public class ServiceUser {
              }
              
                           
-        
+     public static boolean checkPassword(String password_plaintext, String stored_hash) {
+        boolean password_verified = false;
+         System.out.println(password_plaintext+"--"+stored_hash);
+        if (null == stored_hash || !stored_hash.startsWith("$2y$")) {
+            throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
+        }
+
+        password_verified = BCrypt.checkpw(password_plaintext, stored_hash);
+
+        return (password_verified);
+    }   
         
     
 }

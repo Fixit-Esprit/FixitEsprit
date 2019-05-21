@@ -41,7 +41,7 @@ import service.PaysService;
 import service.RegionService;
 import service.VilleService;
 import service.ServiceService;
-
+import entity.BCrypt;
 /**
  * FXML Controller class
  *
@@ -220,7 +220,15 @@ List<Ville> ville;
         this.INimage = INimage;
     }
 
- 
+     private static int workload = 12;
+
+    public static String hashPassword(String password_plaintext) {
+        String salt = BCrypt.gensalt(workload);
+        System.out.println(salt);
+        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
+        return (hashed_password);
+    }
     
     /**
      * Initializes the controller class.
@@ -336,7 +344,7 @@ List<Ville> ville;
          int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;
            System.out.println("\n valeur de combo"+idville);   
           
-         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville,INcin.getText());
+         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),hashPassword(INpwd.getText()),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville,INcin.getText());
          srv.ajouterutilisateur(u);
          }
     

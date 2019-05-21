@@ -8,6 +8,7 @@ package GUI;
  
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import entity.BCrypt;
 import entity.Pays;
 import entity.Region;
 import entity.Service;
@@ -76,7 +77,7 @@ public class ProfileController implements Initializable {
  private TextField LBnbPoint;
 @FXML
  private TextField LBcin;
-
+ 
 @FXML
 private JFXComboBox comboboxpays;
 @FXML
@@ -127,6 +128,7 @@ List<Ville> ville;
      public TextField getLBnom() {
         return LBnom;
     }
+  
 
     public TextField getLBpnom() {
         return LBpnom;
@@ -172,12 +174,12 @@ public TextField getLBcin() {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-          
+         
         String sql = "SELECT * FROM user";        
         try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
              ResultSet rs    = stmt.executeQuery(sql)){
-             rs.next();
+             rs.next();         
              setLBnom(rs.getString(4));
              setLBpnom(rs.getString(5));                      
              setLBphone(rs.getString(6));
@@ -283,7 +285,15 @@ public TextField getLBcin() {
               }
      });
    } 
-     
+      private static int workload = 12;
+
+    public static String hashPassword(String password_plaintext) {
+        String salt = BCrypt.gensalt(workload);
+        System.out.println(salt);
+        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
+        return (hashed_password);
+    }
         @FXML
     private void updateuser(ActionEvent event) {
           String fileName;
@@ -295,9 +305,10 @@ public TextField getLBcin() {
          int idville =srv.getIDVille((String) comboboxville.getValue());
          System.out.println("\n valeur de combo"+comboboxpays.getSelectionModel().getSelectedIndex());
          int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
-         int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;         
-         User u= new User(2,LBnom.getText(),LBpnom.getText(),LBAdresse.getText(),LBlogin.getText(),LBpwd.getText(),LBphone.getText(),LBemail.getText(), fileName, 500,idpays,idregion,idville,LBcin.getText());
-         srv.Updateutilisateur(u);
+         int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;      
+            System.out.println("id user"+getIdUser());
+         User u= new User(getIdUser(),LBnom.getText(),LBpnom.getText(),LBAdresse.getText(),LBlogin.getText(),hashPassword(LBpwd.getText()),LBphone.getText(),LBemail.getText(), fileName, 500,idpays,idregion,idville,LBcin.getText());
+        // srv.Updateutilisateur(u);
     
     }
        @FXML
@@ -340,4 +351,18 @@ public TextField getLBcin() {
             System.out.println(e.getMessage());
         }
     }
+  public int  getIdUser() {
+   String sql = "SELECT * FROM user";        
+        try (Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet rs    = stmt.executeQuery(sql)){
+             rs.next();         
+             return rs.getInt(2);
+                       
+           
+            }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } 
+        return 0;
+  }
 }
