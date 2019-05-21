@@ -42,6 +42,10 @@ import service.RegionService;
 import service.VilleService;
 import service.ServiceService;
 import entity.BCrypt;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+import java.util.Random;
 /**
  * FXML Controller class
  *
@@ -338,15 +342,28 @@ List<Ville> ville;
                 fileName=null;
          ServiceUser srv = new ServiceUser();       
          int idville =srv.getIDVille((String) comboboxville.getValue());
-       
-          int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
-        
+         int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
          int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;
-           System.out.println("\n valeur de combo"+idville);   
-          
-         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),hashPassword(INpwd.getText()),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville,INcin.getText());
-         srv.ajouterutilisateur(u);
-         }
+         System.out.println("\n valeur de combo"+idville);   
+          /***************************SMS********************************/
+            Random r = new Random();
+            int verifCode = r.nextInt(9999);
+            String ACCOUNT_SID = "AC53695a0810423ac99cc123e2d09a000d";
+            String AUTH_TOKEN = "e82e3599383dd1019008b436610c8a9e";
+            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+            String verifMessage = "Votre code de vérification est " + verifCode;
+            Message message = Message.creator(new PhoneNumber("+216"+INphone.getText()),
+            new PhoneNumber("+12568134657"), 
+            verifMessage).create();
+            System.out.println(message.getSid());
+             
+        /**************************SMS*********************************/
+         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),hashPassword(INpwd.getText()),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville,INcin.getText(),verifCode);
+        int res= srv.ajouterutilisateur(u);
+        if(res==1){
+           // load page verification de code sms en cours 
+        } 
+        }
     
     }
    private int validation() {

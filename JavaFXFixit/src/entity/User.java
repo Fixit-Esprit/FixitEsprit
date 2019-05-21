@@ -11,7 +11,7 @@ package entity;
  */
 public class User {
     
-    private int id,nbPoint, ville,pays,region;
+    private int id,nbPoint, ville,pays,region,code;
     private String nom, prenom, login,pwd,telephone,email,image,adresse,cin;
 
    
@@ -31,7 +31,7 @@ public class User {
         this.region = region;
         this.cin =cin;
     }
-    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville,String cin) {
+    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville,String cin,int code) {
         
         this.nbPoint = nbPoint;
         this.nom = nom;
@@ -46,6 +46,7 @@ public class User {
         this.pays = pays;
         this.region = region;
         this.cin =cin;
+        this.code =code;
     }
 
     public User(String login, String pwd) {

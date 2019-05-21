@@ -159,7 +159,7 @@ public class ServiceUser {
             System.out.println(e.getMessage());
         }
     }
-    public void ajouterutilisateur(User u1){
+    public int ajouterutilisateur(User u1){
          try {
             
             Statement st = Conn.createStatement();   
@@ -183,14 +183,16 @@ public class ServiceUser {
             
             st.executeUpdate(req3);
             }
+              return 1;
             } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
             }
             }
+       
             } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-                          
+          return 0;                 
         
         
     }
