@@ -26,6 +26,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.Random;
 import javafx.scene.text.Text;
 /**
  * FXML Controller class
@@ -49,6 +50,7 @@ public class ForgetPasswordController implements Initializable {
     public Text message_error;
     @FXML
     public Text message_su;
+    
     /**
      * Initializes the controller class.
      */
@@ -59,6 +61,7 @@ public class ForgetPasswordController implements Initializable {
         // TODO 0
          message_error.setVisible(false);
          message_su.setVisible(false);
+         message.setVisible(false);
     } 
     
     @FXML
@@ -66,12 +69,19 @@ public class ForgetPasswordController implements Initializable {
      final  String emailto  =FGemail.getText();
      ServiceUser srv = new ServiceUser();              
      rs= srv.check_email(emailto);
-    String PWD=srv.get_passe_Paremail(emailto);
-    String login=srv.get_login_Paremail(emailto);
+    
   
        if(rs==0){
          message_error.setVisible(true);
        }else{
+        Random r = new Random();
+        int codePWD = r.nextInt(999999);
+        System.out.println("code pwd"+codePWD);
+        String NewPWD ="Fixit"+codePWD ;
+        srv.update_passe_Paremail(NewPWD,emailto);
+        //String PWD=srv.get_passe_Paremail(emailto);
+        String PWD=NewPWD;
+        String login=srv.get_login_Paremail(emailto);
         final String username = "fixit.tunis2019@gmail.com";
         final String password = "Fixit2019";
 
@@ -141,7 +151,7 @@ public class ForgetPasswordController implements Initializable {
   private void InscriptionUser(MouseEvent  event) {
             try {              
                    
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Inscription.fxml"));             
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionUser.fxml"));             
            Parent root = loader.load();          
            InscriptionController irc = loader.getController();           
            TXFlogin.getScene().setRoot(root);

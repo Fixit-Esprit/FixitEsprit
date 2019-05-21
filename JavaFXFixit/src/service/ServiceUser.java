@@ -300,4 +300,20 @@ public class ServiceUser {
         }
         return login;
     }
+         public void update_passe_Paremail(String pwd,String email){       
+                      
+            try { 
+            Statement   st = Conn.createStatement(); 
+            String req2 ="UPDATE `utilisateur` SET   `motdepasse` = '"+pwd+"'  WHERE `utilisateur`.`email` like '"+email+"' ";
+            System.out.println("req"+req2);
+            st.executeUpdate(req2);
+            } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+             }   
+             }
+             
+                          
+        
+        
+    
 }
