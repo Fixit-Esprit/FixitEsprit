@@ -116,6 +116,16 @@
                </font>
             </Text>
             <TextField fx:id="INcin" layoutX="358.0" layoutY="301.0" prefHeight="45.0" prefWidth="310.0" promptText="CIN" />
+            <Text fx:id="message_INemail_exist" fill="RED" layoutX="19.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adresse E-mail existe deja !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INlogin_exist" fill="RED" layoutX="22.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login existe deja !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>

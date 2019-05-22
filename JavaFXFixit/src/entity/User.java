@@ -103,6 +103,10 @@ public class User {
         this.nbPoint = nbPoint;
     }
 
+    public int getCode() {
+        return code;
+    }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
@@ -166,11 +170,15 @@ public class User {
     public void setImage(String image) {
         this.image = image;
     }
-
+  public void setCode(int code) {
+        this.code = code;
+    }
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", nbPoint=" + nbPoint + ", ville=" + ville + ", pays=" + pays + ", region=" + region + ", cin=" + cin + ", nom=" + nom + ", prenom=" + prenom + ", login=" + login + ", pwd=" + pwd + ", telephone=" + telephone + ", email=" + email + ", image=" + image + ", adresse=" + adresse + '}';
     }
+
+  
  
 
  

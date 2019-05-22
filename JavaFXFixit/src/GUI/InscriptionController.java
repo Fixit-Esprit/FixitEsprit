@@ -98,6 +98,10 @@ public Text message_pays;
 public Text message_region;
 @FXML
 public Text message_ville;
+@FXML
+public Text message_INemail_exist;
+@FXML
+public Text message_INlogin_exist;
 
 File file;
 List<Service> service;
@@ -253,7 +257,8 @@ List<Ville> ville;
          message_region.setVisible(false);
          message_ville.setVisible(false);
          message_INcin.setVisible(false);
-         
+         message_INemail_exist.setVisible(false);
+         message_INlogin_exist.setVisible(false);
     }    
    public void upload(){
         INimage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -347,7 +352,8 @@ List<Ville> ville;
          System.out.println("\n valeur de combo"+idville);   
           /***************************SMS********************************/
             Random r = new Random();
-            int verifCode = r.nextInt(9999);
+            //int verifCode = r.nextInt(9999);
+            int verifCode = r.nextInt((9999 - 1000) + 1) + 1000;
             String ACCOUNT_SID = "AC53695a0810423ac99cc123e2d09a000d";
             String AUTH_TOKEN = "e82e3599383dd1019008b436610c8a9e";
             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
@@ -358,16 +364,27 @@ List<Ville> ville;
             System.out.println(message.getSid());
              
         /**************************SMS*********************************/
+        
          User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),hashPassword(INpwd.getText()),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville,INcin.getText(),verifCode);
         int res= srv.ajouterutilisateur(u);
         if(res==1){
            // load page verification de code sms en cours 
+            System.out.println(" load page verification de code sms en cours ...");
+            try {     
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionE2.fxml"));             
+           Parent root = loader.load();          
+           InscriptionE2Controller irc = loader.getController();           
+          INnom.getScene().setRoot(root);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         } 
         }
     
     }
    private int validation() {
-         
+          ServiceUser srv = new ServiceUser();
    ControleSaisie Cs =new ControleSaisie();
          if (INlogin.getText() == null ||  INlogin.getText().isEmpty())
         {
@@ -378,6 +395,19 @@ List<Ville> ville;
               message_INlogin.setVisible(false);
            
          }
+                 if (srv.check_login(INlogin.getText())==0)
+        {
+             
+         message_INlogin_exist.setVisible(false); 
+           
+        }else{
+        
+          
+             message_INlogin_exist.setVisible(true);
+             return 0;
+         
+        }
+        
          if (INpwd.getText() == null ||  INpwd.getText().isEmpty())
         {
              
@@ -410,6 +440,20 @@ List<Ville> ville;
          message_INemail.setVisible(false); 
          
         }
+        if (srv.check_email(INemail.getText())==0)
+        {
+             
+         message_INemail_exist.setVisible(false); 
+           
+        }else{
+        
+          
+             message_INemail_exist.setVisible(true);
+             return 0;
+         
+        }
+  
+          
          if (INphone.getText() == null || INphone.getText().isEmpty() || !Cs.isTel(INphone.getText()))
         {
              message_INphone.setVisible(true);

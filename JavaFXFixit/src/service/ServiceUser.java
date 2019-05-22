@@ -20,20 +20,20 @@ import java.util.logging.Logger;
  */
 public class ServiceUser {
     
- private Connection Conn = DaoConnection.getInstance().getConnect();
+private Connection Conn = DaoConnection.getInstance().getConnect();
     
-    public int login(User u1){  
+public int login(User u1){  
       
   try {
         
         Statement   st = Conn.createStatement();    
-        String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='"+u1.getLogin()+"'    ";
+        String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='"+u1.getLogin()+"' and `validation` = 0   ";
         System.out.println("r111"+req);
         st.execute(req);        
         ResultSet rs = st.executeQuery(req);   
         if (!rs.next() ) {
         System.out.println("no data for normale user");            
-        String req2 ="Select * from `utilisateur` INNER JOIN client ON client.id = utilisateur.id  INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='"+u1.getLogin()+"'    ";
+        String req2 ="Select * from `utilisateur` INNER JOIN client ON client.id = utilisateur.id  INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='"+u1.getLogin()+"' and `validation` = 0    ";
         st.execute(req2);
         ResultSet rs2 = st.executeQuery(req2);
         if (!rs2.next() ) {
@@ -114,7 +114,7 @@ public class ServiceUser {
         
         
     }
-    private Connection connect() {
+private Connection connect() {
         // SQLite connection string
       String url = "jdbc:sqlite:./db/user.db";
         Connection conn = null;
@@ -125,7 +125,7 @@ public class ServiceUser {
         }
         return conn;
     }
-    public static void createNewuser() {
+public static void createNewuser() {
         // SQLite connection string
         String url = "jdbc:sqlite:./db/user.db";
 
@@ -159,7 +159,7 @@ public class ServiceUser {
             System.out.println(e.getMessage());
         }
     }
-    public int ajouterutilisateur(User u1){
+public int ajouterutilisateur(User u1){
          try {
             
             Statement st = Conn.createStatement();   
@@ -173,7 +173,7 @@ public class ServiceUser {
             {
             int lastid = rs.getInt(1);
             try {      
-            String req2 ="insert into utilisateur (Adr_id,nom,prenom,login,motdepasse,telephone,email,image,nbPoint) values ( '"+lastid+"','"+ u1.getNom()+"', '"+u1.getPrenom()+"', '"+u1.getLogin()+"','"+u1.getPwd()+"','"+u1.getTelephone()+"','"+u1.getEmail()+"','"+u1.getImage()+"','"+u1.getNbPoint()+"' )";
+            String req2 ="insert into utilisateur (Adr_id,nom,prenom,login,motdepasse,telephone,email,image,nbPoint,validation,code) values ( '"+lastid+"','"+ u1.getNom()+"', '"+u1.getPrenom()+"', '"+u1.getLogin()+"','"+u1.getPwd()+"','"+u1.getTelephone()+"','"+u1.getEmail()+"','"+u1.getImage()+"','"+u1.getNbPoint()+"',1,'"+u1.getCode()+"' )";
             st.executeUpdate(req2);
             ResultSet rs2 = st.executeQuery("select last_insert_id() as ids from utilisateur");           
             if(rs2.next())
@@ -197,7 +197,7 @@ public class ServiceUser {
         
     }
  
-      public void Updateutilisateur(User u1){
+public void Updateutilisateur(User u1){
         
     try {
             
@@ -221,7 +221,7 @@ public class ServiceUser {
         
         
     } 
-     public int getIDVille(String ville){  
+ public int getIDVille(String ville){  
       
   try {
         
@@ -240,13 +240,13 @@ public class ServiceUser {
      return 0;
          }
      
-      public int check_email(String email){  
+public int check_email(String email){  
       
   try {
         
         Statement   st = Conn.createStatement();    
         String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id where email  LIKE '"+email+"'   ";
-        System.out.println("rqPsw oublier:"+req);
+        //System.out.println("rqPsw oublier:"+req);
         st.execute(req);
         ResultSet rs = st.executeQuery(req);   
         if (!rs.next() ) {
@@ -269,8 +269,36 @@ public class ServiceUser {
           return 0;       
         
     }
-     
-  public String get_passe_Paremail(String mail) throws SQLException {
+   public int check_login(String login){  
+      
+  try {
+        
+        Statement   st = Conn.createStatement();    
+        String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id where login  LIKE '"+login+"'   ";
+        //System.out.println("rqPsw oublier:"+req);
+        st.execute(req);
+        ResultSet rs = st.executeQuery(req);   
+        if (!rs.next() ) {
+        System.out.println("no data for normale user");            
+        String req2 ="Select * from `utilisateur`  INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id where login  LIKE '"+login+"'  ";
+        st.execute(req2);
+        ResultSet rs2 = st.executeQuery(req2);
+        if (!rs2.next() ) {
+        System.out.println("no data for prestataire2"); 
+        return 0;   
+        }else{
+        return 2; 
+        }       
+            }else{        
+             return 1;         
+            }    
+        } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+          return 0;       
+        
+    }  
+public String get_passe_Paremail(String mail) throws SQLException {
          String motdepasse="";
         PreparedStatement pst;
         ResultSet res;
@@ -291,7 +319,7 @@ public class ServiceUser {
         }
         return motdepasse;
     }
-   public String get_login_Paremail(String mail) throws SQLException {
+public String get_login_Paremail(String mail) throws SQLException {
          String login="" ;
         PreparedStatement pst;
         ResultSet res;
@@ -312,9 +340,8 @@ public class ServiceUser {
         }
         return login;
     }
-         public void update_passe_Paremail(String pwd,String email){       
-                      
-            try { 
+public void update_passe_Paremail(String pwd,String email){       
+ try { 
             Statement   st = Conn.createStatement(); 
             String req2 ="UPDATE `utilisateur` SET   `motdepasse` = '"+pwd+"'  WHERE `utilisateur`.`email` like '"+email+"' ";
             System.out.println("req"+req2);
@@ -322,11 +349,11 @@ public class ServiceUser {
             } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
              }   
-             }
+}
              
                           
-     public static boolean checkPassword(String password_plaintext, String stored_hash) {
-        boolean password_verified = false;
+public static boolean checkPassword(String password_plaintext, String stored_hash) {
+boolean password_verified = false;
          System.out.println(password_plaintext+"--"+stored_hash);
         if (null == stored_hash || !stored_hash.startsWith("$2y$")) {
             throw new java.lang.IllegalArgumentException("Invalid hash provided for comparison");
@@ -335,7 +362,45 @@ public class ServiceUser {
         password_verified = BCrypt.checkpw(password_plaintext, stored_hash);
 
         return (password_verified);
-    }   
+ }   
         
-    
+public int check_code(String code){        
+  try {
+         Statement   st = Conn.createStatement();    
+        String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id where code  = '"+code+"'   ";
+        System.out.println("rqPsw oublier:"+req);
+        st.execute(req);
+        ResultSet rs = st.executeQuery(req);   
+        if (!rs.next() ) {
+        System.out.println("no data for normale user");            
+        String req2 ="Select * from `utilisateur`  INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id where  code  = '"+code+"'  ";
+        st.execute(req2);
+        ResultSet rs2 = st.executeQuery(req2);
+        if (!rs2.next() ) {
+        System.out.println("no data for prestataire2"); 
+        return 0;   
+        }else{
+        return 2; 
+        }       
+            }else{        
+             return 1;         
+            }    
+        } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+          return 0;       
+        
+    }
+
+         public void update_validationUser(String code){       
+                      
+            try { 
+            Statement   st = Conn.createStatement(); 
+            String req2 ="UPDATE `utilisateur` SET   `validation` = 0  WHERE `utilisateur`.`code` = '"+code+"' ";
+            System.out.println("req"+req2);
+            st.executeUpdate(req2);
+            } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+             }   
+             }
 }
