@@ -42,9 +42,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent; 
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
+import service.ControleSaisie;
 import service.PaysService;
 import service.RegionService;
 import service.VilleService;
@@ -89,6 +91,30 @@ private JFXComboBox comboboxville;
 private JFXComboBox comboboxservice;
 @FXML
 private JFXTextField motcle;
+@FXML
+public Text message_INnom;
+@FXML
+public Text message_INpnom;
+@FXML
+public Text message_INlogin;
+@FXML
+public Text message_INpwd;
+@FXML
+public Text message_INphone;
+@FXML
+public Text message_INemail;
+@FXML
+public Text message_INcin;
+@FXML
+public Text message_pays;
+@FXML
+public Text message_region;
+@FXML
+public Text message_ville;
+@FXML
+public Text message_INemail_exist;
+@FXML
+public Text message_INlogin_exist;
 File file;
 List<Service> service;
 List<Pays> pays;
@@ -167,19 +193,23 @@ public TextField getLBcin() {
     }
  
 
-    
-
-   
-       
-    
-    
-    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         
+         message_INnom.setVisible(false);
+         message_INpnom.setVisible(false);
+         message_INlogin.setVisible(false);
+         message_INpwd.setVisible(false);
+         message_INphone.setVisible(false);
+         message_INemail.setVisible(false);
+         message_pays.setVisible(false);
+         message_region.setVisible(false);
+         message_ville.setVisible(false);
+         message_INcin.setVisible(false);
+         message_INemail_exist.setVisible(false);
+         message_INlogin_exist.setVisible(false);
         String sql = "SELECT * FROM user";        
         try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
@@ -189,7 +219,7 @@ public TextField getLBcin() {
              setLBpnom(rs.getString(5));                      
              setLBphone(rs.getString(6));
              setLBlogin(rs.getString(7)); 
-             setLBpwd(rs.getString(8));
+             //setLBpwd(rs.getString(8));
              setLBemail(rs.getString(9));
              setLBcin(rs.getString(13));  
              setLBAdresse(rs.getString(17)); 
@@ -302,6 +332,7 @@ public TextField getLBcin() {
     }
         @FXML
     private void updateuser(ActionEvent event) {
+          if(validation()==1){
           String fileName;
              if(file!=null) 
                    fileName=".\\src\\GUI\\img\\"+file.getName(); 
@@ -314,8 +345,8 @@ public TextField getLBcin() {
          int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;      
             System.out.println("id user"+getIdUser());
          User u= new User(getIdUser(),LBnom.getText(),LBpnom.getText(),LBAdresse.getText(),LBlogin.getText(),hashPassword(LBpwd.getText()),LBphone.getText(),LBemail.getText(), fileName, 500,idpays,idregion,idville,LBcin.getText());
-        // srv.Updateutilisateur(u);
-    
+        srv.Updateutilisateur(u);
+          }
     }
        @FXML
     private void goHome( ) {
@@ -374,4 +405,96 @@ public TextField getLBcin() {
   public int  paiement() {
    return 1;
   }
+   private int validation() {
+          ServiceUser srv = new ServiceUser();
+   ControleSaisie Cs =new ControleSaisie();
+         if (LBlogin.getText() == null ||  LBlogin.getText().isEmpty())
+        {
+             message_INlogin.setVisible(true);
+             return 0;
+                    
+        }else {
+              message_INlogin.setVisible(false);
+           
+         }
+       /* if (srv.check_login(LBlogin.getText())==0)
+        {
+             
+         message_INlogin_exist.setVisible(false); 
+           
+        }else{
+        
+          
+             message_INlogin_exist.setVisible(true);
+             return 0;
+         
+        }*/
+        
+         if (LBpwd.getText() == null ||  LBpwd.getText().isEmpty())
+        {
+             
+             message_INpwd.setVisible(true);
+             return 0;
+         }else {
+              message_INpwd.setVisible(false);
+         }
+         if  (LBpnom.getText() == null ||  LBpnom.getText().isEmpty())
+        {
+            
+             message_INpnom.setVisible(true);
+             return 0;
+        }else {
+              message_INpnom.setVisible(false);
+         }
+         if (LBnom.getText() == null ||  LBnom.getText().isEmpty())
+        {
+             message_INnom.setVisible(true);
+          return 0;
+        }else {
+              message_INnom.setVisible(false);
+         }
+          if (LBemail.getText() == null ||  LBemail.getText().isEmpty()|| !Cs.validemail(LBemail.getText()))
+        {
+             message_INemail.setVisible(true);
+             return 0;
+        }else{
+         
+         message_INemail.setVisible(false); 
+         
+        }
+       /* if (srv.check_email(LBemail.getText())==0)
+        {
+             
+         message_INemail_exist.setVisible(false); 
+           
+        }else{
+        
+          
+             message_INemail_exist.setVisible(true);
+             return 0;
+         
+        }*/
+  
+          
+         if (LBphone.getText() == null || LBphone.getText().isEmpty() || !Cs.isTel(LBphone.getText()))
+        {
+             message_INphone.setVisible(true);
+              return 0;
+        }else {
+              message_INphone.setVisible(false);
+              
+         }
+         if (LBcin.getText() == null || LBcin.getText().isEmpty() || !Cs.iscin(LBcin.getText()))
+        {
+             message_INcin.setVisible(true);
+              return 0;
+        }else {
+             message_INcin.setVisible(false);
+              
+         }
+       
+     return 1;
+        
+          
+   }   
 }
