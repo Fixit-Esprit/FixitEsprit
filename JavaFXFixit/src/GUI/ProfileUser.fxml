@@ -87,7 +87,47 @@
             </Tab>
             <Tab text="Consulter Mes Points">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton fx:id="payer1500" buttonType="RAISED" layoutX="93.0" layoutY="170.0" onAction="#paiement" prefHeight="100.0" prefWidth="550.0" style="-fx-background-color: #fff; -fx-cursor: hand;" textFill="WHITE" />
+                        <JFXButton fx:id="payer1000" buttonType="RAISED" layoutX="93.0" layoutY="296.0" onAction="#paiement" prefHeight="100.0" prefWidth="550.0" style="-fx-background-color: #fff; -fx-cursor: hand;" textFill="WHITE" />
+                        <ImageView fx:id="user" fitHeight="90.0" fitWidth="90.0" layoutX="110.0" layoutY="300.0" onMouseClicked="#paiement" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                           <image>
+                              <Image url="@img/star-with-number-two.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="90.0" fitWidth="90.0" layoutX="110.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/star-for-number-one.png" />
+                           </image>
+                        </ImageView>
+                        <JFXButton fx:id="payer500" buttonType="RAISED" layoutX="93.0" layoutY="418.0" onAction="#paiement" prefHeight="100.0" prefWidth="550.0" style="-fx-background-color: #fff; -fx-cursor: hand;" textFill="WHITE" />
+                        <ImageView fitHeight="90.0" fitWidth="90.0" layoutX="110.0" layoutY="423.0" onMouseClicked="#paiement" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/star-number-3.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="262.0" layoutY="205.0" onMouseClicked="#paiement" prefHeight="31.0" prefWidth="319.0" text="PACK UN DE 1500 POINT" textFill="#039be5">
+                           <font>
+                              <Font name="Calibri Bold" size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="262.0" layoutY="330.0" prefHeight="31.0" prefWidth="319.0" text="PACK DEUX DE 1000 POINT" textFill="#039be5">
+                           <font>
+                              <Font name="Calibri Bold" size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="262.0" layoutY="453.0" prefHeight="31.0" prefWidth="319.0" text="PACK TROIS DE 500 POINT" textFill="#039be5">
+                           <font>
+                              <Font name="Calibri Bold" size="26.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="LBnbPoint" layoutX="179.0" layoutY="77.0" text="VOUS AVEZ 1500 POINT !" textFill="#007ac1">
+                           <font>
+                              <Font name="Calibri Bold" size="35.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
               </content>
             </Tab>
          </tabs>

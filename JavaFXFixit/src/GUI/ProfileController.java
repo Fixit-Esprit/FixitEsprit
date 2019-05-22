@@ -37,6 +37,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable; 
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -74,7 +75,7 @@ public class ProfileController implements Initializable {
 @FXML
  private ImageView home;
 @FXML
- private TextField LBnbPoint;
+ private Label LBnbPoint;
 @FXML
  private TextField LBcin;
  
@@ -123,7 +124,10 @@ List<Ville> ville;
  public void setLBcin(String LBcin) {
         this.LBcin.setText(LBcin);
     }
-     
+     public void setLBnbPoint(String LBnbPoint) {        
+        this.LBnbPoint.setText(LBnbPoint);
+    }
+  
 /****************************/
      public TextField getLBnom() {
         return LBnom;
@@ -134,6 +138,7 @@ List<Ville> ville;
         return LBpnom;
     }
 
+  
     public TextField getLBlogin() {
         return LBlogin;
     }
@@ -160,7 +165,7 @@ List<Ville> ville;
 public TextField getLBcin() {
         return LBcin;
     }
-  
+ 
 
     
 
@@ -188,6 +193,7 @@ public TextField getLBcin() {
              setLBemail(rs.getString(9));
              setLBcin(rs.getString(13));  
              setLBAdresse(rs.getString(17)); 
+             setLBnbPoint("Vous avez "+rs.getInt(11)+" point !");
             File file = new File(rs.getString(10));
             Image image = new Image(file.toURI().toString());             
             LBimage.setImage(image);
@@ -364,5 +370,8 @@ public TextField getLBcin() {
             System.out.println(e.getMessage());
         } 
         return 0;
+  }
+  public int  paiement() {
+   return 1;
   }
 }
