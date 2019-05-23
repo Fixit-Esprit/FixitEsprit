@@ -69,7 +69,7 @@
                         <Font size="18.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="523.0" prefHeight="46.0" prefWidth="228.0" ripplerFill="WHITE" styleClass="annence" text="Annoncer votre besoin" textAlignment="CENTER" />
+                  <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="523.0" onAction="#annoncer" prefHeight="46.0" prefWidth="228.0" ripplerFill="WHITE" styleClass="annence" text="Annoncer votre besoin" textAlignment="CENTER" />
                   <JFXButton layoutX="131.0" layoutY="45.0" onAction="#goprestataire" />
                </children></Pane>
             <JFXTabPane id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1200.0" stylesheets="@accueil.css" tabMaxHeight="Infinity" tabMaxWidth="Infinity">
@@ -101,7 +101,7 @@
                      <content>
                         <AnchorPane id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1000.0">
                            <children>
-                              <GoogleMapView id="stackPane" fx:id="mapView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1000.0" />
+                              <GoogleMapView id="stackPane" fx:id="mapView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="622.0" prefWidth="885.0" />
                            </children>
                         </AnchorPane>
                      </content>

@@ -8,6 +8,8 @@ package GUI;
 import com.jfoenix.controls.JFXButton;
 import entity.Client;
 import entity.Demande;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -21,8 +23,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,10 +38,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.NumberStringConverter;
+import javax.imageio.ImageIO;
 import service.DemandeService;
+import sun.misc.BASE64Decoder;
 
 /**
  * FXML Controller class
@@ -69,6 +77,7 @@ public class AccueilPrestataireController implements Initializable {
 
     ObservableList<Demande> ObservableListDemande;
     DemandeService demandeService;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -118,15 +127,10 @@ public class AccueilPrestataireController implements Initializable {
             @Override
             public TableCell<Demande, Void> call(final TableColumn<Demande, Void> param) {
                 final TableCell<Demande, Void> cell = new TableCell<Demande, Void>() {
-
-                    private final JFXButton btn = new JFXButton("Afficher");
+                    ImageView imageView = new ImageView();
 
                     {
-                        btn.setOnAction((ActionEvent event) -> {
-                            Demande data = getTableView().getItems().get(getIndex());
-                            System.out.println("selectedData: " + data);
-                        });
-                        btn.getStyleClass().add("valider");
+
                     }
 
                     @Override
@@ -135,16 +139,37 @@ public class AccueilPrestataireController implements Initializable {
                         if (empty) {
                             setGraphic(null);
                         } else {
-                            setGraphic(btn);
+                            Demande demande = getTableView().getItems().get(getIndex());
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] imageByte;
+                            try {
+                                if (demande.getImage() != null) {
+                                    imageByte = decoder.decodeBuffer(demande.getImage());
+                                    ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+                                    BufferedImage bufferedImage = ImageIO.read(bis);
+                                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                                    imageView.setImage(image);
+                                    imageView.setFitHeight(100);
+                                    imageView.setFitWidth(180);
+                                }
+                            } catch (IOException ex) {
+                                Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            setGraphic(imageView);
                         }
                     }
                 };
+                cell.setOnMouseClicked(event -> {
+                    Demande data = (Demande) cell.getTableRow().getItem();
+                    System.out.println("selectedData: " + data);
+                });
                 return cell;
             }
         };
 
         ColumnImage.setCellFactory(cellFactory);
     }
+
     private void addButtonColumnValider(TableColumn<Demande, Void> Column) {
 
         Callback<TableColumn<Demande, Void>, TableCell<Demande, Void>> cellFactory = new Callback<TableColumn<Demande, Void>, TableCell<Demande, Void>>() {
@@ -180,7 +205,7 @@ public class AccueilPrestataireController implements Initializable {
 
         Column.setCellFactory(cellFactory);
     }
-    
+
     public void addTextFieldColumn(TableColumn<Demande, Number> columnPrix) {
         // Job is a String, editable column
 
