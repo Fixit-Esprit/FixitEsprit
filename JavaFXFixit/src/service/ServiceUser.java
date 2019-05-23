@@ -203,7 +203,7 @@ public void Updateutilisateur(User u1){
             
             Statement st = Conn.createStatement();  
                                 
-            String req ="UPDATE adresse SET `Pay_id` = '"+u1.getPays()+"', Reg_id = '"+u1.getRegion()+"',Vil_id  = '"+u1.getRegion()+"' ,description = '"+u1.getAdresse()+"' ";
+            String req ="UPDATE adresse SET `Pay_id` = '"+u1.getPays()+"', Reg_id = '"+u1.getRegion()+"',Vil_id  = '"+u1.getVille()+"' ,description = '"+u1.getAdresse()+"' ";
             st.executeUpdate(req);          
              
             try {      
@@ -239,6 +239,7 @@ public void Updateutilisateur(User u1){
         }    
      return 0;
          }
+
      
 public int check_email(String email){  
       
@@ -367,21 +368,12 @@ boolean password_verified = false;
 public int check_code(String code){        
   try {
          Statement   st = Conn.createStatement();    
-        String req ="Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id where code  = '"+code+"'   ";
+        String req ="Select * from `utilisateur`  where code  = '"+code+"'   ";
         System.out.println("rqPsw oublier:"+req);
         st.execute(req);
         ResultSet rs = st.executeQuery(req);   
         if (!rs.next() ) {
-        System.out.println("no data for normale user");            
-        String req2 ="Select * from `utilisateur`  INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id where  code  = '"+code+"'  ";
-        st.execute(req2);
-        ResultSet rs2 = st.executeQuery(req2);
-        if (!rs2.next() ) {
-        System.out.println("no data for prestataire2"); 
-        return 0;   
-        }else{
-        return 2; 
-        }       
+             return 0; 
             }else{        
              return 1;         
             }    

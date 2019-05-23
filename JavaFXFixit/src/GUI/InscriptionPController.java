@@ -6,7 +6,11 @@
 package GUI;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import entity.Pays;
+import entity.Prestataire;
 import entity.Region;
 import entity.Service;
 import entity.User;
@@ -16,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +42,7 @@ import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 import service.ControleSaisie;
 import service.PaysService;
+import service.PrestataireService;
 import service.RegionService;
 import service.ServiceService;
 import service.ServiceUser;
@@ -265,14 +271,14 @@ List<Ville> ville;
    } 
      
    public void loadinfo(){
-    ServiceService ServiceService = new ServiceService();
+        ServiceService ServiceService = new ServiceService();
         service = ServiceService.getAllService();
         ArrayList<String> listservise = new ArrayList<String>();
         for (Service s : service) {
             listservise.add(s.getDescription());
         }
         ObservableList<String> olistservice = FXCollections.observableArrayList(listservise);        
-         comboboxservice.setItems(olistservice);
+        comboboxservice.setItems(olistservice);
         
         PaysService paysService = new PaysService();
         pays = paysService.getAllPays();
@@ -331,16 +337,46 @@ List<Ville> ville;
                 fileName=hos+file.getName(); 
                else 
                 fileName=null;
-         ServiceUser srv = new ServiceUser();       
+         ServiceUser srv = new ServiceUser(); 
+         PrestataireService prest = new PrestataireService();  
          int idville =srv.getIDVille((String) comboboxville.getValue());
-       
-          int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
+         int idservice =prest.getIDservice((String) comboboxservice.getValue());
+         int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
         
          int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;
-           System.out.println("\n valeur de combo"+idville);   
-          
-        // User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville);
-        // srv.ajouterutilisateur(u);
+         System.out.println("\n valeur de combo"+idville);   
+          /***************************SMS********************************/
+            Random r = new Random();
+            //int verifCode = r.nextInt(9999);
+            int verifCode = r.nextInt((9999 - 1000) + 1) + 1000;
+            String ACCOUNT_SID = "AC53695a0810423ac99cc123e2d09a000d";
+            String AUTH_TOKEN = "e82e3599383dd1019008b436610c8a9e";
+            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+            String verifMessage = "Votre code de vérification est " + verifCode;
+            Message message = Message.creator(new PhoneNumber("+216"+INphone.getText()),
+            new PhoneNumber("+12568134657"), 
+            verifMessage).create();
+            System.out.println(message.getSid());
+             
+        /**************************SMS*********************************/
+      
+        String service =(String) comboboxservice.getValue();
+        int adresse_id=  prest.ajouteadresse(idpays,idregion,idville,INAdresse.getText());
+        Prestataire p= new Prestataire (adresse_id,INnom.getText(),INpnom.getText(), INemail.getText(),INlogin.getText(), INphone.getText(),INpwd.getText(), fileName, 500,  verifCode ,service);
+        int res=prest.ajoutePrestataire(p);
+                if(res==1){
+           // load page verification de code sms en cours 
+            System.out.println(" load page verification de code sms en cours ...");
+            try {     
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionE2.fxml"));             
+           Parent root = loader.load();          
+           InscriptionE2Controller irc = loader.getController();           
+          INnom.getScene().setRoot(root);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
          }
     
     }

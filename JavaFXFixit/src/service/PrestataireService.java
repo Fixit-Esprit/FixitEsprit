@@ -8,6 +8,7 @@ package service;
 import entity.Pays;
 import entity.Position;
 import entity.Prestataire;
+import entity.User;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -99,4 +100,70 @@ public class PrestataireService {
         }
         return position;
     }
+      public int getIDservice(String service){  
+      
+  try {
+        
+        Statement   st = conx.createStatement();    
+        String req ="Select * from `service` where description LIKE '"+service+"'  ";
+        st.execute(req);
+        ResultSet rs = st.executeQuery(req);   
+            if (!rs.next() )             
+            return 0;
+           
+            return rs.getInt("id");
+           
+             } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+     return 0;
+         }
+      
+   public int ajouteadresse(int Pays,int Region, int ville,String description){
+        
+    try {
+           
+            Statement st = conx.createStatement(); 
+            String req ="Insert into adresse (Pay_id,Reg_id,Vil_id,description) values ( '"+Pays+"','"+Region+"', '"+ville+"', '"+description+"') ";
+            st.executeUpdate(req);          
+             ResultSet rs = st.executeQuery("select last_insert_id() as id from adresse");             
+            if(rs.next())
+            {
+           return rs.getInt(1);
+            }
+            } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           return 0;        
+    } 
+      
+  public int ajoutePrestataire(Prestataire p){
+         try {
+            
+            Statement st = conx.createStatement();   
+         
+            try {      
+            String req2 ="insert into utilisateur (Adr_id,nom,prenom,login,motdepasse,telephone,email,image,nbPoint,validation,code) values ( '"+p.getAdresse_id()+"','"+ p.getNom()+"', '"+p.getPrenom()+"', '"+p.getLogin()+"','"+p.getPwd()+"','"+p.getTel()+"','"+p.getEmail()+"','"+p.getImage()+"','"+p.getNbpiont()+"',1,'"+p.getCode()+"' )";
+            st.executeUpdate(req2);
+            ResultSet rs2 = st.executeQuery("select last_insert_id() as ids from utilisateur");           
+            if(rs2.next())
+            {
+            int lastiduser = rs2.getInt(1);
+            String req3 ="INSERT INTO `prestataire` (`id`, `Uti_id`,numberPiont,description) VALUES  ( '"+getIDservice(p.getService())+"','"+ lastiduser+"' ,'"+ p.getNbpiont()+"' ,'"+p.getDescription()+"'  )";
+            
+            st.executeUpdate(req3);
+            }
+              return 1;
+            } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+       
+            } catch (SQLException ex) {
+            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          return 0;                 
+        
+        
+    }    
 }
