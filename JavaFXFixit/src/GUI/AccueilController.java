@@ -161,7 +161,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mapView.setKey("AIzaSyCpBZ4AjkZIoLWHnYYF5qsdQO5CTnCpcko");
+        mapView.setKey("AIzaSyCCCGYt6So0VJqzAKnso64imGK28BY57ec");
         mapView.addMapInializedListener(this);
 
         ServiceService serviceService = new ServiceService();
@@ -268,10 +268,10 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 } catch (Exception e) {
                 }
                 VBox vbox = new VBox(5);
-                vbox.setPrefSize(200, 300);
+                vbox.setPrefSize(240, 300);
                 vbox.getStyleClass().add("vbox");
                 vbox.setMaxHeight(300);
-                vbox.setMaxWidth(200);
+                vbox.setMaxWidth(240);
                 HBox hbox = new HBox(2);
 
                 vbox.setAlignment(Pos.CENTER);
@@ -387,10 +387,10 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 } catch (Exception e) {
                 }
                 VBox vbox = new VBox(5);
-                vbox.setPrefSize(200, 300);
+                vbox.setPrefSize(240, 300);
                 vbox.getStyleClass().add("vbox");
                 vbox.setMaxHeight(300);
-                vbox.setMaxWidth(200);
+                vbox.setMaxWidth(240);
                 HBox hbox = new HBox(2);
 
                 vbox.setAlignment(Pos.CENTER);
@@ -586,6 +586,22 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 1200, 600));
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void annoncer(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Annonce.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 700, 520));
             stage.show();
 
         } catch (IOException ex) {

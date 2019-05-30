@@ -82,6 +82,7 @@ public class DemandeService {
             while (resultat.next()) {
                 Demande demande = new Demande();
                 demande.setId(resultat.getInt("id"));
+                demande.setImage(resultat.getString("image"));
                 demande.setDescription(resultat.getString("description"));
                 demande.setNomclient(resultat.getString("nom") + " " + resultat.getString("prenom"));
                 demande.setDateFunction(Format.format(resultat.getDate("dateFunction")));

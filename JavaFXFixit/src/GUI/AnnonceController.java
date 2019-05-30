@@ -7,20 +7,17 @@ package GUI;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import entity.Annonce;
 import entity.Client;
 import entity.Demande;
-import entity.Disponiblite;
-import entity.Prestataire;
 import entity.Service;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,15 +34,18 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import org.apache.commons.io.FileUtils;
+import service.AnnonceService;
 import service.DemandeService;
-import service.PrestataireService;
 import service.ServiceService;
 import sun.misc.BASE64Decoder;
 import utilis.Utilis;
@@ -55,70 +55,43 @@ import utilis.Utilis;
  *
  * @author hphqlim
  */
-public class DemandeController implements Initializable {
+public class AnnonceController implements Initializable {
+
+    @FXML
+    private JFXComboBox comboboxservice;
+    @FXML
+    private Spinner<Integer> minprix;
+    @FXML
+    private Spinner<Integer> maxprix;
+    @FXML
+    private ImageView imageannonce;
+    @FXML
+    private JFXTextArea description;
+
+    List<Service> service;
+    File file;
+    String imageEncoder;
 
     /**
      * Initializes the controller class.
      */
-    @FXML
-    private JFXComboBox comboboxdisponiblites;
-
-    @FXML
-    private JFXTextArea description;
-
-    @FXML
-    private ImageView imageannonce;
-
-    Prestataire prestataire;
-    List<Disponiblite> disponiblites;
-    String imageEncoder;
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }
+        final int initialValue = 100;
+        SpinnerValueFactory<Integer> valueFactory
+                = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, initialValue);
+        minprix.setValueFactory(valueFactory);
+        maxprix.setValueFactory(valueFactory);
 
-    public void setData(Prestataire prestataire) {
-
-        this.prestataire = prestataire;
-        System.out.println(prestataire);
-
-        PrestataireService prestataireService = new PrestataireService();
-        disponiblites = prestataireService.getDisponiblite(prestataire.getId());
-        ArrayList<String> listdisponiblites = new ArrayList<String>();
-        for (Disponiblite d : disponiblites) {
-            listdisponiblites.add(d.getDate());
+        ServiceService serviceService = new ServiceService();
+        service = serviceService.getAllService();
+        ArrayList<String> listservise = new ArrayList<String>();
+        for (Service s : service) {
+            listservise.add(s.getDescription());
         }
-        ObservableList<String> olistservice = FXCollections.observableArrayList(listdisponiblites);
-        comboboxdisponiblites.setItems(olistservice);
-    }
-
-    @FXML
-    private void envoyerDemande(ActionEvent event) {
-        Client client = new Client();
-        String sql = "SELECT * FROM user";
-
-        try (Connection conn = Utilis.connect();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
-            rs.next();
-            client.setId(rs.getInt(1));
-            // setLBimg(rs.getString(10));  
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        if (client.getId() != 0) {
-            Demande demande;
-            demande = new Demande(prestataire.getId(), client.getId(), description.getText(), imageEncoder, new Date(), comboboxdisponiblites.getValue().toString());
-            DemandeService demandeService = new DemandeService();
-            int result = demandeService.ajouterDemande(demande);
-            if (result == 1) {
-                Stage stage = (Stage) comboboxdisponiblites.getScene().getWindow();
-                // do what you have to do
-                stage.close();
-            }
-        }
-
+        ObservableList<String> olistservice = FXCollections.observableArrayList(listservise);
+        comboboxservice.setItems(olistservice);
     }
 
     public void upload(MouseEvent event) {
@@ -136,18 +109,48 @@ public class DemandeController implements Initializable {
             fis.read(bytes);
             fis.close();
             imageEncoder = Base64.getEncoder().encodeToString(bytes);
-            
 
             BASE64Decoder decoder = new BASE64Decoder();
             imageByte = decoder.decodeBuffer(imageEncoder);
             ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
             BufferedImage bufferedImage = ImageIO.read(bis);
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-            
+
             imageannonce.setImage(image);
         } catch (IOException ex) {
             Logger.getLogger(AnnonceController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
+    @FXML
+    private void annoncer(ActionEvent event) {
+        Client client = new Client();
+        String sql = "SELECT * FROM user";
+
+        try (Connection conn = Utilis.connect();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            rs.next();
+            client.setId(rs.getInt(1));
+            // setLBimg(rs.getString(10));  
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        if (client.getId() != 0) {
+            int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
+
+            Annonce annonce;
+            annonce = new Annonce(client.getId(), idService, new Date(), description.getText(), imageEncoder,minprix.getValue(),maxprix.getValue());
+            AnnonceService annonceService = new AnnonceService();
+            int result = annonceService.ajouterAnnonce(annonce);
+            if (result == 1) {
+                Stage stage = (Stage) comboboxservice.getScene().getWindow();
+                // do what you have to do
+                stage.close();
+            }
+        }
+
+    }
+
 }
