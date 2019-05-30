@@ -48,6 +48,7 @@ import service.DemandeService;
 import service.PrestataireService;
 import service.ServiceService;
 import sun.misc.BASE64Decoder;
+import utilis.Utilis;
 
 /**
  * FXML Controller class
@@ -97,7 +98,7 @@ public class DemandeController implements Initializable {
         Client client = new Client();
         String sql = "SELECT * FROM user";
 
-        try (Connection conn = this.connect();
+        try (Connection conn = Utilis.connect();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             rs.next();
@@ -148,17 +149,5 @@ public class DemandeController implements Initializable {
             Logger.getLogger(AnnonceController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    private Connection connect() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:./db/user.db";
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
     }
 }
