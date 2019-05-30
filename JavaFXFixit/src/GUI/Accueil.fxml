@@ -24,24 +24,24 @@
    <children>
       <HBox id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0">
          <children>
-            <Pane id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" styleClass="pane">
+            <Pane id="stackPane" fx:id="panep" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" styleClass="pane">
                <children>
-                  <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="157.0" layoutY="387.0" prefHeight="37.0" prefWidth="137.0" promptText="Ville" unFocusColor="#ffffff00">
+                  <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="159.0" layoutY="475.0" prefHeight="37.0" prefWidth="137.0" promptText="Ville" unFocusColor="#ffffff00">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </JFXComboBox>
-                  <ImageView fitHeight="117.0" fitWidth="251.0" layoutX="26.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="117.0" fitWidth="251.0" layoutX="60.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/Logo.png" />
                      </image>
                   </ImageView>
-                  <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="9.0" layoutY="207.0" prefHeight="37.0" prefWidth="286.0" promptText="Catégorie de votre besoin" unFocusColor="#ffffff00">
+                  <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="7.0" layoutY="280.0" prefHeight="37.0" prefWidth="286.0" promptText="Catégorie de votre besoin" unFocusColor="#ffffff00">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </JFXComboBox>
-                  <JFXTextField fx:id="motcle" focusColor="#ffffff00" layoutX="7.0" layoutY="253.0" prefHeight="37.0" prefWidth="286.0" promptText="Mots clé" style="-fx-background-color: #ffffff;" unFocusColor="#beb2ff00">
+                  <JFXTextField fx:id="motcle" focusColor="#ffffff00" layoutX="7.0" layoutY="327.0" prefHeight="37.0" prefWidth="286.0" promptText="Mots clé" style="-fx-background-color: #ffffff;" unFocusColor="#beb2ff00">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -49,28 +49,38 @@
                         <Insets left="20.0" />
                      </padding>
                   </JFXTextField>
-                  <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="296.0" onAction="#recherchePrestataireByName" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
+                  <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="377.0" onAction="#recherchePrestataireByName" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </JFXButton>
-                  <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="7.0" layoutY="340.0" prefHeight="37.0" prefWidth="286.0" promptText="Pays" unFocusColor="#ffffff00">
+                  <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="7.0" layoutY="426.0" prefHeight="37.0" prefWidth="286.0" promptText="Pays" unFocusColor="#ffffff00">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </JFXComboBox>
-                  <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="8.0" layoutY="387.0" prefHeight="37.0" prefWidth="144.0" promptText="Region" unFocusColor="#ffffff00">
+                  <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="7.0" layoutY="475.0" prefHeight="37.0" prefWidth="144.0" promptText="Region" unFocusColor="#ffffff00">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </JFXComboBox>
-                  <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="432.0" onAction="#recherchePrestataireByAdress" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
+                  <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="525.0" onAction="#recherchePrestataireByAdress" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="523.0" onAction="#annoncer" prefHeight="46.0" prefWidth="228.0" ripplerFill="WHITE" styleClass="annence" text="Annoncer votre besoin" textAlignment="CENTER" />
+                  <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="576.0" onAction="#annoncer" prefHeight="46.0" prefWidth="228.0" ripplerFill="WHITE" styleClass="annence" text="Annoncer votre besoin" textAlignment="CENTER" />
                   <JFXButton layoutX="131.0" layoutY="45.0" onAction="#goprestataire" />
+                  <ImageView fitHeight="29.0" fitWidth="28.0" layoutX="183.0" layoutY="14.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/logout.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="29.0" fitWidth="28.0" layoutX="103.0" layoutY="14.0" onMouseClicked="#goToProfile" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/user.png" />
+                     </image>
+                  </ImageView>
                </children></Pane>
             <JFXTabPane id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1200.0" stylesheets="@accueil.css" tabMaxHeight="Infinity" tabMaxWidth="Infinity">
                <tabs>

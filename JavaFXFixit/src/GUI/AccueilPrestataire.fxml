@@ -20,11 +20,16 @@
             <children>
                 <Pane prefHeight="600.0" prefWidth="300.0" style="-fx-background-color: #1e88e5;">
                     <children>
-                        <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="25.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="135.0" fitWidth="211.0" layoutX="46.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@img/Logo.png" />
                             </image>
                         </ImageView>
+                  <ImageView fitHeight="41.0" fitWidth="30.0" layoutX="175.0" layoutY="14.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/logout.png" />
+                     </image>
+                  </ImageView>
                     </children>
                     <effect>
                         <DropShadow />
@@ -38,7 +43,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="tableviewannonce" prefHeight="600.0" prefWidth="916.0">
+                        <TableView fx:id="tableviewannonce" prefHeight="559.0" prefWidth="916.0">
                            <columns>
                               <TableColumn fx:id="colmunclientannoce" prefWidth="122.0" text="Client" />
                               <TableColumn fx:id="colmunadressannoce" prefWidth="115.0" text="Adresse" />
@@ -57,7 +62,7 @@
                 <Tab fx:id="tabdemande" onSelectionChanged="#eventTab2" text="Liste des demandes">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                            <TableView fx:id="tableviewdemande" layoutY="-1.0" prefHeight="600.0" prefWidth="916.0">
+                            <TableView fx:id="tableviewdemande" prefHeight="562.0" prefWidth="916.0">
                                 <columns>
                                     <TableColumn fx:id="colmunclient" prefWidth="144.0" text="Client" />
                            <TableColumn fx:id="colmunadress" prefWidth="119.0" text="Adresse" />

@@ -40,6 +40,7 @@ public class ServiceUser {
                 String req2 = "Select * from `utilisateur`   INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='" + u1.getLogin() + "' and `validation` = 0    ";
                 st.execute(req2);
                 ResultSet rs2 = st.executeQuery(req2);
+                
                 if (!rs2.next()) {
                     System.out.println("no data for prestataire2");
                     return 0;
@@ -62,7 +63,7 @@ public class ServiceUser {
                             pstmt.setString(9, rs2.getString("image"));
                             pstmt.setInt(10, rs2.getInt("nbPoint"));
                             pstmt.setInt(11, 2);
-                            pstmt.setString(12, rs2.getString("cin"));
+                            pstmt.setString(12, null);
                             pstmt.setInt(13, rs2.getInt("Pay_id"));
                             pstmt.setInt(14, rs2.getInt("Reg_id"));
                             pstmt.setInt(15, rs2.getInt("Vil_id"));
@@ -86,6 +87,7 @@ public class ServiceUser {
                     String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint,type,cin,Pay_id,Reg_id,Vil_id,description)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     try (Connection conn = this.connect();
                             PreparedStatement pstmt = conn.prepareStatement(sqlA)) {
+                        System.out.println("user : " +rs.getInt("id"));
                         pstmt.setInt(1, rs.getInt("id"));
                         pstmt.setInt(2, rs.getInt("Adr_id"));
                         pstmt.setString(3, rs.getString("nom"));

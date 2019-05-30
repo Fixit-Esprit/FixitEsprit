@@ -102,7 +102,7 @@ public class DemandeController implements Initializable {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             rs.next();
-            client.setId(rs.getInt(1));
+            client.setId(rs.getInt(2));
             // setLBimg(rs.getString(10));  
         } catch (SQLException e) {
             System.out.println(e.getMessage());

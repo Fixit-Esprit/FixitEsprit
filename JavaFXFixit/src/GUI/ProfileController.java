@@ -74,7 +74,6 @@ import utilis.Utilis;
  */
 public class ProfileController implements Initializable {
 
-
     @FXML
     private TextField LBnom;
     @FXML
@@ -144,7 +143,6 @@ public class ProfileController implements Initializable {
     byte[] imageByte;
     int idpays, idregion, idville;
 
-
     public void setLBnom(String nom) {
         this.LBnom.setText(nom);
     }
@@ -172,7 +170,6 @@ public class ProfileController implements Initializable {
     public void setLBAdresse(String LBAdresse) {
         this.LBAdresse.setText(LBAdresse);
     }
-
 
     public void setLBcin(String LBcin) {
         this.LBcin.setText(LBcin);
@@ -241,7 +238,6 @@ public class ProfileController implements Initializable {
         message_INlogin_exist.setVisible(false);
         String sql = "SELECT * FROM user";
         try (Connection conn = this.connect();
-
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             rs.next();
@@ -269,7 +265,6 @@ public class ProfileController implements Initializable {
             System.out.println(e.getMessage());
 
         }
-
 
         ServiceService serviceService = new ServiceService();
         service = serviceService.getAllService();
@@ -354,9 +349,7 @@ public class ProfileController implements Initializable {
         }
         return conn;
 
-
     }
-
 
     public void upload(MouseEvent event) {
 
@@ -412,8 +405,9 @@ public class ProfileController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));
             Parent root = loader.load();
             AccueilController irc = loader.getController();
+            LBnom.getScene().getWindow().setWidth(1200);
+            LBnom.getScene().getWindow().setHeight(700);
             LBnom.getScene().setRoot(root);
-
         } catch (IOException ex) {
             Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
         }
