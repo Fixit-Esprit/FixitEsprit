@@ -5,10 +5,7 @@
  */
 package GUI;
 
-
-import entity.BCrypt;
 import entity.User;
-import service.ServiceUser;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,17 +19,18 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import service.ServiceUser;
 
 /**
  * FXML Controller class
  *
- * @author Marwa
+ * @author EXTHONE-marwa
  */
-public class LoginUserController implements Initializable {
-
+public class InscriptionE2Controller implements Initializable {
+   @FXML
+   private TextField INcode;
    private int rs;
     @FXML
     private TextField TXFlogin;
@@ -40,21 +38,40 @@ public class LoginUserController implements Initializable {
     private TextField TXFpwd;
     @FXML
     private Button BTNlog;
+  @FXML
+    public Label message ;
     @FXML
-    private Label inc;
+    public Text message_error;
     @FXML
-    public Label message;
-
+    public Text message_su;
     /**
      * Initializes the controller class.
-    */
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        message.setVisible(false);
+           message_error.setVisible(false);
+           message_su.setVisible(false);
+           message.setVisible(false);
     }    
-
     @FXML
+    private void validationCompteUser(ActionEvent event) {
+           
+          
+            
+            ServiceUser srv = new ServiceUser();              
+            rs= srv.check_code(INcode.getText());         
+            if(rs==1){      
+            srv.update_validationUser(INcode.getText()); 
+            message_su.setVisible(true);
+            }else{              
+            message_error.setVisible(true);
+
+            }
+        
+    
+    }
+      @FXML
     private void LoginUser(ActionEvent event) {
             try {
             User u= new User( TXFlogin.getText(),TXFpwd.getText());
@@ -81,41 +98,18 @@ public class LoginUserController implements Initializable {
         }
     
     }
-     @FXML    
+         @FXML    
   private void InscriptionUser(MouseEvent  event) {
             try {              
                    
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Switcher.fxml"));             
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionUser.fxml"));             
            Parent root = loader.load();          
-           SwitcherController irc = loader.getController();           
+           InscriptionController irc = loader.getController();           
            TXFlogin.getScene().setRoot(root);
             
         } catch (IOException ex) {
             Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
     
-    }  
-       @FXML    
-  private void ForgetPassword(MouseEvent  event) {
-            try {                 
-                   
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ForgetPassword.fxml"));             
-           Parent root = loader.load(); 
-           ForgetPasswordController irc = loader.getController();           
-           TXFlogin.getScene().setRoot(root);           
-        } catch (IOException ex) {
-            Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-    }
-  private static int workload = 12;
-
-    public static String hashPassword(String password_plaintext) {
-        String salt = BCrypt.gensalt(workload);
-        System.out.println(salt);
-        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
-
-        return (hashed_password);
-    }
-    
+    } 
 }

@@ -1,0 +1,10 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+
+}
+#btn1{
+ -fx-border-radius:0 0 0 0;   
+}

@@ -13,17 +13,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #fff;" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ForgetPasswordController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.InscriptionE2Controller">
     <stylesheets>
-        <URL value="@forgetpassword.css" />
+        <URL value="@inscriptione2.css" />
     </stylesheets>
-   <children>
+    <children>
       <Pane blendMode="SRC_ATOP" cacheHint="SCALE" layoutX="1.0" layoutY="1.0" prefHeight="600.0" prefWidth="290.0" style="-fx-background-color: #039BE5;">
          <children>
             <JFXButton fx:id="BTNlog" buttonType="RAISED" layoutX="33.0" layoutY="362.0" onAction="#LoginUser" prefHeight="39.0" prefWidth="222.0" style="-fx-background-color: #007ac1;" text="Connexion" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
             <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="22.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/Logo.png" />
+                 <Image url="@img/logo.png" />
                </image>
             </ImageView>
             <TextField fx:id="TXFlogin" layoutX="35.0" layoutY="261.0" prefHeight="39.0" prefWidth="222.0" promptText="Login" style="-fx-background-color: #fff;" />
@@ -57,18 +57,18 @@
             <Insets />
          </opaqueInsets>
       </Pane>
-      <Text fill="#007ac1" layoutX="400.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modifier ou réinitialiser votre mot de passe" wrappingWidth="545.0">
+      <Text fill="#007ac1" layoutX="400.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Activer votre compte" wrappingWidth="545.0">
          <font>
             <Font name="Calibri Bold" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="400.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous pouvez modifier votre mot de passe pour des raisons de sécurité, ou le réinitialiser si vous l'avez oublié. Le mot de passe de votre compte FIXIT" wrappingWidth="555.642578125">
+      <Text layoutX="400.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Un SMS a été envoyer à votre numéro de téléphone ,Saisissez le code pour valider votre identité" wrappingWidth="555.642578125">
          <font>
             <Font name="Calibri" size="20.0" />
          </font></Text>
-      <TextField fx:id="FGemail" layoutX="400.0" layoutY="373.0" prefHeight="39.0" prefWidth="370.0" promptText="Adresse E-mail" />
-      <JFXButton fx:id="BTNlog1" buttonType="RAISED" layoutX="799.0" layoutY="373.0" onAction="#sendPassword" prefHeight="39.0" prefWidth="163.0" style="-fx-background-color: #007ac1;" text="Récupérer" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
-      <Text fx:id="message_su" fill="#0ec332" layoutX="400.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nous avons envoyé un email . Cliquez sur le lien figurant dans cet email pour réinitialiser votre mot de passe.Si vous ne voyez pas l'email, vérifiez les autres endroits où il pourrait être, comme votre courrier indésirable, spam, social, ou autres dossiers." wrappingWidth="545.0" />
-      <Text fx:id="message_error" fill="#f50c0c" layoutX="400.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cette E-mail n'existe pas ou Invalide ! " />
+      <TextField fx:id="INcode" layoutX="400.0" layoutY="373.0" prefHeight="39.0" prefWidth="370.0" promptText="Code  EX: 1234" />
+      <JFXButton fx:id="BTNlog1" buttonType="RAISED" layoutX="799.0" layoutY="373.0" onAction="#validationCompteUser" prefHeight="39.0" prefWidth="163.0" style="-fx-background-color: #007ac1;" text="Inscription" textFill="WHITE" textOverrun="WORD_ELLIPSIS" />
+      <Text fx:id="message_su" fill="#0ec332" layoutX="400.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Votre compte est activé!Vous pouvez désormais vous connecter avec votre nouvel identifiant et mot de passe " wrappingWidth="545.0" />
+      <Text fx:id="message_error" fill="#f50c0c" layoutX="400.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ce code est Invalide ! " />
    </children>
 </AnchorPane>

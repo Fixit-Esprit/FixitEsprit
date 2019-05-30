@@ -365,7 +365,7 @@ public class AccueilPrestataireController implements Initializable {
             public TableCell<Annonce, Void> call(final TableColumn<Annonce, Void> param) {
                 final TableCell<Annonce, Void> cell = new TableCell<Annonce, Void>() {
 
-                    private final JFXButton btn = new JFXButton("Confirme");
+                    private final JFXButton btn = new JFXButton("Accepter");
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
