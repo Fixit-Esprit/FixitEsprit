@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import java.net.URL?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="AnchorPane" prefHeight="468.0" prefWidth="708.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.DemandeController">
+    <stylesheets>
+        <URL value="@demande.css" />
+    </stylesheets>
+   <children>
+      <Pane prefHeight="167.0" prefWidth="709.0" style="-fx-background-color: #039BE5;" />
+      <Pane layoutX="38.0" layoutY="84.0" prefHeight="360.0" prefWidth="634.0" style="-fx-background-color: #FFF;">
+         <children>
+            <JFXTextArea fx:id="description" layoutX="14.0" layoutY="22.0" prefHeight="130.0" prefWidth="277.0" promptText="description" unFocusColor="#4059a9" />
+            <ImageView fx:id="imageannonce" fitHeight="130.0" fitWidth="190.0" layoutX="401.0" layoutY="22.0" onMouseClicked="#upload" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/GUI.img.png" />
+               </image>
+            </ImageView>
+            <JFXComboBox fx:id="comboboxdisponiblites" layoutX="209.0" layoutY="180.0" prefHeight="41.0" prefWidth="216.0" promptText="disponiblite" unFocusColor="#4059a9" />
+            <JFXButton buttonType="RAISED" layoutX="259.0" layoutY="292.0" onAction="#envoyerDemande" prefHeight="37.0" prefWidth="117.0" ripplerFill="WHITE" styleClass="envoyer" text="Envoyer" textFill="#039be5" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -94,7 +94,9 @@ try {
                 + "	pwd varchar(100) ,\n"
                 + "	telephone varchar(100) ,\n"
                 + "	email varchar(255) ,\n"
+
                 + "	image blob ,\n"
+
                 + "	nbPoint integer,\n"
                 + "	type integer,\n"
                 + "	cin varchar(255),\n"

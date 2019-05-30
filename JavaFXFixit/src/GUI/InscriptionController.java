@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package GUI;
-
+ 
 import com.jfoenix.controls.JFXComboBox;
 import entity.Pays;
 import entity.Region;
@@ -29,6 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -303,6 +304,7 @@ public class InscriptionController implements Initializable {
 
     public void loadinfo() {
 
+
         PaysService paysService = new PaysService();
         pays = paysService.getAllPays();
 
@@ -409,6 +411,7 @@ public class InscriptionController implements Initializable {
             }
         }
 
+
     }
 
     private int validation() {
@@ -505,5 +508,6 @@ public class InscriptionController implements Initializable {
         }
 
     }
+
 
 }

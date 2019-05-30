@@ -8,6 +8,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,10 +33,10 @@
                   </JFXComboBox>
                   <ImageView fitHeight="117.0" fitWidth="251.0" layoutX="26.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@img/fixit.png" />
+                        <Image url="@img/Logo.png" />
                      </image>
                   </ImageView>
-                  <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="9.0" layoutY="187.0" prefHeight="37.0" prefWidth="286.0" promptText="Catégorie de votre besoin" unFocusColor="#ffffff00">
+                  <JFXComboBox fx:id="comboboxservice" focusColor="#ffffff00" layoutX="9.0" layoutY="207.0" prefHeight="37.0" prefWidth="286.0" promptText="Catégorie de votre besoin" unFocusColor="#ffffff00">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -67,16 +69,8 @@
                         <Font size="18.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutY="612.0" prefHeight="30.0" prefWidth="198.0" ripplerFill="WHITE" text="Créer un compte" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutX="219.0" layoutY="612.0" prefHeight="15.0" prefWidth="74.0" style="-fx-background-color: #64b5f6;" text="Login" textFill="WHITE">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="523.0" onAction="#annoncer" prefHeight="46.0" prefWidth="228.0" ripplerFill="WHITE" styleClass="annence" text="Annoncer votre besoin" textAlignment="CENTER" />
+                  <JFXButton layoutX="131.0" layoutY="45.0" onAction="#goprestataire" />
                </children></Pane>
             <JFXTabPane id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1200.0" stylesheets="@accueil.css" tabMaxHeight="Infinity" tabMaxWidth="Infinity">
                <tabs>
@@ -107,14 +101,26 @@
                      <content>
                         <AnchorPane id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1000.0">
                            <children>
-                              <GoogleMapView id="stackPane" fx:id="mapView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1000.0" />
+                              <GoogleMapView id="stackPane" fx:id="mapView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="622.0" prefWidth="885.0" />
                            </children>
                         </AnchorPane>
                      </content>
                   </Tab>
-                  <Tab text="Liste des demandes">
+                  <Tab fx:id="tabdemande" onSelectionChanged="#eventTab3" text="Liste des demandes">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="TableView" layoutY="-1.0" prefHeight="600.0" prefWidth="881.0">
+                                <columns>
+                                  <TableColumn fx:id="colmunservice" prefWidth="188.0" text="Service" />
+                                    <TableColumn fx:id="colmundescription" prefWidth="197.0" text="Description" />
+                                  <TableColumn fx:id="colmunprestataire" prefWidth="162.0" text="Prestataire" />
+                                    <TableColumn fx:id="colmundate" prefWidth="148.0" text="Date" />
+                                    <TableColumn fx:id="colmunprix" prefWidth="94.0" text="Prix (DT)" />
+                                    <TableColumn fx:id="colmunpayer" prefWidth="91.0" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                </tabs>

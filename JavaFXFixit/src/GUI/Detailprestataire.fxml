@@ -29,23 +29,23 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <GoogleMapView fx:id="mapView2" layoutX="337.0" layoutY="42.0" prefHeight="379.0" prefWidth="454.0" />
-      <Label fx:id="nometprenom" layoutX="69.0" layoutY="232.0" textFill="#0d47a1">
+      <GoogleMapView fx:id="mapView2" layoutX="337.0" layoutY="42.0" prefHeight="379.0" prefWidth="479.0" />
+      <Label fx:id="nometprenom" layoutX="69.0" layoutY="232.0" textFill="#37474f">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="service" layoutX="69.0" layoutY="309.0" textFill="#0d47a1">
+      <Label fx:id="service" layoutX="69.0" layoutY="303.0" textFill="#37474f">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="adresse" layoutX="69.0" layoutY="387.0" textFill="#0d47a1">
+      <Label fx:id="adresse" layoutX="69.0" layoutY="382.0" textFill="#37474f">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="440.0" prefHeight="37.0" prefWidth="176.0" styleClass="demande" text="Demander le service" textFill="#0d47a1" />
-      <JFXButton layoutX="186.0" layoutY="440.0" prefHeight="27.0" prefWidth="128.0" text="Button" />
+      <JFXButton buttonType="RAISED" layoutX="190.0" layoutY="447.0" prefHeight="37.0" prefWidth="176.0" styleClass="demande" text="Demander le service" textFill="#0d47a1" />
+      <JFXButton buttonType="RAISED" layoutX="25.0" layoutY="447.0" prefHeight="27.0" prefWidth="128.0" styleClass="demande" text="Historiques" textFill="#0d47a1" />
    </children>
 </AnchorPane>

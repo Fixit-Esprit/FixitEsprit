@@ -162,7 +162,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mapView.setKey("AIzaSyCpBZ4AjkZIoLWHnYYF5qsdQO5CTnCpcko");
+        mapView.setKey("AIzaSyCCCGYt6So0VJqzAKnso64imGK28BY57ec");
         mapView.addMapInializedListener(this);
 
         ServiceService serviceService = new ServiceService();

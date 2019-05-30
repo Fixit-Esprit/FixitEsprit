@@ -24,6 +24,7 @@
                <children>
                   <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="27.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                      <image>
+
                     <Image url="@img/Logo.png" />
                      </image>
                   </ImageView>
@@ -188,6 +189,7 @@
                            </font>
                         </Label>
                      </children></AnchorPane>
+
               </content>
             </Tab>
          </tabs>

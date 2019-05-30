@@ -44,15 +44,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+
 import javafx.scene.control.Label;
+
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import javax.imageio.ImageIO;
+
 import org.apache.commons.io.FileUtils;
 import service.ControleSaisie;
 import service.PaysService;
@@ -68,6 +73,7 @@ import utilis.Utilis;
  * @author Marwa
  */
 public class ProfileController implements Initializable {
+
 
     @FXML
     private TextField LBnom;
@@ -138,6 +144,7 @@ public class ProfileController implements Initializable {
     byte[] imageByte;
     int idpays, idregion, idville;
 
+
     public void setLBnom(String nom) {
         this.LBnom.setText(nom);
     }
@@ -166,6 +173,7 @@ public class ProfileController implements Initializable {
         this.LBAdresse.setText(LBAdresse);
     }
 
+
     public void setLBcin(String LBcin) {
         this.LBcin.setText(LBcin);
     }
@@ -178,6 +186,7 @@ public class ProfileController implements Initializable {
      * *************************
      */
     public TextField getLBnom() {
+
         return LBnom;
     }
 
@@ -232,6 +241,7 @@ public class ProfileController implements Initializable {
         message_INlogin_exist.setVisible(false);
         String sql = "SELECT * FROM user";
         try (Connection conn = this.connect();
+
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             rs.next();
@@ -255,8 +265,11 @@ public class ProfileController implements Initializable {
                 Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } catch (SQLException e) {
+
             System.out.println(e.getMessage());
+
         }
+
 
         ServiceService serviceService = new ServiceService();
         service = serviceService.getAllService();
@@ -340,7 +353,10 @@ public class ProfileController implements Initializable {
             System.out.println(e.getMessage());
         }
         return conn;
+
+
     }
+
 
     public void upload(MouseEvent event) {
 
@@ -397,6 +413,7 @@ public class ProfileController implements Initializable {
             Parent root = loader.load();
             AccueilController irc = loader.getController();
             LBnom.getScene().setRoot(root);
+
         } catch (IOException ex) {
             Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
         }

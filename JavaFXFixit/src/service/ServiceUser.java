@@ -5,7 +5,11 @@
  */
 package service;
 
+
 import entity.BCrypt;
+
+import entity.Position;
+
 import entity.User;
 import utilis.*;
 
@@ -26,6 +30,7 @@ public class ServiceUser {
         try {
 
             Statement st = Conn.createStatement();
+
             String req = "Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='" + u1.getLogin() + "' and `validation` = 0   ";
             System.out.println("r111" + req);
             st.execute(req);
@@ -106,6 +111,7 @@ public class ServiceUser {
                     }
                 } else {
                     return 0;
+
                 }
             }
 
@@ -144,7 +150,9 @@ public class ServiceUser {
                 + "	pwd varchar(100) ,\n"
                 + "	telephone varchar(100) ,\n"
                 + "	email varchar(255) ,\n"
+
                 + "	image blob,\n"
+
                 + "	nbPoint integer,\n"
                 + "	type integer,\n"
                 + "	cin varchar(255),\n"
@@ -153,7 +161,6 @@ public class ServiceUser {
                 + "	Vil_id integer,\n"
                 + "	description varchar(255)\n"
                 + ");";
-        //Ajouter champs de test
 
         try (Connection conn = DriverManager.getConnection(url);
                 Statement stmt = conn.createStatement()) {
@@ -164,6 +171,7 @@ public class ServiceUser {
         }
     }
 
+
     public int ajouterutilisateur(User u1) {
         try {
 
@@ -171,7 +179,9 @@ public class ServiceUser {
 
             String req = "insert into adresse (Pay_id,Reg_id,Vil_id,description) values (  '" + u1.getPays() + "', '" + u1.getRegion() + "','" + u1.getVille() + "','" + u1.getAdresse() + "')";
             // System.out.println("requette"+req);
+
             st.executeUpdate(req);
+
 
             ResultSet rs = st.executeQuery("select last_insert_id() as id from adresse");
             if (rs.next()) {
@@ -187,6 +197,7 @@ public class ServiceUser {
                         st.executeUpdate(req3);
                     }
                     return 1;
+
                 } catch (SQLException ex) {
                     Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -195,6 +206,7 @@ public class ServiceUser {
         } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         return 0;
 
     }
@@ -205,7 +217,9 @@ public class ServiceUser {
 
             Statement st = Conn.createStatement();
 
+
             String req = "UPDATE adresse SET `Pay_id` = '" + u1.getPays() + "', Reg_id = '" + u1.getRegion() + "',Vil_id  = '" + u1.getVille() + "' ,description = '" + u1.getAdresse() + "' ";
+
             st.executeUpdate(req);
 
             try {
@@ -221,6 +235,7 @@ public class ServiceUser {
         }
 
     }
+
 
     
 
@@ -247,6 +262,7 @@ public class ServiceUser {
             } else {
                 return 1;
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -380,5 +396,28 @@ public class ServiceUser {
         } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
+
+    public Position getPosition(int id) {
+        Position position = new Position();
+        try {
+            Statement st;
+            st = Conn.createStatement();
+            ResultSet resultat
+                    = st.executeQuery("Select v.nom ville,r.nom region ,p.nom pays,v.latitude,v.longitude from utilisateur u INNER JOIN adresse a INNER JOIN ville v INNER JOIN region r INNER JOIN pays p where v.Reg_id = r.id and v.Pay_id = p.id and u.Adr_id = a.id and a.Vil_id = v.id and u.id =" + id);
+            while (resultat.next()) {
+                position.setVille(resultat.getString("ville"));
+                position.setRegion(resultat.getString("region"));
+                position.setPays(resultat.getString("pays"));
+                position.setLatitude(resultat.getDouble("latitude"));
+                position.setLongitude(resultat.getDouble("longitude"));
+                System.out.println(position);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PaysService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return position;
+    }
+
 }
