@@ -48,11 +48,16 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import sun.misc.BASE64Decoder;
 import javax.imageio.ImageIO;
+import java.util.Set;
+import java.util.TreeSet;
+import utilis.Utilis;
 
 /**
  * FXML Controller class
@@ -113,12 +118,14 @@ public class InscriptionController implements Initializable {
     public Text message_INlogin_exist;
 
     File file;
-    List<Service> service;
     List<Pays> pays;
+    Map<Integer, String> paysMap;
     List<Region> region;
+    Map<Integer, String> regionMap;
     List<Ville> ville;
+    Map<Integer, String> villeMap;
     String imageEncoder;
-    
+    int idpays,idregion,idville;
     public TextField getINnom() {
         return INnom;
     }
@@ -219,10 +226,6 @@ public class InscriptionController implements Initializable {
         this.file = file;
     }
 
-    public void setService(List<Service> service) {
-        this.service = service;
-    }
-
     public void setPays(List<Pays> pays) {
         this.pays = pays;
     }
@@ -254,7 +257,6 @@ public class InscriptionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
         this.loadinfo();
         message_INnom.setVisible(false);
         message_INpnom.setVisible(false);
@@ -269,8 +271,8 @@ public class InscriptionController implements Initializable {
         message_INemail_exist.setVisible(false);
         message_INlogin_exist.setVisible(false);
     }
- 
-     public void upload(MouseEvent event) {
+
+    public void upload(MouseEvent event) {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter[]{new FileChooser.ExtensionFilter("Image Files", new String[]{"*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"}), new FileChooser.ExtensionFilter("JPG", new String[]{"*.jpg"}), new FileChooser.ExtensionFilter("JPEG", new String[]{"*.jpeg"}), new FileChooser.ExtensionFilter("BMP", new String[]{"*.bmp"}), new FileChooser.ExtensionFilter("PNG", new String[]{"*.png"}), new FileChooser.ExtensionFilter("GIF", new String[]{"*.gif"})});
@@ -285,14 +287,13 @@ public class InscriptionController implements Initializable {
             fis.read(bytes);
             fis.close();
             imageEncoder = Base64.getEncoder().encodeToString(bytes);
-            
 
             BASE64Decoder decoder = new BASE64Decoder();
             imageByte = decoder.decodeBuffer(imageEncoder);
             ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
             BufferedImage bufferedImage = ImageIO.read(bis);
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-            
+
             INimage.setImage(image);
         } catch (IOException ex) {
             Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
@@ -304,67 +305,75 @@ public class InscriptionController implements Initializable {
 
         PaysService paysService = new PaysService();
         pays = paysService.getAllPays();
-        ArrayList<String> listp = new ArrayList<String>();
+
+        paysMap = new HashMap<>();
         for (Pays p : pays) {
-            listp.add(p.getNom());
+            paysMap.put(p.getId(), p.getNom());
         }
-        ObservableList<String> olist = FXCollections.observableArrayList(listp);
+
+        ObservableList<String> olist = FXCollections.observableArrayList(new TreeSet(paysMap.values()));
+
         comboboxpays.setItems(olist);
+
         comboboxpays.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 
-                int id = (int) pays.stream().filter(p -> p.getNom().equals(newValue)).mapToInt(p -> p.getId()).average().getAsDouble();
                 RegionService regionservice = new RegionService();
-                region = regionservice.getRegionByPays(id);
+                region = regionservice.getRegionByPays(Utilis.getKeys(paysMap, newValue));
+                 idpays = Utilis.getKeys(paysMap, newValue);
                 region.toString();
-                ArrayList<String> listr = new ArrayList<String>();
-                for (Region p : region) {
-                    listr.add(p.getNom());
 
+                regionMap = new HashMap<>();
+                for (Region r : region) {
+                    regionMap.put(r.getId(), r.getNom());
                 }
-                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
-                comboboxregion.setItems(olistregion);
 
+                ObservableList<String> olistregion = FXCollections.observableArrayList(new TreeSet(regionMap.values()));
+                comboboxregion.setItems(olistregion);
             }
+
         });
-        comboboxpays.getSelectionModel().select(204);
+        comboboxpays.getSelectionModel().select(208);
 
         comboboxregion.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 
-                int id = (int) region.stream().filter(r -> r.getNom().equals(newValue)).mapToInt(r -> r.getId()).average().getAsDouble();
                 VilleService villeService = new VilleService();
-                ville = villeService.getVilleByRegion(id);
+                ville = villeService.getVilleByRegion(Utilis.getKeys(regionMap, newValue));
+                idregion = Utilis.getKeys(regionMap, newValue);
                 ville.toString();
-                ArrayList<String> listr = new ArrayList<String>();
+                villeMap = new HashMap<>();
+
                 for (Ville v : ville) {
-                    listr.add(v.getNom());
+                    villeMap.put(v.getId(), v.getNom());
                 }
-                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+
+                ObservableList<String> olistregion = FXCollections.observableArrayList(new TreeSet(villeMap.values()));
                 comboboxville.setItems(olistregion);
+            }
+        });
+        comboboxville.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                 idville= Utilis.getKeys(villeMap, newValue);
+
             }
         });
     }
 
     @FXML
     private void adduser(ActionEvent event) {
+           
         if (validation() == 1) {
-            String fileName;
-            String hos = ".\\src\\GUI\\img\\";
-            if (file != null) {
-                fileName = hos + file.getName();
-            } else {
-                fileName = null;
-            }
             ServiceUser srv = new ServiceUser();
-            int idville = srv.getIDVille((String) comboboxville.getValue());
-            int idpays = comboboxpays.getSelectionModel().getSelectedIndex() + 1;
-            int idregion = comboboxpays.getSelectionModel().getSelectedIndex() + 1;
-            System.out.println("\n valeur de combo" + idville);
+           
+           
+            System.out.println("\n valeur de combo"  + idpays+ idregion + idville);
             /**
              * *************************SMS*******************************
              */

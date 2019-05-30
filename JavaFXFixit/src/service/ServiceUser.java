@@ -32,7 +32,7 @@ public class ServiceUser {
             ResultSet rs = st.executeQuery(req);
             if (!rs.next()) {
                 System.out.println("no data for normale user");
-                String req2 = "Select * from `utilisateur` INNER JOIN client ON client.id = utilisateur.id  INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='" + u1.getLogin() + "' and `validation` = 0    ";
+                String req2 = "Select * from `utilisateur`   INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='" + u1.getLogin() + "' and `validation` = 0    ";
                 st.execute(req2);
                 ResultSet rs2 = st.executeQuery(req2);
                 if (!rs2.next()) {
@@ -144,7 +144,7 @@ public class ServiceUser {
                 + "	pwd varchar(100) ,\n"
                 + "	telephone varchar(100) ,\n"
                 + "	email varchar(255) ,\n"
-                + "	image varchar(255) ,\n"
+                + "	image blob,\n"
                 + "	nbPoint integer,\n"
                 + "	type integer,\n"
                 + "	cin varchar(255),\n"
@@ -184,7 +184,6 @@ public class ServiceUser {
                     if (rs2.next()) {
                         int lastiduser = rs2.getInt(1);
                         String req3 = "INSERT INTO `client` (`id`, `cin`) VALUES  ( '" + lastiduser + "','" + u1.getCin() + "'  )";
-
                         st.executeUpdate(req3);
                     }
                     return 1;
@@ -223,25 +222,7 @@ public class ServiceUser {
 
     }
 
-    public int getIDVille(String ville) {
-
-        try {
-
-            Statement st = Conn.createStatement();
-            String req = "Select * from `ville` where nom LIKE '" + ville + "'  ";
-            st.execute(req);
-            ResultSet rs = st.executeQuery(req);
-            if (!rs.next()) {
-                return 0;
-            }
-
-            return rs.getInt("id");
-
-        } catch (SQLException ex) {
-            Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
-    }
+    
 
     public int check_email(String email) {
 

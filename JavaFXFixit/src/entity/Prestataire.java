@@ -23,10 +23,11 @@ public class Prestataire {
     private String login;
     private String pwd;
     private int code;
+     private String cin;
     public Prestataire() {
     }
 
-    public Prestataire(int id, int adresse_id, String nom, String prenom, String email, String tel, String image, int nbpiont, String description, String service) {
+    public Prestataire(int id, int adresse_id, String nom, String prenom, String email, String tel, String image,int nbpiont, String description, String service,String cin) {
         this.id = id;
         this.adresse_id = adresse_id;
         this.nom = nom;
@@ -37,9 +38,10 @@ public class Prestataire {
         this.nbpiont = nbpiont;
         this.description = description;
         this.service = service;
+        this.cin = cin;
     }
 
-    public Prestataire( int adresse_id, String nom, String prenom, String email,String login, String tel,String pwd, String image, int nbpiont, int code ,String service)      
+    public Prestataire( int adresse_id, String nom, String prenom, String email,String login, String tel,String pwd, String image, int nbpiont, int code ,String service,String cin)      
     {
         this.login = login;
         this.pwd = pwd;
@@ -52,6 +54,7 @@ public class Prestataire {
         this.nbpiont = nbpiont;
         this.service = service;
         this.code = code;
+        this.cin = cin;
     }
     public int getId() {
         return id;
@@ -143,6 +146,27 @@ public String getLogin() {
     public int getCode() {
         return code;
     }
+
+    public String getCin() {
+        return cin;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public void setCin(String cin) {
+        this.cin = cin;
+    }
+    
     @Override
     public String toString() {
         return "Prestataire{" + "id=" + id + ", adresse_id=" + adresse_id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", tel=" + tel + ", image=" + image + ", nbpiont=" + nbpiont + ", description=" + description + ", service=" + service + '}';

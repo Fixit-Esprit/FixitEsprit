@@ -20,11 +20,6 @@
    <children>
       <Pane prefHeight="176.0" prefWidth="1024.0" style="-fx-background-color: #039BE5;">
          <children>
-            <ImageView fitHeight="91.0" fitWidth="159.0" layoutX="442.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/logo.png" />
-               </image>
-            </ImageView>
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="988.0" layoutY="8.0" onMouseClicked="#retour" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                <image>
                   <Image url="@img/back.png" />
@@ -35,7 +30,7 @@
             <DropShadow />
          </effect>
       </Pane>
-      <Pane layoutX="162.0" layoutY="106.0" prefHeight="486.0" prefWidth="700.0" style="-fx-background-color: #ffffff;">
+      <Pane layoutX="162.0" layoutY="48.0" prefHeight="533.0" prefWidth="700.0" style="-fx-background-color: #ffffff;">
          <children>
             <TextField fx:id="INlogin" layoutX="18.0" layoutY="108.0" prefHeight="45.0" prefWidth="310.0" promptText="Login*" />
             <TextField fx:id="INpnom" layoutX="358.0" layoutY="175.0" prefHeight="45.0" prefWidth="310.0" promptText="Prénom*" />

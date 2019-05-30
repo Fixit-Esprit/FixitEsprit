@@ -149,6 +149,8 @@ public class PrestataireService {
             if(rs2.next())
             {
             int lastiduser = rs2.getInt(1);
+            String req = "INSERT INTO `client` (`id`, `cin`) VALUES  ( '" + lastiduser + "','" + p.getCin() + "'  )";
+            st.executeUpdate(req);
             String req3 ="INSERT INTO `prestataire` (`id`, `Uti_id`,numberPiont,description) VALUES  ( '"+getIDservice(p.getService())+"','"+ lastiduser+"' ,'"+ p.getNbpiont()+"' ,'"+p.getDescription()+"'  )";
             
             st.executeUpdate(req3);

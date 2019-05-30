@@ -22,7 +22,7 @@
          <children>
             <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="21.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/logo.png" />
+                   <Image url="@img/Logo.png" />
                </image>
             </ImageView>
             <JFXButton fx:id="btn1" layoutY="274.0" prefHeight="35.0" prefWidth="201.0" style="-fx-background-color: #039BE5;" stylesheets="@admin.css" text="Liste des utilisateurs" textFill="WHITE" wrapText="true" />

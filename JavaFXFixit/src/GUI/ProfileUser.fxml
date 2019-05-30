@@ -24,7 +24,7 @@
                <children>
                   <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="27.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@img/logo.png" />
+                    <Image url="@img/Logo.png" />
                      </image>
                   </ImageView>
                   <JFXButton buttonType="RAISED" layoutX="167.0" layoutY="406.0" prefHeight="41.0" prefWidth="116.0" style="-fx-background-color: #007ac1;" text="Rechercher" textFill="WHITE">
