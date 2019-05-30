@@ -13,7 +13,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="GUI.InscriptionPController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.InscriptionPController">
     <stylesheets>
         <URL value="@inscriptionp.css" />
     </stylesheets>
@@ -44,7 +44,7 @@
             <JFXButton buttonType="RAISED" layoutX="358.0" layoutY="424.0" onAction="#adduser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Inscription !" textFill="WHITE" />
             <PasswordField fx:id="INpwd" layoutX="358.0" layoutY="108.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe*" />
             <TextField fx:id="INnom" layoutX="18.0" layoutY="175.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom*" />
-            <ImageView fx:id="INimage" fitHeight="91.0" fitWidth="93.0" layoutX="307.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="INimage" fitHeight="91.0" fitWidth="93.0" layoutX="307.0" layoutY="3.0" onMouseClicked="#upload" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/worker.png" />
                </image>

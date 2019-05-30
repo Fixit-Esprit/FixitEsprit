@@ -14,6 +14,8 @@ import entity.Region;
 import entity.Service;
 import entity.User;
 import entity.Ville;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import service.ServiceUser;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +34,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,12 +48,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import service.ControleSaisie;
 import service.PaysService;
 import service.RegionService;
 import service.VilleService;
 import service.ServiceService;
+import sun.misc.BASE64Decoder;
 
 /**
  * FXML Controller class
@@ -120,7 +125,7 @@ List<Service> service;
 List<Pays> pays;
 List<Region> region;
 List<Ville> ville;
-       
+byte[] imageByte;       
     public void setLBnom(String nom) {
         this.LBnom.setText(nom);
     }
@@ -223,10 +228,17 @@ public TextField getLBcin() {
              setLBemail(rs.getString(9));
              setLBcin(rs.getString(13));  
              setLBAdresse(rs.getString(17)); 
-             setLBnbPoint("Vous avez "+rs.getInt(11)+" point !");
-            File file = new File(rs.getString(10));
-            Image image = new Image(file.toURI().toString());             
-            LBimage.setImage(image);
+             setLBnbPoint("Vous avez "+rs.getInt(11)+" point !");           
+             BASE64Decoder decoder = new BASE64Decoder();             
+             try {
+             imageByte = decoder.decodeBuffer(rs.getString(10));
+             ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+             BufferedImage bufferedImage = ImageIO.read(bis);
+             Image image = SwingFXUtils.toFXImage(bufferedImage, null);            
+             LBimage.setImage(image);
+             } catch (IOException ex) {
+                 Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+             }
             }catch (SQLException e) {
             System.out.println(e.getMessage());
         } 

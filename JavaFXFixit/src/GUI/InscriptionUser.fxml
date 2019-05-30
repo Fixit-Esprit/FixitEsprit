@@ -44,7 +44,7 @@
             <JFXButton buttonType="RAISED" layoutX="358.0" layoutY="424.0" onAction="#adduser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Inscription !" textFill="WHITE" />
             <PasswordField fx:id="INpwd" layoutX="358.0" layoutY="108.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe*" />
             <TextField fx:id="INnom" layoutX="18.0" layoutY="175.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom*" />
-            <ImageView fx:id="INimage" fitHeight="91.0" fitWidth="93.0" layoutX="307.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="INimage" fitHeight="91.0" fitWidth="93.0" layoutX="307.0" layoutY="3.0" onMouseClicked="#upload" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/avatar1.png" />
                </image>

@@ -15,10 +15,14 @@ import entity.Region;
 import entity.Service;
 import entity.User;
 import entity.Ville;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -28,17 +32,20 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import service.ControleSaisie;
 import service.PaysService;
@@ -47,6 +54,7 @@ import service.RegionService;
 import service.ServiceService;
 import service.ServiceUser;
 import service.VilleService;
+import sun.misc.BASE64Decoder;
 
 /**
  * FXML Controller class
@@ -106,7 +114,7 @@ List<Service> service;
 List<Pays> pays;
 List<Region> region;
 List<Ville> ville;
-
+String imageEncoder;
     public TextField getINnom() {
         return INnom;
     }
@@ -232,7 +240,7 @@ List<Ville> ville;
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-               this.upload();
+        
         this.loadinfo();
          message_INnom.setVisible(false);
          message_INpnom.setVisible(false);
@@ -245,30 +253,35 @@ List<Ville> ville;
          message_ville.setVisible(false);
          message_secteur.setVisible(false);
     }    
-    public void upload(){
-        INimage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-         System.out.println("img cliqued");
-         FileChooser fileChooser = new FileChooser();
-         fileChooser.setTitle("Open Resource File");
-         file =fileChooser.showOpenDialog(new Stage());
-         if(file!=null){      
- String fileName=file.getName();
- String hos = ".\\src\\GUI\\img\\"; 
- System.out.println("home dir path is"+hos);
- String windPath=hos.replaceAll("\\\\", "/");                    
- System.out.println("windows path for copy is"+windPath);
- File  targetFile  = new File(hos+fileName);
- try {
- FileUtils.copyFile(file, targetFile);
-             } catch (IOException ex) {
-              Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-             }
-             }else{  
-         
-                 System.out.println("Cancelled");
-              }
-     });
-   } 
+    public void upload(MouseEvent event) {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter[]{new FileChooser.ExtensionFilter("Image Files", new String[]{"*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"}), new FileChooser.ExtensionFilter("JPG", new String[]{"*.jpg"}), new FileChooser.ExtensionFilter("JPEG", new String[]{"*.jpeg"}), new FileChooser.ExtensionFilter("BMP", new String[]{"*.bmp"}), new FileChooser.ExtensionFilter("PNG", new String[]{"*.png"}), new FileChooser.ExtensionFilter("GIF", new String[]{"*.gif"})});
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(null);
+
+        try {
+
+            byte[] imageByte;
+            byte[] bytes = new byte[(int) file.length()];
+            FileInputStream fis = new FileInputStream(file);
+            fis.read(bytes);
+            fis.close();
+            imageEncoder = Base64.getEncoder().encodeToString(bytes);
+            
+
+            BASE64Decoder decoder = new BASE64Decoder();
+            imageByte = decoder.decodeBuffer(imageEncoder);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            BufferedImage bufferedImage = ImageIO.read(bis);
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            
+            INimage.setImage(image);
+        } catch (IOException ex) {
+            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
      
    public void loadinfo(){
         ServiceService ServiceService = new ServiceService();
@@ -362,7 +375,7 @@ List<Ville> ville;
       
         String service =(String) comboboxservice.getValue();
         int adresse_id=  prest.ajouteadresse(idpays,idregion,idville,INAdresse.getText());
-        Prestataire p= new Prestataire (adresse_id,INnom.getText(),INpnom.getText(), INemail.getText(),INlogin.getText(), INphone.getText(),INpwd.getText(), fileName, 500,  verifCode ,service);
+        Prestataire p= new Prestataire (adresse_id,INnom.getText(),INpnom.getText(), INemail.getText(),INlogin.getText(), INphone.getText(),INpwd.getText(), imageEncoder, 500,  verifCode ,service);
         int res=prest.ajoutePrestataire(p);
                 if(res==1){
            // load page verification de code sms en cours 
