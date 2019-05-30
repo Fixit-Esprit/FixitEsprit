@@ -11,7 +11,8 @@ package entity;
  */
 public class User {
     
-    private int id,nbPoint, ville,pays,region;
+    private int id,nbPoint, ville,pays,region,code;
+
     private String nom, prenom, login,pwd,telephone,email,image,adresse,cin;
 
    
@@ -31,7 +32,8 @@ public class User {
         this.region = region;
         this.cin =cin;
     }
-    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville,String cin) {
+
+    public User(String nom, String prenom, String adresse, String login, String pwd, String telephone, String email, String image,int nbPoint,int pays,int region,int ville,String cin,int code) {
         
         this.nbPoint = nbPoint;
         this.nom = nom;
@@ -46,6 +48,8 @@ public class User {
         this.pays = pays;
         this.region = region;
         this.cin =cin;
+        this.code =code;
+
     }
 
     public User(String login, String pwd) {
@@ -100,6 +104,10 @@ public class User {
 
     public void setNbPoint(int nbPoint) {
         this.nbPoint = nbPoint;
+    }
+
+    public int getCode() {
+        return code;
     }
 
     public void setNom(String nom) {
@@ -166,14 +174,15 @@ public class User {
         this.image = image;
     }
 
+  public void setCode(int code) {
+        this.code = code;
+    }
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", nbPoint=" + nbPoint + ", ville=" + ville + ", pays=" + pays + ", region=" + region + ", cin=" + cin + ", nom=" + nom + ", prenom=" + prenom + ", login=" + login + ", pwd=" + pwd + ", telephone=" + telephone + ", email=" + email + ", image=" + image + ", adresse=" + adresse + '}';
     }
- 
 
  
-    
     
     
     

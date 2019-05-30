@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import static GUI.ProfileController.Dropuser;
 import com.jfoenix.controls.JFXButton;
 import entity.Annonce;
 import entity.Client;
@@ -365,7 +366,7 @@ public class AccueilPrestataireController implements Initializable {
             public TableCell<Annonce, Void> call(final TableColumn<Annonce, Void> param) {
                 final TableCell<Annonce, Void> cell = new TableCell<Annonce, Void>() {
 
-                    private final JFXButton btn = new JFXButton("Confirme");
+                    private final JFXButton btn = new JFXButton("Accepter");
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
@@ -430,5 +431,22 @@ public class AccueilPrestataireController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void logout() {
+        Dropuser();
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUser.fxml"));
+            Parent root = loader.load();
+            LoginUserController irc = loader.getController();
+            tableviewannonce.getScene().getWindow().setWidth(1044);
+            tableviewannonce.getScene().getWindow().setHeight(600);
+            tableviewannonce.getScene().setRoot(root);
+        } catch (IOException ex) {
+            Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import utilis.Utilis;
 
 /**
  *
@@ -33,38 +34,58 @@ public class JavaFXFixit extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-try {
-             createNewuser();
-             String sql = "SELECT COUNT(*) as nb  FROM user";        
-             try (Connection conn = this.connect();
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-           rs.next();
-           int count = rs.getInt(1);
-           System.out.println("nbr de row dans sqllit "+count);
-           if(count!=0){               
-           Parent root = FXMLLoader.load(getClass().getResource("/GUI/ProfileUser.fxml"));                
-           
-            Scene scene = new Scene(root);                     
-            primaryStage.setScene(scene);
-            primaryStage.show();
-            System.out.println("nom user " +rs.getString(4));
-           }else{
-            Parent root = FXMLLoader.load(getClass().getResource("/GUI/LoginUser.fxml"));       
-            Scene scene = new Scene(root);                     
-            primaryStage.setScene(scene);
-            primaryStage.show();
-           }
-           
-             
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } 
-                        
+        try {
+            createNewuser();
+            String sql = "SELECT COUNT(*) as nb  FROM user";
+            try (Connection conn = this.connect();
+                    Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql)) {
+                rs.next();
+                int count = rs.getInt(1);
+                System.out.println("nbr de row dans sqllit " + count);
+                if (count != 0) {
+                    conn.close();
+                    String sqluser = "SELECT * FROM user";
+                    try (Connection connuser = this.connect();
+                            Statement stmtuser = connuser.createStatement();
+                            ResultSet rsuser = stmtuser.executeQuery(sqluser)) {
+                        rsuser.next();
+                        System.out.println("cin " + rsuser.getString(13));
+                        if (rsuser.getString(13) != null) {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));
+                            Parent root = loader.load();
+                            Scene scene = new Scene(root);
+                            primaryStage.setScene(scene);
+                            scene.getWindow().setWidth(1200);
+                            scene.getWindow().setHeight(700);
+                            primaryStage.show();
+                        } else {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AccueilPrestataire.fxml"));
+                            Parent root = loader.load();
+                            Scene scene = new Scene(root);
+                            primaryStage.setScene(scene);
+                            scene.getWindow().setWidth(1250);
+                            scene.getWindow().setHeight(640);
+                            primaryStage.show();
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("e :" +e.getMessage());
+                    }
+                } else {
+                    Parent root = FXMLLoader.load(getClass().getResource("/GUI/LoginUser.fxml"));
+                    Scene scene = new Scene(root);
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(JavaFXFixit.class.getName()).log(Level.SEVERE, null, ex);
         }
-      /*  try {
+        /*  try {
             Parent root = FXMLLoader.load(getClass().getResource("/GUI/Accueil.fxml"));
             Scene scene = new Scene(root, 1200, 660);
 
@@ -79,11 +100,12 @@ try {
             Logger.getLogger(JavaFXFixit.class.getName()).log(Level.SEVERE, null, ex);
         }*/
     }
- public static void createNewuser() {
+
+    public static void createNewuser() {
         // SQLite connection string
         String url = "jdbc:sqlite:./db/user.db";
         // SQL statement for creating a new table
-        
+
         String sql = "CREATE TABLE IF NOT EXISTS user (\n"
                 + "	id integer PRIMARY KEY,\n"
                 + "	id_user integer,\n"
@@ -94,7 +116,7 @@ try {
                 + "	pwd varchar(100) ,\n"
                 + "	telephone varchar(100) ,\n"
                 + "	email varchar(255) ,\n"
-                + "	image varchar(255) ,\n"
+                + "	image blob ,\n"
                 + "	nbPoint integer,\n"
                 + "	type integer,\n"
                 + "	cin varchar(255),\n"
@@ -103,18 +125,19 @@ try {
                 + "	Vil_id integer,\n"
                 + "	description varchar(255)\n"
                 + ");";
-        
+
         try (Connection conn = DriverManager.getConnection(url);
-            Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
             // create a new table
             stmt.execute(sql);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-     private Connection connect() {
+
+    private Connection connect() {
         // SQLite connection string
-      String url = "jdbc:sqlite:./db/user.db";
+        String url = "jdbc:sqlite:./db/user.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -122,7 +145,8 @@ try {
             System.out.println(e.getMessage());
         }
         return conn;
-    } 
+    }
+
     /**
      * @param args the command line arguments
      */

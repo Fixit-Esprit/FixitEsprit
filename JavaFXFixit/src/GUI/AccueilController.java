@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,6 +6,7 @@
  */
 package GUI;
 
+import static GUI.ProfileController.Dropuser;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -161,7 +163,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mapView.setKey("AIzaSyCCCGYt6So0VJqzAKnso64imGK28BY57ec");
+        mapView.setKey("AIzaSyCpBZ4AjkZIoLWHnYYF5qsdQO5CTnCpcko");
         mapView.addMapInializedListener(this);
 
         ServiceService serviceService = new ServiceService();
@@ -517,8 +519,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             rs.next();
-            client.setId(rs.getInt(1));
-            // setLBimg(rs.getString(10));  
+            client.setId(rs.getInt(2));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -614,6 +615,38 @@ public class AccueilController implements Initializable, MapComponentInitialized
         if (tabdemande.isSelected()) {
             getAllDemandeAccepter();
         }
+    }
+
+    @FXML
+    private void logout() {
+        Dropuser();
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUser.fxml"));
+            Parent root = loader.load();
+            LoginUserController irc = loader.getController();
+            panep.getScene().getWindow().setWidth(1044);
+            panep.getScene().getWindow().setHeight(600);
+            panep.getScene().setRoot(root);
+        } catch (IOException ex) {
+            Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    @FXML
+    private void goToProfile() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ProfileUser.fxml"));
+            Parent root = loader.load();
+            panep.getScene().getWindow().setWidth(1044);
+            panep.getScene().getWindow().setHeight(600);
+            panep.getScene().setRoot(root);
+        } catch (IOException ex) {
+            Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private Connection connect() {

@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import entity.BCrypt;
 import entity.User;
 import service.ServiceUser;
 import java.io.IOException;
@@ -31,7 +32,7 @@ import javafx.scene.layout.AnchorPane;
  */
 public class LoginUserController implements Initializable {
 
-   private int rs;
+    private int rs;
     @FXML
     private TextField TXFlogin;
     @FXML
@@ -45,66 +46,79 @@ public class LoginUserController implements Initializable {
 
     /**
      * Initializes the controller class.
-    */
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         message.setVisible(false);
-    }    
+    }
 
     @FXML
     private void LoginUser(ActionEvent event) {
-            try {
-            User u= new User( TXFlogin.getText(), TXFpwd.getText());
-            
-            ServiceUser srv = new ServiceUser();              
-            rs= srv.login(u);         
-            if(rs==1){      
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ProfileUser.fxml"));             
-           Parent root = loader.load();          
-           ProfileController irc = loader.getController();
-           irc.setLBnom(TXFlogin.getText()); 
-           TXFlogin.getScene().setRoot(root);
-            }else if(rs==2){      
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));             
-           Parent root = loader.load();                    
-           TXFlogin.getScene().setRoot(root);
-            }else{
-              
-               message.setVisible(true);
+        try {
+            User u = new User(TXFlogin.getText(), TXFpwd.getText());
+
+            ServiceUser srv = new ServiceUser();
+            rs = srv.login(u);
+            if (rs == 1) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));
+                Parent root = loader.load();
+                TXFlogin.getScene().getWindow().setWidth(1200);
+                TXFlogin.getScene().getWindow().setHeight(700);
+                TXFlogin.getScene().setRoot(root);
+            } else if (rs == 2) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AccueilPrestataire.fxml"));
+                Parent root = loader.load();
+                TXFlogin.getScene().getWindow().setWidth(1250);
+                TXFlogin.getScene().getWindow().setHeight(640);
+                TXFlogin.getScene().setRoot(root);
+            } else {
+
+                message.setVisible(true);
 
             }
         } catch (IOException ex) {
             Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+
     }
-     @FXML    
-  private void InscriptionUser(MouseEvent  event) {
-            try {              
-                   
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Switcher.fxml"));             
-           Parent root = loader.load();          
-           SwitcherController irc = loader.getController();           
-           TXFlogin.getScene().setRoot(root);
-            
+
+    @FXML
+    private void InscriptionUser(MouseEvent event) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Switcher.fxml"));
+            Parent root = loader.load();
+            SwitcherController irc = loader.getController();
+            TXFlogin.getScene().setRoot(root);
+
         } catch (IOException ex) {
             Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    }  
-       @FXML    
-  private void ForgetPassword(MouseEvent  event) {
-            try {                 
-                   
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ForgetPassword.fxml"));             
-           Parent root = loader.load(); 
-           ForgetPasswordController irc = loader.getController();           
-           TXFlogin.getScene().setRoot(root);           
+
+    }
+
+    @FXML
+    private void ForgetPassword(MouseEvent event) {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ForgetPassword.fxml"));
+            Parent root = loader.load();
+            ForgetPasswordController irc = loader.getController();
+            TXFlogin.getScene().setRoot(root);
         } catch (IOException ex) {
             Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+
     }
-    
+    private static int workload = 12;
+
+    public static String hashPassword(String password_plaintext) {
+        String salt = BCrypt.gensalt(workload);
+        System.out.println(salt);
+        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
+        return (hashed_password);
+    }
+
 }

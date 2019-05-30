@@ -24,7 +24,8 @@
                <children>
                   <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="27.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@img/logo.png" />
+
+                    <Image url="@img/Logo.png" />
                      </image>
                   </ImageView>
                   <JFXButton buttonType="RAISED" layoutX="167.0" layoutY="406.0" prefHeight="41.0" prefWidth="116.0" style="-fx-background-color: #007ac1;" text="Rechercher" textFill="WHITE">
@@ -56,38 +57,139 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#goHome" prefHeight="180.0" prefWidth="310.0">
                      <children>
-                        <TextField fx:id="LBnom" layoutX="40.0" layoutY="178.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom" />
-                        <TextField fx:id="LBpnom" layoutX="377.0" layoutY="178.0" prefHeight="45.0" prefWidth="310.0" promptText="Prénom" />
-                        <TextField fx:id="LBemail" layoutX="40.0" layoutY="230.0" prefHeight="45.0" prefWidth="310.0" promptText="E-mail" />
-                        <TextField fx:id="LBphone" layoutX="377.0" layoutY="231.0" prefHeight="45.0" prefWidth="310.0" promptText="Téléphone" />
-                        <TextField fx:id="LBlogin" layoutX="40.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Login" />
-                        <PasswordField fx:id="LBpwd" layoutX="377.0" layoutY="126.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe" />
-                        <JFXButton buttonType="RAISED" layoutX="377.0" layoutY="400.0" onAction="#updateuser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Modifier" textFill="WHITE" />
-                        <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="40.0" layoutY="339.0" prefHeight="45.0" prefWidth="310.0" promptText="  Pays" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                        <TextField fx:id="LBnom" layoutX="39.0" layoutY="206.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom" />
+                        <TextField fx:id="LBpnom" layoutX="376.0" layoutY="204.0" prefHeight="45.0" prefWidth="310.0" promptText="Prénom" />
+                        <TextField fx:id="LBemail" layoutX="39.0" layoutY="266.0" prefHeight="45.0" prefWidth="310.0" promptText="E-mail" />
+                        <TextField fx:id="LBphone" layoutX="376.0" layoutY="265.0" prefHeight="45.0" prefWidth="310.0" promptText="Téléphone" />
+                        <TextField fx:id="LBlogin" layoutX="39.0" layoutY="143.0" prefHeight="45.0" prefWidth="310.0" promptText="Login" />
+                        <PasswordField fx:id="LBpwd" layoutX="376.0" layoutY="143.0" prefHeight="45.0" prefWidth="310.0" promptText="Mot de passe" />
+                        <JFXButton buttonType="RAISED" layoutX="377.0" layoutY="445.0" onAction="#updateuser" prefHeight="45.0" prefWidth="310.0" style="-fx-background-color: #007ac1;" text="Modifier" textFill="WHITE" />
+                        <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="39.0" layoutY="384.0" prefHeight="45.0" prefWidth="310.0" promptText="  Pays" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="377.0" layoutY="339.0" prefHeight="45.0" prefWidth="310.0" promptText="  Region" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                        <JFXComboBox fx:id="comboboxregion" focusColor="#ffffff00" layoutX="377.0" layoutY="384.0" prefHeight="45.0" prefWidth="310.0" promptText="  Region" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="40.0" layoutY="400.0" prefHeight="45.0" prefWidth="310.0" promptText="  Ville" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
+                        <JFXComboBox fx:id="comboboxville" focusColor="#ffffff00" layoutX="40.0" layoutY="445.0" prefHeight="45.0" prefWidth="310.0" promptText="  Ville" style="-fx-background-color: #ffffff; -fx-border-color: #c5c5c5;" unFocusColor="#ffffff00">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </JFXComboBox>
                         <ImageView fx:id="LBimage" fitHeight="89.0" fitWidth="174.0" layoutX="290.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-                        <TextField fx:id="LBAdresse" layoutX="40.0" layoutY="283.0" prefHeight="45.0" prefWidth="310.0" promptText="Adresse" />
-                        <TextField fx:id="LBcin" layoutX="377.0" layoutY="283.0" prefHeight="45.0" prefWidth="310.0" promptText="CIN" />
+                        <TextField fx:id="LBAdresse" layoutX="40.0" layoutY="326.0" prefHeight="45.0" prefWidth="310.0" promptText="Adresse" />
+                        <TextField fx:id="LBcin" layoutX="377.0" layoutY="326.0" prefHeight="45.0" prefWidth="310.0" promptText="CIN" />
+                        <Text fx:id="message_INlogin_exist" fill="RED" layoutX="39.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login existe deja !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_INcin" fill="RED" layoutX="376.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire ( 8 chiffres) !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_ville" fill="RED" layoutX="41.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_region" fill="RED" layoutX="376.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_pays" fill="RED" layoutX="41.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_INpwd" fill="RED" layoutX="377.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_INphone" fill="RED" layoutX="377.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire (8 chiffres) !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_INemail" fill="RED" layoutX="42.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire (exemple@gmail.com) !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_INpnom" fill="RED" layoutX="377.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_INnom" fill="RED" layoutX="41.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_INemail_exist" fill="RED" layoutX="42.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adresse E-mail existe deja !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="message_INlogin" fill="RED" layoutX="44.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
             <Tab text="Consulter Mes Points">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton fx:id="payer1500" buttonType="RAISED" layoutX="93.0" layoutY="170.0" onAction="#paiement" prefHeight="100.0" prefWidth="550.0" style="-fx-background-color: #fff; -fx-cursor: hand;" textFill="WHITE" />
+                        <JFXButton fx:id="payer1000" buttonType="RAISED" layoutX="93.0" layoutY="296.0" onAction="#paiement" prefHeight="100.0" prefWidth="550.0" style="-fx-background-color: #fff; -fx-cursor: hand;" textFill="WHITE" />
+                        <ImageView fx:id="user" fitHeight="90.0" fitWidth="90.0" layoutX="110.0" layoutY="300.0" onMouseClicked="#paiement" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                           <image>
+                              <Image url="@img/star-with-number-two.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="90.0" fitWidth="90.0" layoutX="110.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/star-for-number-one.png" />
+                           </image>
+                        </ImageView>
+                        <JFXButton fx:id="payer500" buttonType="RAISED" layoutX="93.0" layoutY="418.0" onAction="#paiement" prefHeight="100.0" prefWidth="550.0" style="-fx-background-color: #fff; -fx-cursor: hand;" textFill="WHITE" />
+                        <ImageView fitHeight="90.0" fitWidth="90.0" layoutX="110.0" layoutY="423.0" onMouseClicked="#paiement" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/star-number-3.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="262.0" layoutY="205.0" onMouseClicked="#paiement" prefHeight="31.0" prefWidth="319.0" text="PACK UN DE 1500 POINT" textFill="#039be5">
+                           <font>
+                              <Font name="Calibri Bold" size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="262.0" layoutY="330.0" prefHeight="31.0" prefWidth="319.0" text="PACK DEUX DE 1000 POINT" textFill="#039be5">
+                           <font>
+                              <Font name="Calibri Bold" size="26.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="262.0" layoutY="453.0" prefHeight="31.0" prefWidth="319.0" text="PACK TROIS DE 500 POINT" textFill="#039be5">
+                           <font>
+                              <Font name="Calibri Bold" size="26.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="LBnbPoint" layoutX="179.0" layoutY="77.0" text="VOUS AVEZ 1500 POINT !" textFill="#007ac1">
+                           <font>
+                              <Font name="Calibri Bold" size="35.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+
               </content>
             </Tab>
          </tabs>

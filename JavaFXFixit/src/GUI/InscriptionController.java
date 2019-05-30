@@ -28,7 +28,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent; 
+import javafx.scene.Parent;
+
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -40,7 +41,24 @@ import service.ControleSaisie;
 import service.PaysService;
 import service.RegionService;
 import service.VilleService;
-import service.ServiceService;
+import entity.BCrypt;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import sun.misc.BASE64Decoder;
+import javax.imageio.ImageIO;
+import java.util.Set;
+import java.util.TreeSet;
+import utilis.Utilis;
 
 /**
  * FXML Controller class
@@ -48,59 +66,67 @@ import service.ServiceService;
  * @author EXTHONE-marwa
  */
 public class InscriptionController implements Initializable {
-@FXML
-   private TextField INnom;
-@FXML
-   private TextField INpnom;
-@FXML
-   private TextField INlogin;
-@FXML
-   private TextField INpwd;
-@FXML
-   private TextField INphone;
-@FXML
-   private TextField INemail;
-@FXML
-   private TextField INAdresse;
-@FXML
-   private TextField INcin;
-@FXML
- private ImageView INimage;
-@FXML
-private JFXComboBox comboboxpays;
-@FXML
-private JFXComboBox comboboxregion;
-@FXML
-private JFXComboBox comboboxville;
-@FXML
-private JFXComboBox comboboxservice;
-@FXML
-public Text message_INnom;
-@FXML
-public Text message_INpnom;
-@FXML
-public Text message_INlogin;
-@FXML
-public Text message_INpwd;
-@FXML
-public Text message_INphone;
-@FXML
-public Text message_INemail;
-@FXML
-public Text message_INcin;
-@FXML
-public Text message_pays;
-@FXML
-public Text message_region;
-@FXML
-public Text message_ville;
 
-File file;
-List<Service> service;
-List<Pays> pays;
-List<Region> region;
-List<Ville> ville;
+    @FXML
+    private TextField INnom;
+    @FXML
+    private TextField INpnom;
+    @FXML
+    private TextField INlogin;
+    @FXML
+    private TextField INpwd;
+    @FXML
+    private TextField INphone;
+    @FXML
+    private TextField INemail;
+    @FXML
+    private TextField INAdresse;
+    @FXML
+    private TextField INcin;
+    @FXML
+    private ImageView INimage;
+    @FXML
+    private JFXComboBox comboboxpays;
+    @FXML
+    private JFXComboBox comboboxregion;
+    @FXML
+    private JFXComboBox comboboxville;
+    @FXML
+    private JFXComboBox comboboxservice;
+    @FXML
+    public Text message_INnom;
+    @FXML
+    public Text message_INpnom;
+    @FXML
+    public Text message_INlogin;
+    @FXML
+    public Text message_INpwd;
+    @FXML
+    public Text message_INphone;
+    @FXML
+    public Text message_INemail;
+    @FXML
+    public Text message_INcin;
+    @FXML
+    public Text message_pays;
+    @FXML
+    public Text message_region;
+    @FXML
+    public Text message_ville;
+    @FXML
+    public Text message_INemail_exist;
+    @FXML
+    public Text message_INlogin_exist;
 
+    File file;
+    List<Pays> pays;
+    Map<Integer, String> paysMap;
+    List<Region> region;
+    Map<Integer, String> regionMap;
+    List<Ville> ville;
+    Map<Integer, String> villeMap;
+    String imageEncoder;
+    int idpays,idregion,idville;
     public TextField getINnom() {
         return INnom;
     }
@@ -201,10 +227,6 @@ List<Ville> ville;
         this.file = file;
     }
 
-    public void setService(List<Service> service) {
-        this.service = service;
-    }
-
     public void setPays(List<Pays> pays) {
         this.pays = pays;
     }
@@ -216,210 +238,276 @@ List<Ville> ville;
     public void setVille(List<Ville> ville) {
         this.ville = ville;
     }
-        public void setINimage(ImageView INimage) {
+
+    public void setINimage(ImageView INimage) {
         this.INimage = INimage;
     }
 
- 
-    
+    private static int workload = 12;
+
+    public static String hashPassword(String password_plaintext) {
+        String salt = BCrypt.gensalt(workload);
+        System.out.println(salt);
+        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
+        return (hashed_password);
+    }
+
     /**
      * Initializes the controller class.
      */
-
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.upload();
         this.loadinfo();
-         message_INnom.setVisible(false);
-         message_INpnom.setVisible(false);
-         message_INlogin.setVisible(false);
-         message_INpwd.setVisible(false);
-         message_INphone.setVisible(false);
-         message_INemail.setVisible(false);
-         message_pays.setVisible(false);
-         message_region.setVisible(false);
-         message_ville.setVisible(false);
-         message_INcin.setVisible(false);
-         
-    }    
-   public void upload(){
-        INimage.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-         System.out.println("img cliqued");
-         FileChooser fileChooser = new FileChooser();
-         fileChooser.setTitle("Open Resource File");
-         file =fileChooser.showOpenDialog(new Stage());
-         if(file!=null){      
- String fileName=file.getName();
- String hos = ".\\src\\GUI\\img\\"; 
- System.out.println("home dir path is"+hos);
- String windPath=hos.replaceAll("\\\\", "/");                    
- System.out.println("windows path for copy is"+windPath);
- File  targetFile  = new File(hos+fileName);
- try {
- FileUtils.copyFile(file, targetFile);
-             } catch (IOException ex) {
-              Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
-             }
-             }else{  
-         
-                 System.out.println("Cancelled");
-              }
-     });
-   } 
-     
-   public void loadinfo(){
-     
-        
+        message_INnom.setVisible(false);
+        message_INpnom.setVisible(false);
+        message_INlogin.setVisible(false);
+        message_INpwd.setVisible(false);
+        message_INphone.setVisible(false);
+        message_INemail.setVisible(false);
+        message_pays.setVisible(false);
+        message_region.setVisible(false);
+        message_ville.setVisible(false);
+        message_INcin.setVisible(false);
+        message_INemail_exist.setVisible(false);
+        message_INlogin_exist.setVisible(false);
+    }
+
+    public void upload(MouseEvent event) {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter[]{new FileChooser.ExtensionFilter("Image Files", new String[]{"*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp"}), new FileChooser.ExtensionFilter("JPG", new String[]{"*.jpg"}), new FileChooser.ExtensionFilter("JPEG", new String[]{"*.jpeg"}), new FileChooser.ExtensionFilter("BMP", new String[]{"*.bmp"}), new FileChooser.ExtensionFilter("PNG", new String[]{"*.png"}), new FileChooser.ExtensionFilter("GIF", new String[]{"*.gif"})});
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(null);
+
+        try {
+
+            byte[] imageByte;
+            byte[] bytes = new byte[(int) file.length()];
+            FileInputStream fis = new FileInputStream(file);
+            fis.read(bytes);
+            fis.close();
+            imageEncoder = Base64.getEncoder().encodeToString(bytes);
+
+            BASE64Decoder decoder = new BASE64Decoder();
+            imageByte = decoder.decodeBuffer(imageEncoder);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            BufferedImage bufferedImage = ImageIO.read(bis);
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+
+            INimage.setImage(image);
+        } catch (IOException ex) {
+            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void loadinfo() {
+
+
         PaysService paysService = new PaysService();
         pays = paysService.getAllPays();
-        ArrayList<String> listp = new ArrayList<String>();
+
+        paysMap = new HashMap<>();
         for (Pays p : pays) {
-            listp.add(p.getNom());
+            paysMap.put(p.getId(), p.getNom());
         }
-        ObservableList<String> olist = FXCollections.observableArrayList(listp);
+
+        ObservableList<String> olist = FXCollections.observableArrayList(new TreeSet(paysMap.values()));
+
         comboboxpays.setItems(olist);
+
         comboboxpays.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener() {
+                new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 
-                int id = (int) pays.stream().filter(p -> p.getNom().equals(newValue)).mapToInt(p -> p.getId()).average().getAsDouble();
                 RegionService regionservice = new RegionService();
-                region = regionservice.getRegionByPays(id);
+                region = regionservice.getRegionByPays(Utilis.getKeys(paysMap, newValue));
+                 idpays = Utilis.getKeys(paysMap, newValue);
                 region.toString();
-                ArrayList<String> listr = new ArrayList<String>();
-                for (Region p : region) {
-                    listr.add(p.getNom());
-                     
+
+                regionMap = new HashMap<>();
+                for (Region r : region) {
+                    regionMap.put(r.getId(), r.getNom());
                 }
-                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+
+                ObservableList<String> olistregion = FXCollections.observableArrayList(new TreeSet(regionMap.values()));
                 comboboxregion.setItems(olistregion);
-               
             }
+
         });
-        comboboxpays.getSelectionModel().select(204);
+        comboboxpays.getSelectionModel().select(208);
 
         comboboxregion.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 
-                int id = (int) region.stream().filter(r -> r.getNom().equals(newValue)).mapToInt(r -> r.getId()).average().getAsDouble();
                 VilleService villeService = new VilleService();
-                ville = villeService.getVilleByRegion(id);
+                ville = villeService.getVilleByRegion(Utilis.getKeys(regionMap, newValue));
+                idregion = Utilis.getKeys(regionMap, newValue);
                 ville.toString();
-                ArrayList<String> listr = new ArrayList<String>();
+                villeMap = new HashMap<>();
+
                 for (Ville v : ville) {
-                    listr.add(v.getNom());
+                    villeMap.put(v.getId(), v.getNom());
                 }
-                ObservableList<String> olistregion = FXCollections.observableArrayList(listr);
+
+                ObservableList<String> olistregion = FXCollections.observableArrayList(new TreeSet(villeMap.values()));
                 comboboxville.setItems(olistregion);
             }
         });
-}
-   
+        comboboxville.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                 idville= Utilis.getKeys(villeMap, newValue);
+
+            }
+        });
+    }
+
     @FXML
     private void adduser(ActionEvent event) {
-        if(validation()==1){
-       String fileName;
-       String hos = ".\\src\\GUI\\img\\";
-             if(file!=null)                  
-                fileName=hos+file.getName(); 
-               else 
-                fileName=null;
-         ServiceUser srv = new ServiceUser();       
-         int idville =srv.getIDVille((String) comboboxville.getValue());
-       
-          int idpays =comboboxpays.getSelectionModel().getSelectedIndex()+1;
-        
-         int idregion =comboboxpays.getSelectionModel().getSelectedIndex()+1;
-           System.out.println("\n valeur de combo"+idville);   
-          
-         User u= new User(INnom.getText(),INpnom.getText(),INAdresse.getText(),INlogin.getText(),INpwd.getText(),INphone.getText(),INemail.getText(), fileName, 500,idpays,idregion,idville,INcin.getText());
-         srv.ajouterutilisateur(u);
-         }
-    
-    }
-   private int validation() {
-         
-   ControleSaisie Cs =new ControleSaisie();
-         if (INlogin.getText() == null ||  INlogin.getText().isEmpty())
-        {
-             message_INlogin.setVisible(true);
-             return 0;
-                    
-        }else {
-              message_INlogin.setVisible(false);
            
-         }
-         if (INpwd.getText() == null ||  INpwd.getText().isEmpty())
-        {
-             
-             message_INpwd.setVisible(true);
-             return 0;
-         }else {
-              message_INpwd.setVisible(false);
-         }
-         if  (INpnom.getText() == null ||  INpnom.getText().isEmpty())
-        {
-            
-             message_INpnom.setVisible(true);
-             return 0;
-        }else {
-              message_INpnom.setVisible(false);
-         }
-         if (INnom.getText() == null ||  INnom.getText().isEmpty())
-        {
-             message_INnom.setVisible(true);
-          return 0;
-        }else {
-              message_INnom.setVisible(false);
-         }
-          if (INemail.getText() == null ||  INemail.getText().isEmpty()|| !Cs.validemail(INemail.getText()))
-        {
-             message_INemail.setVisible(true);
-             return 0;
-        }else{
-         
-         message_INemail.setVisible(false); 
-         
+        if (validation() == 1) {
+            ServiceUser srv = new ServiceUser();
+           
+           
+            System.out.println("\n valeur de combo"  + idpays+ idregion + idville);
+            /**
+             * *************************SMS*******************************
+             */
+            Random r = new Random();
+            //int verifCode = r.nextInt(9999);
+            int verifCode = r.nextInt((9999 - 1000) + 1) + 1000;
+            String ACCOUNT_SID = "AC53695a0810423ac99cc123e2d09a000d";
+            String AUTH_TOKEN = "e82e3599383dd1019008b436610c8a9e";
+            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+            String verifMessage = "Votre code de vérification est " + verifCode;
+            Message message = Message.creator(new PhoneNumber("+216" + INphone.getText()),
+                    new PhoneNumber("+12568134657"),
+                    verifMessage).create();
+            System.out.println(message.getSid());
+
+            /**
+             * ************************SMS********************************
+             */
+            User u = new User(INnom.getText(), INpnom.getText(), INAdresse.getText(), INlogin.getText(), hashPassword(INpwd.getText()), INphone.getText(), INemail.getText(), imageEncoder, 500, idpays, idregion, idville, INcin.getText(), verifCode);
+            int res = srv.ajouterutilisateur(u);
+            if (res == 1) {
+                // load page verification de code sms en cours 
+                System.out.println(" load page verification de code sms en cours ...");
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionE2.fxml"));
+                    Parent root = loader.load();
+                    InscriptionE2Controller irc = loader.getController();
+                    INnom.getScene().setRoot(root);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-         if (INphone.getText() == null || INphone.getText().isEmpty() || !Cs.isTel(INphone.getText()))
-        {
-             message_INphone.setVisible(true);
-              return 0;
-        }else {
-              message_INphone.setVisible(false);
-              
-         }
-         if (INcin.getText() == null || INcin.getText().isEmpty() || !Cs.iscin(INcin.getText()))
-        {
-             message_INcin.setVisible(true);
-              return 0;
-        }else {
-              message_INcin.setVisible(false);
-              
-         }
-       
-     return 1;
-        
-          
-   }   
-    
-@FXML
-  private void retour() {    
-        
-           try {                
-                   
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Switcher.fxml"));             
-           Parent root = loader.load(); 
-           SwitcherController irc = loader.getController();           
-           INnom.getScene().setRoot(root);           
+
+
+    }
+
+    private int validation() {
+        ServiceUser srv = new ServiceUser();
+        ControleSaisie Cs = new ControleSaisie();
+        if (INlogin.getText() == null || INlogin.getText().isEmpty()) {
+            message_INlogin.setVisible(true);
+            return 0;
+
+        } else {
+            message_INlogin.setVisible(false);
+
+        }
+        if (srv.check_login(INlogin.getText()) == 0) {
+
+            message_INlogin_exist.setVisible(false);
+
+        } else {
+
+            message_INlogin_exist.setVisible(true);
+            return 0;
+
+        }
+
+        if (INpwd.getText() == null || INpwd.getText().isEmpty()) {
+
+            message_INpwd.setVisible(true);
+            return 0;
+        } else {
+            message_INpwd.setVisible(false);
+        }
+        if (INpnom.getText() == null || INpnom.getText().isEmpty()) {
+
+            message_INpnom.setVisible(true);
+            return 0;
+        } else {
+            message_INpnom.setVisible(false);
+        }
+        if (INnom.getText() == null || INnom.getText().isEmpty()) {
+            message_INnom.setVisible(true);
+            return 0;
+        } else {
+            message_INnom.setVisible(false);
+        }
+        if (INemail.getText() == null || INemail.getText().isEmpty() || !Cs.validemail(INemail.getText())) {
+            message_INemail.setVisible(true);
+            return 0;
+        } else {
+
+            message_INemail.setVisible(false);
+
+        }
+        if (srv.check_email(INemail.getText()) == 0) {
+
+            message_INemail_exist.setVisible(false);
+
+        } else {
+
+            message_INemail_exist.setVisible(true);
+            return 0;
+
+        }
+
+        if (INphone.getText() == null || INphone.getText().isEmpty() || !Cs.isTel(INphone.getText())) {
+            message_INphone.setVisible(true);
+            return 0;
+        } else {
+            message_INphone.setVisible(false);
+
+        }
+        if (INcin.getText() == null || INcin.getText().isEmpty() || !Cs.iscin(INcin.getText())) {
+            message_INcin.setVisible(true);
+            return 0;
+        } else {
+            message_INcin.setVisible(false);
+
+        }
+
+        return 1;
+
+    }
+
+    @FXML
+    private void retour() {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Switcher.fxml"));
+            Parent root = loader.load();
+            SwitcherController irc = loader.getController();
+            INnom.getScene().setRoot(root);
         } catch (IOException ex) {
             Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    } 
-  
+
+    }
+
+
 }

@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import entity.BCrypt;
 import entity.User;
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +27,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.Random;
 import javafx.scene.text.Text;
 /**
  * FXML Controller class
@@ -49,6 +51,7 @@ public class ForgetPasswordController implements Initializable {
     public Text message_error;
     @FXML
     public Text message_su;
+    
     /**
      * Initializes the controller class.
      */
@@ -59,19 +62,35 @@ public class ForgetPasswordController implements Initializable {
         // TODO 0
          message_error.setVisible(false);
          message_su.setVisible(false);
+         message.setVisible(false);
     } 
-    
+         private static int workload = 12;
+
+    public static String hashPassword(String password_plaintext) {
+        String salt = BCrypt.gensalt(workload);
+        System.out.println(salt);
+        String hashed_password = BCrypt.hashpw(password_plaintext, salt);
+
+        return (hashed_password);
+    }
     @FXML
     private void sendPassword(ActionEvent event) throws SQLException {
      final  String emailto  =FGemail.getText();
      ServiceUser srv = new ServiceUser();              
      rs= srv.check_email(emailto);
-    String PWD=srv.get_passe_Paremail(emailto);
-    String login=srv.get_login_Paremail(emailto);
+    
   
        if(rs==0){
          message_error.setVisible(true);
        }else{
+        Random r = new Random();
+        int codePWD = r.nextInt(999999);
+        System.out.println("code pwd"+codePWD);
+        String NewPWD ="Fixit"+codePWD ;
+        srv.update_passe_Paremail(hashPassword(NewPWD),emailto);
+        //String PWD=srv.get_passe_Paremail(emailto);
+        String PWD=NewPWD;
+        String login=srv.get_login_Paremail(emailto);
         final String username = "fixit.tunis2019@gmail.com";
         final String password = "Fixit2019";
 
@@ -112,26 +131,28 @@ public class ForgetPasswordController implements Initializable {
         }
        }
     }
-    @FXML
+        @FXML
     private void LoginUser(ActionEvent event) {
             try {
-            User u= new User( TXFlogin.getText(), TXFpwd.getText());
+            User u= new User( TXFlogin.getText(),TXFpwd.getText());
             
             ServiceUser srv = new ServiceUser();              
             rs= srv.login(u);         
-           if(rs==1){      
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Profile.fxml"));             
+            if(rs==1){      
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ProfileUser.fxml"));             
            Parent root = loader.load();          
            ProfileController irc = loader.getController();
            irc.setLBnom(TXFlogin.getText()); 
            TXFlogin.getScene().setRoot(root);
-           }else if(rs==2){      
+            }else if(rs==2){      
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));             
            Parent root = loader.load();                    
            TXFlogin.getScene().setRoot(root);
-           }else{
-           message.setVisible(true);
-           }
+            }else{
+              
+               message.setVisible(true);
+
+            }
         } catch (IOException ex) {
             Logger.getLogger(LoginUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,7 +162,8 @@ public class ForgetPasswordController implements Initializable {
   private void InscriptionUser(MouseEvent  event) {
             try {              
                    
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Inscription.fxml"));             
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionUser.fxml"));             
+
            Parent root = loader.load();          
            InscriptionController irc = loader.getController();           
            TXFlogin.getScene().setRoot(root);
