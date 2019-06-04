@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package GUI;
- 
+
 import com.jfoenix.controls.JFXComboBox;
 import entity.Pays;
 import entity.Region;
@@ -29,7 +29,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -117,6 +116,9 @@ public class InscriptionController implements Initializable {
     public Text message_INemail_exist;
     @FXML
     public Text message_INlogin_exist;
+    @FXML
+    public Text message_INphoto;
+    
 
     File file;
     List<Pays> pays;
@@ -271,6 +273,7 @@ public class InscriptionController implements Initializable {
         message_INcin.setVisible(false);
         message_INemail_exist.setVisible(false);
         message_INlogin_exist.setVisible(false);
+        message_INphoto.setVisible(false);
     }
 
     public void upload(MouseEvent event) {
@@ -303,7 +306,6 @@ public class InscriptionController implements Initializable {
     }
 
     public void loadinfo() {
-
 
         PaysService paysService = new PaysService();
         pays = paysService.getAllPays();
@@ -411,7 +413,6 @@ public class InscriptionController implements Initializable {
             }
         }
 
-
     }
 
     private int validation() {
@@ -489,6 +490,13 @@ public class InscriptionController implements Initializable {
             message_INcin.setVisible(false);
 
         }
+          if (imageEncoder == null || imageEncoder.isEmpty() || imageEncoder=="") {
+            message_INphoto.setVisible(true);
+            return 0;
+        } else {
+            message_INphoto.setVisible(false);
+
+        }
 
         return 1;
 
@@ -508,6 +516,5 @@ public class InscriptionController implements Initializable {
         }
 
     }
-
 
 }

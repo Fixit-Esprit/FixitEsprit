@@ -163,7 +163,6 @@ public class ForgetPasswordController implements Initializable {
             try {              
                    
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/InscriptionUser.fxml"));             
-
            Parent root = loader.load();          
            InscriptionController irc = loader.getController();           
            TXFlogin.getScene().setRoot(root);

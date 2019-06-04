@@ -5,7 +5,7 @@
  */
 package GUI;
 
-
+ 
 import com.jfoenix.controls.JFXComboBox;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -118,6 +118,13 @@ public class InscriptionPController implements Initializable {
     public Text message_ville;
     @FXML
     public Text message_secteur;
+     @FXML
+    public Text message_INemail_exist;
+    @FXML
+    public Text message_INlogin_exist;
+    @FXML
+    public Text message_INphoto;
+    
     File file;
     List<Service> service;
     List<Pays> pays;
@@ -267,7 +274,10 @@ public class InscriptionPController implements Initializable {
         message_region.setVisible(false);
         message_ville.setVisible(false);
         message_secteur.setVisible(false);
-         message_INcin.setVisible(false);
+        message_INcin.setVisible(false);
+        message_INphoto.setVisible(false);
+        message_INemail_exist.setVisible(false);
+        message_INlogin_exist.setVisible(false);
     }
     private static int workload = 12;
     public static String hashPassword(String password_plaintext) {
@@ -428,7 +438,7 @@ public class InscriptionPController implements Initializable {
     }
 
     private int validation() {
-         
+        ServiceUser srv = new ServiceUser();
         ControleSaisie Cs = new ControleSaisie();
         if (INlogin.getText() == null || INlogin.getText().isEmpty()) {
             message_INlogin.setVisible(true);
@@ -438,6 +448,17 @@ public class InscriptionPController implements Initializable {
             message_INlogin.setVisible(false);
 
         }
+        if (srv.check_login(INlogin.getText()) == 0) {
+
+            message_INlogin_exist.setVisible(false);
+
+        } else {
+
+            message_INlogin_exist.setVisible(true);
+            return 0;
+
+        }
+
         if (INpwd.getText() == null || INpwd.getText().isEmpty()) {
 
             message_INpwd.setVisible(true);
@@ -458,19 +479,30 @@ public class InscriptionPController implements Initializable {
         } else {
             message_INnom.setVisible(false);
         }
-        if (INphone.getText() == null || INphone.getText().isEmpty() || !Cs.isTel(INphone.getText())) {
-            message_INphone.setVisible(true);
-            return 0;
-        } else {
-            message_INphone.setVisible(false);
-
-        }
         if (INemail.getText() == null || INemail.getText().isEmpty() || !Cs.validemail(INemail.getText())) {
             message_INemail.setVisible(true);
             return 0;
         } else {
 
             message_INemail.setVisible(false);
+
+        }
+        if (srv.check_email(INemail.getText()) == 0) {
+
+            message_INemail_exist.setVisible(false);
+
+        } else {
+
+            message_INemail_exist.setVisible(true);
+            return 0;
+
+        }
+
+        if (INphone.getText() == null || INphone.getText().isEmpty() || !Cs.isTel(INphone.getText())) {
+            message_INphone.setVisible(true);
+            return 0;
+        } else {
+            message_INphone.setVisible(false);
 
         }
         if (INcin.getText() == null || INcin.getText().isEmpty() || !Cs.iscin(INcin.getText())) {
@@ -480,6 +512,14 @@ public class InscriptionPController implements Initializable {
             message_INcin.setVisible(false);
 
         }
+          if (imageEncoder == null || imageEncoder.isEmpty() || imageEncoder=="") {
+            message_INphoto.setVisible(true);
+            return 0;
+        } else {
+            message_INphoto.setVisible(false);
+
+        }
+
         return 1;
 
     }

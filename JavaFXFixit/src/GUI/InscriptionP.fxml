@@ -117,7 +117,21 @@
             </Text>
             <TextField fx:id="INcin" layoutX="358.0" layoutY="301.0" prefHeight="45.0" prefWidth="310.0" promptText="CIN" />
             <Text fx:id="message_INcin" fill="RED" layoutX="359.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="champs obligatoire ( 8 chiffres) !">
-
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INphoto" fill="RED" layoutX="238.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliquer sur la photo pour changer votre photo de profile !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INemail_exist" fill="RED" layoutX="20.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adresse E-mail existe deja !">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+            <Text fx:id="message_INlogin_exist" fill="RED" layoutX="19.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login existe deja !">
                <font>
                   <Font size="9.0" />
                </font>

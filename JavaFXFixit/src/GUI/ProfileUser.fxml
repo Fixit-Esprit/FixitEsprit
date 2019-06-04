@@ -24,7 +24,6 @@
                <children>
                   <ImageView fitHeight="200.0" fitWidth="250.0" layoutX="27.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-
                     <Image url="@img/Logo.png" />
                      </image>
                   </ImageView>
@@ -55,7 +54,7 @@
          <tabs>
             <Tab text="Mon Profil">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" onMouseClicked="#goHome" prefHeight="180.0" prefWidth="310.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="310.0">
                      <children>
                         <TextField fx:id="LBnom" layoutX="39.0" layoutY="206.0" prefHeight="45.0" prefWidth="310.0" promptText="Nom" />
                         <TextField fx:id="LBpnom" layoutX="376.0" layoutY="204.0" prefHeight="45.0" prefWidth="310.0" promptText="Prénom" />
@@ -79,7 +78,10 @@
                               <Insets />
                            </opaqueInsets>
                         </JFXComboBox>
-                        <ImageView fx:id="LBimage" fitHeight="89.0" fitWidth="174.0" layoutX="290.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="LBimage" fitHeight="89.0" fitWidth="174.0" layoutX="290.0" layoutY="14.0" onMouseClicked="#upload" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/avatar1.png" />
+                           </image></ImageView>
                         <TextField fx:id="LBAdresse" layoutX="40.0" layoutY="326.0" prefHeight="45.0" prefWidth="310.0" promptText="Adresse" />
                         <TextField fx:id="LBcin" layoutX="377.0" layoutY="326.0" prefHeight="45.0" prefWidth="310.0" promptText="CIN" />
                         <Text fx:id="message_INlogin_exist" fill="RED" layoutX="39.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login existe deja !">
@@ -142,6 +144,11 @@
                               <Font size="9.0" />
                            </font>
                         </Text>
+                        <Text fx:id="message_INphoto" fill="RED" layoutX="220.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cliquer sur la photo pour changer votre photo de profile !">
+                           <font>
+                              <Font size="9.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
               </content>
@@ -189,7 +196,6 @@
                            </font>
                         </Label>
                      </children></AnchorPane>
-
               </content>
             </Tab>
          </tabs>

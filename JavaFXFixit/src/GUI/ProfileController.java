@@ -44,20 +44,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-
 import javafx.scene.control.Label;
-
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import javax.imageio.ImageIO;
-
 import org.apache.commons.io.FileUtils;
 import service.ControleSaisie;
 import service.PaysService;
@@ -131,6 +126,9 @@ public class ProfileController implements Initializable {
     public Text message_INemail_exist;
     @FXML
     public Text message_INlogin_exist;
+    @FXML
+    public Text message_INphoto;
+
     File file;
     List<Service> service;
     List<Pays> pays;
@@ -140,6 +138,7 @@ public class ProfileController implements Initializable {
     List<Ville> ville;
     Map<Integer, String> villeMap;
     String imageEncoder;
+    String imageByteSans;
     byte[] imageByte;
     int idpays, idregion, idville;
 
@@ -183,7 +182,6 @@ public class ProfileController implements Initializable {
      * *************************
      */
     public TextField getLBnom() {
-
         return LBnom;
     }
 
@@ -236,6 +234,7 @@ public class ProfileController implements Initializable {
         message_INcin.setVisible(false);
         message_INemail_exist.setVisible(false);
         message_INlogin_exist.setVisible(false);
+        message_INphoto.setVisible(false);
         String sql = "SELECT * FROM user";
         try (Connection conn = this.connect();
                 Statement stmt = conn.createStatement();
@@ -251,6 +250,8 @@ public class ProfileController implements Initializable {
             setLBAdresse(rs.getString(17));
             setLBnbPoint("Vous avez " + rs.getInt(11) + " point !");
             BASE64Decoder decoder = new BASE64Decoder();
+            imageByteSans=rs.getString(10);
+            System.out.println("here :: "+rs.getString(10));
             try {
                 imageByte = decoder.decodeBuffer(rs.getString(10));
                 ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
@@ -260,10 +261,9 @@ public class ProfileController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         } catch (SQLException e) {
-
             System.out.println(e.getMessage());
-
         }
 
         ServiceService serviceService = new ServiceService();
@@ -348,7 +348,6 @@ public class ProfileController implements Initializable {
             System.out.println(e.getMessage());
         }
         return conn;
-
     }
 
     public void upload(MouseEvent event) {
@@ -394,6 +393,9 @@ public class ProfileController implements Initializable {
         if (validation() == 1) {
             ServiceUser srv = new ServiceUser();
             System.out.println("id user" + getIdUser());
+            if(imageEncoder==null){
+            imageEncoder=imageByteSans;
+            }
             User u = new User(getIdUser(), LBnom.getText(), LBpnom.getText(), LBAdresse.getText(), LBlogin.getText(), hashPassword(LBpwd.getText()), LBphone.getText(), LBemail.getText(), imageEncoder, 500, idpays, idregion, idville, LBcin.getText());
             srv.Updateutilisateur(u);
         }
@@ -405,8 +407,6 @@ public class ProfileController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Accueil.fxml"));
             Parent root = loader.load();
             AccueilController irc = loader.getController();
-            LBnom.getScene().getWindow().setWidth(1200);
-            LBnom.getScene().getWindow().setHeight(700);
             LBnom.getScene().setRoot(root);
         } catch (IOException ex) {
             Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
@@ -541,6 +541,7 @@ public class ProfileController implements Initializable {
             message_INcin.setVisible(false);
 
         }
+     
 
         return 1;
 
