@@ -19,6 +19,7 @@ import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.event.MouseEventHandler;
 import com.lynden.gmapsfx.javascript.event.UIEventType;
+import entity.Annonce;
 import entity.Client;
 import entity.Demande;
 import entity.Pays;
@@ -97,6 +98,7 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import javafxfixit.JavaFXFixit;
 import netscape.javascript.JSObject;
+import service.AnnonceService;
 import service.DemandeService;
 import service.PaysService;
 import service.PrestataireService;
@@ -109,6 +111,9 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @FXML
     private Tab tabdemande;
+
+    @FXML
+    private Tab tabannonce;
 
     @FXML
     private GoogleMapView mapView;
@@ -151,6 +156,22 @@ public class AccueilController implements Initializable, MapComponentInitialized
     @FXML
     private TableView TableView;
 
+// Table View liste des annonce 
+    @FXML
+    private TableColumn columntitle;
+    @FXML
+    private TableColumn columndescription;
+    @FXML
+    private TableColumn columnimage;
+    @FXML
+    private TableColumn columnmin;
+
+    @FXML
+    private TableColumn columnmax;
+
+    @FXML
+    private TableView TableViewlisteannoce;
+
     List<Service> service;
     List<Pays> pays;
     Map<Integer, String> paysMap;
@@ -160,6 +181,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
     Map<Integer, String> villeMap;
 
     ObservableList<Demande> ObservableListDemande;
+    ObservableList<Annonce> ObservableListAnnonce;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -618,6 +640,43 @@ public class AccueilController implements Initializable, MapComponentInitialized
     }
 
     @FXML
+    void eventTab4(Event ev) {
+        if (tabannonce.isSelected()) {
+            getAllannonce();
+        }
+    }
+
+    public void getAllannonce() {
+        Client client = new Client();
+        String sql = "SELECT * FROM user";
+
+        try (Connection conn = this.connect();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            rs.next();
+            client.setId(rs.getInt(2));
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        if (client.getId() != 0) {  // on appel tous les annonces du client
+            AnnonceService a = new AnnonceService();
+            List<Annonce> result = a.getAnnonceByIdClient(client.getId()); // appel au methode annonce ID 
+
+            TableViewlisteannoce.setEditable(true);
+            ObservableListAnnonce = FXCollections.observableArrayList();
+            ObservableListAnnonce.addAll(result);
+
+            columntitle.setCellValueFactory(new PropertyValueFactory<>("description"));
+            columndescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+            columnimage.setCellValueFactory(new PropertyValueFactory<>("description"));
+            columnmin.setCellValueFactory(new PropertyValueFactory<>("minprix"));
+            columnmax.setCellValueFactory(new PropertyValueFactory<>("maxprix"));
+            TableViewlisteannoce.setItems(ObservableListAnnonce);
+        }
+
+    }
+
+    @FXML
     private void logout() {
         Dropuser();
         try {
@@ -660,4 +719,5 @@ public class AccueilController implements Initializable, MapComponentInitialized
         }
         return conn;
     }
+
 }

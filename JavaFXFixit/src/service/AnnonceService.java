@@ -21,10 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import utilis.DaoConnection;
 
-/**
- *
- * @author hphqlim
- */
+
 public class AnnonceService {
 
     private Connection conx = DaoConnection.getInstance().getConnect();
@@ -73,6 +70,33 @@ public class AnnonceService {
                 System.out.println(position);
 
                 annonces.add(annonce);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PaysService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return annonces;
+    }
+    public List<Annonce> getAnnonceByIdClient(int idclient) {
+        List<Annonce> annonces = new ArrayList();
+        try {
+            Statement st;
+            st = conx.createStatement();
+            ResultSet resultat = st.executeQuery("Select a.id,a.idclient,a.idservice,a.description,a.image,a.minprix,a.maxprix,u.nom,u.prenom from annonce a INNER JOIN utilisateur u where u.id = a.idclient and a.idclient=" + idclient );
+            while (resultat.next()) {
+                Annonce annonce = new Annonce();
+                annonce.setId(resultat.getInt("id"));
+                annonce.setIdclient(resultat.getInt("idclient"));
+                annonce.setIdservice(resultat.getInt("idservice"));
+
+                annonce.setDescription(resultat.getString("description"));
+                annonce.setImage(resultat.getString("image"));
+                annonce.setMinprix(resultat.getInt("minprix"));
+                annonce.setMaxprix(resultat.getInt("maxprix"));
+                annonce.setNomclient(resultat.getString("nom") + " " + resultat.getString("prenom"));
+                ServiceUser serviceUser = new ServiceUser();
+                
+                annonces.add(annonce);
+                System.out.println(annonce);
             }
         } catch (SQLException ex) {
             Logger.getLogger(PaysService.class.getName()).log(Level.SEVERE, null, ex);
