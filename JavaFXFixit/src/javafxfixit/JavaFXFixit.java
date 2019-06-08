@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import utilis.Utilis;
@@ -34,6 +35,11 @@ public class JavaFXFixit extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        try {
+            primaryStage.getIcons().add(new Image("/GUI/img/icon.png"));
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
         try {
             createNewuser();
             String sql = "SELECT COUNT(*) as nb  FROM user";
@@ -58,6 +64,7 @@ public class JavaFXFixit extends Application {
                             primaryStage.setScene(scene);
                             scene.getWindow().setWidth(1200);
                             scene.getWindow().setHeight(700);
+                            primaryStage.setTitle("Accueil");
                             primaryStage.show();
                         } else {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AccueilPrestataire.fxml"));
@@ -66,10 +73,12 @@ public class JavaFXFixit extends Application {
                             primaryStage.setScene(scene);
                             scene.getWindow().setWidth(1250);
                             scene.getWindow().setHeight(640);
+                            primaryStage.setTitle("Accueil");
+
                             primaryStage.show();
                         }
                     } catch (SQLException e) {
-                        System.out.println("e :" +e.getMessage());
+                        System.out.println("e :" + e.getMessage());
                     }
                 } else {
                     Parent root = FXMLLoader.load(getClass().getResource("/GUI/LoginUser.fxml"));
