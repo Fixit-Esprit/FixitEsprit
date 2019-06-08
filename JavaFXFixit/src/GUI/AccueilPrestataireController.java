@@ -91,10 +91,12 @@ public class AccueilPrestataireController implements Initializable {
     private TableColumn colmunminprix;
     @FXML
     private TableColumn colmunmaxprix;
+
+    @FXML
+    private TableColumn colmuntitleannonce;
+
     @FXML
     private TableColumn<Demande, Number> colmunprix;
-    @FXML
-    private TableColumn<Annonce, Number> colmunprixannonce;
     @FXML
     private TableColumn<Demande, Void> colmunvalide;
     @FXML
@@ -189,18 +191,16 @@ public class AccueilPrestataireController implements Initializable {
             tableviewannonce.setEditable(true);
             ObservableListAnnonce = FXCollections.observableArrayList();
             ObservableListAnnonce.addAll(result);
-
+            colmuntitleannonce.setCellValueFactory(new PropertyValueFactory<>("title"));
             colmunclientannoce.setCellValueFactory(new PropertyValueFactory<>("nomclient"));
             colmunadressannoce.setCellValueFactory(new PropertyValueFactory<>("adresseclient"));
             colmundescriptionannonce.setCellValueFactory(new PropertyValueFactory<>("description"));
 
             colmunminprix.setCellValueFactory(new PropertyValueFactory<>("minprix"));
             colmunmaxprix.setCellValueFactory(new PropertyValueFactory<>("maxprix"));
-            colmunprixannonce.setCellValueFactory(new PropertyValueFactory<>("prix"));
             tableviewannonce.setItems(ObservableListAnnonce);
             addColumnImageAnnonce(colmunimageannonce);
             addButtonAnnonceColumnValider(colmunvalideannonce);
-            addTextFieldColumnAnnonce(colmunprixannonce);
         }
 
     }
@@ -335,10 +335,16 @@ public class AccueilPrestataireController implements Initializable {
                                     imageByte = decoder.decodeBuffer(demande.getImage());
                                     ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
                                     BufferedImage bufferedImage = ImageIO.read(bis);
-                                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-                                    imageView.setImage(image);
-                                    imageView.setFitHeight(100);
-                                    imageView.setFitWidth(180);
+
+                                    try {
+                                        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                                        imageView.setImage(image);
+                                        imageView.setFitHeight(100);
+                                        imageView.setFitWidth(180);
+                                    } catch (Exception ex) {
+                                        Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
                                 }
                             } catch (IOException ex) {
                                 Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
@@ -393,24 +399,6 @@ public class AccueilPrestataireController implements Initializable {
         };
 
         Column.setCellFactory(cellFactory);
-    }
-
-    public void addTextFieldColumnAnnonce(TableColumn<Annonce, Number> columnPrix) {
-        // Job is a String, editable column
-
-        // Use a TextFieldTableCell, so it can be edited
-        columnPrix.setCellFactory(TextFieldTableCell.forTableColumn(new NumberStringConverter()));
-
-        // Set editing related event handlers (OnEditCommit)
-        columnPrix.setOnEditCommit((TableColumn.CellEditEvent<Annonce, Number> t) -> {
-            ((Annonce) t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())).setPrix(t.getNewValue().intValue());
-        });
-
-        columnPrix.setOnEditCommit((TableColumn.CellEditEvent<Annonce, Number> t) -> {
-            ((Annonce) t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())).setPrix(t.getNewValue().intValue());
-        });
     }
 
     private void goToImage(String image) {

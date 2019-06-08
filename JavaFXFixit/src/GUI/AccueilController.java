@@ -709,7 +709,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
             ObservableListAnnonce = FXCollections.observableArrayList();
             ObservableListAnnonce.addAll(result);
 
-            columntitle.setCellValueFactory(new PropertyValueFactory<>("description"));
+            columntitle.setCellValueFactory(new PropertyValueFactory<>("title"));
             columndescription.setCellValueFactory(new PropertyValueFactory<>("description"));
             columnimage.setCellValueFactory(new PropertyValueFactory<>("description"));
             columnmin.setCellValueFactory(new PropertyValueFactory<>("minprix"));

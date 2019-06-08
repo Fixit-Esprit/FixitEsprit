@@ -21,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import utilis.DaoConnection;
 
-
 public class AnnonceService {
 
     private Connection conx = DaoConnection.getInstance().getConnect();
@@ -31,7 +30,7 @@ public class AnnonceService {
         int result = 0;
         try {
             PreparedStatement st;
-            st = conx.prepareStatement("insert into annonce(idclient,idservice,date,description,image,minprix,maxprix) values(?,?,?,?,?,?,?)");
+            st = conx.prepareStatement("insert into annonce(idclient,idservice,date,description,image,minprix,maxprix,title) values(?,?,?,?,?,?,?,?)");
             st.setInt(1, annonce.getIdclient());
             st.setInt(2, annonce.getIdservice());
             st.setString(3, Format.format(annonce.getDate()));
@@ -39,6 +38,7 @@ public class AnnonceService {
             st.setString(5, annonce.getImage());
             st.setInt(6, annonce.getMinprix());
             st.setInt(7, annonce.getMaxprix());
+            st.setString(8, annonce.getTitle());
             result = st.executeUpdate();
 
         } catch (SQLException ex) {
@@ -52,13 +52,13 @@ public class AnnonceService {
         try {
             Statement st;
             st = conx.createStatement();
-            ResultSet resultat = st.executeQuery("Select a.id,a.idclient,a.idservice,a.description,a.image,a.minprix,a.maxprix,u.nom,u.prenom from annonce a INNER JOIN utilisateur u where u.id = a.idclient and idservice=" + idservice + " and publier = 1");
+            ResultSet resultat = st.executeQuery("Select a.id,a.idclient,a.idservice,a.title,a.description,a.image,a.minprix,a.maxprix,u.nom,u.prenom from annonce a INNER JOIN utilisateur u where u.id = a.idclient and idservice=" + idservice + " and publier = 1");
             while (resultat.next()) {
                 Annonce annonce = new Annonce();
                 annonce.setId(resultat.getInt("id"));
                 annonce.setIdclient(resultat.getInt("idclient"));
                 annonce.setIdservice(resultat.getInt("idservice"));
-
+                annonce.setTitle(resultat.getString("title"));
                 annonce.setDescription(resultat.getString("description"));
                 annonce.setImage(resultat.getString("image"));
                 annonce.setMinprix(resultat.getInt("minprix"));
@@ -76,25 +76,26 @@ public class AnnonceService {
         }
         return annonces;
     }
+
     public List<Annonce> getAnnonceByIdClient(int idclient) {
         List<Annonce> annonces = new ArrayList();
         try {
             Statement st;
             st = conx.createStatement();
-            ResultSet resultat = st.executeQuery("Select a.id,a.idclient,a.idservice,a.description,a.image,a.minprix,a.maxprix,u.nom,u.prenom from annonce a INNER JOIN utilisateur u where u.id = a.idclient and a.idclient=" + idclient );
+            ResultSet resultat = st.executeQuery("Select a.id,a.idclient,a.idservice,a.title,a.description,a.image,a.minprix,a.maxprix,u.nom,u.prenom from annonce a INNER JOIN utilisateur u where u.id = a.idclient and a.idclient=" + idclient);
             while (resultat.next()) {
                 Annonce annonce = new Annonce();
                 annonce.setId(resultat.getInt("id"));
                 annonce.setIdclient(resultat.getInt("idclient"));
                 annonce.setIdservice(resultat.getInt("idservice"));
-
+                annonce.setTitle(resultat.getString("title"));
                 annonce.setDescription(resultat.getString("description"));
                 annonce.setImage(resultat.getString("image"));
                 annonce.setMinprix(resultat.getInt("minprix"));
                 annonce.setMaxprix(resultat.getInt("maxprix"));
                 annonce.setNomclient(resultat.getString("nom") + " " + resultat.getString("prenom"));
                 ServiceUser serviceUser = new ServiceUser();
-                
+
                 annonces.add(annonce);
                 System.out.println(annonce);
             }

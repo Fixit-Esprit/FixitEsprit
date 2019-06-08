@@ -16,6 +16,7 @@ public class Annonce {
     private int id;
     private int idclient;
     private int idservice;
+    private String title;
     private Date date;
     private String description;
     private String image;
@@ -25,9 +26,10 @@ public class Annonce {
     private String adresseclient;
     private int prix;
 
-    public Annonce(int idclient, int idservice, Date date, String description, String image, int minprix, int maxprix) {
+    public Annonce(int idclient, int idservice, Date date, String title, String description, String image, int minprix, int maxprix) {
         this.idclient = idclient;
         this.idservice = idservice;
+        this.title = title;
         this.date = date;
         this.description = description;
         this.image = image;
@@ -124,6 +126,14 @@ public class Annonce {
 
     public void setPrix(int prix) {
         this.prix = prix;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

@@ -7,6 +7,7 @@ package GUI;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import entity.Annonce;
 import entity.Client;
@@ -69,7 +70,8 @@ public class AnnonceController implements Initializable {
     private ImageView imageannonce;
     @FXML
     private JFXTextArea description;
-
+    @FXML
+    private JFXTextField title;
     @FXML
     private Text errorsecteur;
     @FXML
@@ -87,10 +89,21 @@ public class AnnonceController implements Initializable {
         // TODO
         errorprix.setVisible(false);
         errorsecteur.setVisible(false);
-        RequiredFieldValidator validator = new RequiredFieldValidator();
-        validator.setMessage("discription est obligatoire");
 
-        description.getValidators().add(validator);
+        RequiredFieldValidator validatortitle = new RequiredFieldValidator();
+        validatortitle.setMessage("tilte est obligatoire");
+
+        title.getValidators().add(validatortitle);
+        title.focusedProperty().addListener((o, oldVal, newVal) -> {
+            if (!newVal) {
+                title.validate();
+            }
+        });
+
+        RequiredFieldValidator validatordescription = new RequiredFieldValidator();
+        validatordescription.setMessage("discription est obligatoire");
+
+        description.getValidators().add(validatordescription);
         description.focusedProperty().addListener((o, oldVal, newVal) -> {
             if (!newVal) {
                 description.validate();
@@ -167,7 +180,7 @@ public class AnnonceController implements Initializable {
 
     @FXML
     private void annoncer(ActionEvent event) {
-        if (description.validate() && comboboxservice.getValue() != null && minprix.getValue() < maxprix.getValue()) {
+        if (description.validate() && title.validate() && comboboxservice.getValue() != null && minprix.getValue() <= maxprix.getValue()) {
             Client client = new Client();
             String sql = "SELECT * FROM user";
 
@@ -184,7 +197,7 @@ public class AnnonceController implements Initializable {
                 int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
 
                 Annonce annonce;
-                annonce = new Annonce(client.getId(), idService, new Date(), description.getText(), imageEncoder, minprix.getValue(), maxprix.getValue());
+                annonce = new Annonce(client.getId(), idService, new Date(),title.getText(), description.getText(), imageEncoder, minprix.getValue(), maxprix.getValue());
                 AnnonceService annonceService = new AnnonceService();
                 int result = annonceService.ajouterAnnonce(annonce);
                 if (result == 1) {
@@ -195,10 +208,13 @@ public class AnnonceController implements Initializable {
             }
 
         } else {
-            if(comboboxservice.getValue() == null)
+            title.validate();
+            if (comboboxservice.getValue() == null) {
                 errorsecteur.setVisible(true);
-            if(minprix.getValue() > maxprix.getValue())
+            }
+            if (minprix.getValue() > maxprix.getValue()) {
                 errorprix.setVisible(true);
+            }
         }
     }
 
