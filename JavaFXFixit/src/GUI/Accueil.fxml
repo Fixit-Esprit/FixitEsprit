@@ -148,13 +148,13 @@
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
-                                        <TableView fx:id="TableViewlisteannoce" layoutY="-1.0" prefHeight="600.0" prefWidth="881.0">
+                                        <TableView fx:id="TableViewlisteannonce" layoutY="-1.0" prefHeight="600.0" prefWidth="881.0">
                                             <columns>
-                                                <TableColumn fx:id="colmuntitle" prefWidth="162.0" text="Title" />                    
-                                                <TableColumn fx:id="colmundescriptionannoce" prefWidth="162.0" text="Description" />
-                                                <TableColumn fx:id="colmunimage" prefWidth="167.0" text="Image" />
-                                                <TableColumn fx:id="colmunmin" prefWidth="162.0" text="Min (DT)" />
-                                                <TableColumn fx:id="colmunmax" prefWidth="165.0" text="Max (DT)" />
+                                                <TableColumn fx:id="columntitle" prefWidth="162.0" text="Title" />                    
+                                                <TableColumn fx:id="columndescription" prefWidth="162.0" text="Description" />
+                                                <TableColumn fx:id="columnimage" prefWidth="167.0" text="Image" />
+                                                <TableColumn fx:id="columnmin" prefWidth="162.0" text="Min (DT)" />
+                                                <TableColumn fx:id="columnmax" prefWidth="165.0" text="Max (DT)" />
                                             </columns>
                                         </TableView>
                                     </children>

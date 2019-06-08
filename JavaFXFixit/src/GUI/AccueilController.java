@@ -156,7 +156,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
     @FXML
     private TableView TableView;
 
-// Table View liste des annonce 
+// @Administrateur Table View liste des annonce 
     @FXML
     private TableColumn columntitle;
     @FXML
@@ -170,7 +170,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
     private TableColumn columnmax;
 
     @FXML
-    private TableView TableViewlisteannoce;
+    private TableView TableViewlisteannonce;
 
     List<Service> service;
     List<Pays> pays;
@@ -662,7 +662,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
             AnnonceService a = new AnnonceService();
             List<Annonce> result = a.getAnnonceByIdClient(client.getId()); // appel au methode annonce ID 
 
-            TableViewlisteannoce.setEditable(true);
+            TableViewlisteannonce.setEditable(true);
             ObservableListAnnonce = FXCollections.observableArrayList();
             ObservableListAnnonce.addAll(result);
 
@@ -671,7 +671,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
             columnimage.setCellValueFactory(new PropertyValueFactory<>("description"));
             columnmin.setCellValueFactory(new PropertyValueFactory<>("minprix"));
             columnmax.setCellValueFactory(new PropertyValueFactory<>("maxprix"));
-            TableViewlisteannoce.setItems(ObservableListAnnonce);
+            TableViewlisteannonce.setItems(ObservableListAnnonce);
         }
 
     }
