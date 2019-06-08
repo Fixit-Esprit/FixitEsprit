@@ -7,6 +7,7 @@ package GUI;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.validation.RequiredFieldValidator;
 import entity.Annonce;
 import entity.Client;
 import entity.Demande;
@@ -39,6 +40,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -68,6 +70,11 @@ public class AnnonceController implements Initializable {
     @FXML
     private JFXTextArea description;
 
+    @FXML
+    private Text errorsecteur;
+    @FXML
+    private Text errorprix;
+
     List<Service> service;
     File file;
     String imageEncoder;
@@ -78,11 +85,44 @@ public class AnnonceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        errorprix.setVisible(false);
+        errorsecteur.setVisible(false);
+        RequiredFieldValidator validator = new RequiredFieldValidator();
+        validator.setMessage("discription est obligatoire");
+
+        description.getValidators().add(validator);
+        description.focusedProperty().addListener((o, oldVal, newVal) -> {
+            if (!newVal) {
+                description.validate();
+            }
+        });
+
         final int initialValue = 100;
-        SpinnerValueFactory<Integer> valueFactory
+        SpinnerValueFactory<Integer> valueFactoryMin
                 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, initialValue);
-        minprix.setValueFactory(valueFactory);
-        maxprix.setValueFactory(valueFactory);
+        SpinnerValueFactory<Integer> valueFactoryMax
+                = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, initialValue);
+        minprix.setValueFactory(valueFactoryMin);
+        maxprix.setValueFactory(valueFactoryMax);
+        minprix.setEditable(false);
+        minprix.setEditable(false);
+
+        minprix.valueProperty().addListener((obs, oldValue, newValue)
+                -> {
+            if (newValue > maxprix.getValue()) {
+                errorprix.setVisible(true);
+            } else {
+                errorprix.setVisible(false);
+            }
+        });
+        maxprix.valueProperty().addListener((obs, oldValue, newValue)
+                -> {
+            if (newValue < minprix.getValue()) {
+                errorprix.setVisible(true);
+            } else {
+                errorprix.setVisible(false);
+            }
+        });
 
         ServiceService serviceService = new ServiceService();
         service = serviceService.getAllService();
@@ -92,6 +132,8 @@ public class AnnonceController implements Initializable {
         }
         ObservableList<String> olistservice = FXCollections.observableArrayList(listservise);
         comboboxservice.setItems(olistservice);
+        comboboxservice.valueProperty().addListener((obs, oldValue, newValue)
+                -> errorsecteur.setVisible(false));
     }
 
     public void upload(MouseEvent event) {
@@ -125,34 +167,39 @@ public class AnnonceController implements Initializable {
 
     @FXML
     private void annoncer(ActionEvent event) {
-        Client client = new Client();
-        String sql = "SELECT * FROM user";
+        if (description.validate() && comboboxservice.getValue() != null && minprix.getValue() < maxprix.getValue()) {
+            Client client = new Client();
+            String sql = "SELECT * FROM user";
 
-        try (Connection conn = Utilis.connect();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
-            rs.next();
-            client.setId(rs.getInt(2));
-            // setLBimg(rs.getString(10));  
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        if (client.getId() != 0) {
-            int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
-
-            Annonce annonce;
-            annonce = new Annonce(client.getId(), idService, new Date(), description.getText(), imageEncoder,minprix.getValue(),maxprix.getValue());
-            AnnonceService annonceService = new AnnonceService();
-            int result = annonceService.ajouterAnnonce(annonce);
-            if (result == 1) {
-                Stage stage = (Stage) comboboxservice.getScene().getWindow();
-                // do what you have to do
-                stage.close();
+            try (Connection conn = Utilis.connect();
+                    Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql)) {
+                rs.next();
+                client.setId(rs.getInt(2));
+                // setLBimg(rs.getString(10));  
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
-        }
+            if (client.getId() != 0) {
+                int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
 
+                Annonce annonce;
+                annonce = new Annonce(client.getId(), idService, new Date(), description.getText(), imageEncoder, minprix.getValue(), maxprix.getValue());
+                AnnonceService annonceService = new AnnonceService();
+                int result = annonceService.ajouterAnnonce(annonce);
+                if (result == 1) {
+                    Stage stage = (Stage) comboboxservice.getScene().getWindow();
+                    // do what you have to do
+                    stage.close();
+                }
+            }
+
+        } else {
+            if(comboboxservice.getValue() == null)
+                errorsecteur.setVisible(true);
+            if(minprix.getValue() > maxprix.getValue())
+                errorprix.setVisible(true);
+        }
     }
 
 }
-
-

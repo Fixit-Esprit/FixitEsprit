@@ -49,19 +49,12 @@
                                 <Insets />
                             </opaqueInsets>
                         </JFXComboBox>
-                        <JFXTextField fx:id="motcle" focusColor="#ffffff00" layoutX="7.0" layoutY="327.0" prefHeight="37.0" prefWidth="286.0" promptText="Mots clé" style="-fx-background-color: #ffffff;" unFocusColor="#beb2ff00">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <padding>
-                                <Insets left="20.0" />
-                            </padding>
-                        </JFXTextField>
-                        <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="377.0" onAction="#recherchePrestataireByName" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
+                        <JFXButton buttonType="RAISED" layoutX="183.0" layoutY="330.0" onAction="#recherchePrestataireByName" prefHeight="29.0" prefWidth="111.0" ripplerFill="#0d47a1" styleClass="recherche" text="Recherche" textAlignment="CENTER" textFill="#1e88e5" textOverrun="CLIP">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </JFXButton>
+                  <Text fx:id="errorregion" fill="#d32f2f" layoutX="14.0" layoutY="538.0" text="Region est obligatoire" />
                         <JFXComboBox fx:id="comboboxpays" focusColor="#ffffff00" layoutX="7.0" layoutY="426.0" prefHeight="37.0" prefWidth="286.0" promptText="Pays" unFocusColor="#ffffff00">
                             <opaqueInsets>
                                 <Insets />
@@ -89,6 +82,8 @@
                                 <Image url="@img/user.png" />
                             </image>
                         </ImageView>
+                  <Text fx:id="errorsecteur" fill="#d32f2f" layoutX="14.0" layoutY="343.0" text="Catégorie est obligatoire" />
+                  <Text fx:id="errorville" fill="#d32f2f" layoutX="14.0" layoutY="567.0" text="Ville est obligatoire" />
                     </children>
                 </Pane>
                 <JFXTabPane id="stackPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="1200.0" stylesheets="@accueil.css" tabMaxHeight="Infinity" tabMaxWidth="Infinity">

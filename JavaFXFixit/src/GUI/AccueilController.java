@@ -69,6 +69,8 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart.Data;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -139,9 +141,6 @@ public class AccueilController implements Initializable, MapComponentInitialized
     private GridPane GridAllUser;
 
     @FXML
-    private JFXTextField motcle;
-
-    @FXML
     private TableColumn colmunservice;
     @FXML
     private TableColumn colmunprestataire;
@@ -183,8 +182,24 @@ public class AccueilController implements Initializable, MapComponentInitialized
     ObservableList<Demande> ObservableListDemande;
     ObservableList<Annonce> ObservableListAnnonce;
 
+    @FXML
+    private Text errorsecteur;
+    @FXML
+    private Text errorregion;
+    @FXML
+    private Text errorville;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        errorsecteur.setVisible(false);
+        errorregion.setVisible(false);
+        errorville.setVisible(false);
+        comboboxservice.valueProperty().addListener((obs, oldValue, newValue)
+                -> errorsecteur.setVisible(false));
+        comboboxregion.valueProperty().addListener((obs, oldValue, newValue)
+                -> errorregion.setVisible(false));
+        comboboxville.valueProperty().addListener((obs, oldValue, newValue)
+                -> errorville.setVisible(false));
         mapView.setKey("AIzaSyCpBZ4AjkZIoLWHnYYF5qsdQO5CTnCpcko");
         mapView.addMapInializedListener(this);
 
@@ -270,239 +285,261 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @FXML
     private void recherchePrestataireByName(ActionEvent event) {
-        GridAllUser.getChildren().clear();
-        try {
-            map.clearMarkers();
-        } catch (Exception e) {
-        }
-        try {
-            System.out.println(motcle.getText());
-            int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
-            System.out.println(idService);
-
-            PrestataireService prestataireService = new PrestataireService();
-            List<Prestataire> Prestataires = prestataireService.getPrestatairByService(idService);
-            System.out.println(Prestataires);
-
-            int Column = 0;
-            int Row = 0;
-            for (Prestataire prestataire : Prestataires) {
-                try {
-                    addpositions(prestataire);
-                } catch (Exception e) {
-                }
-                VBox vbox = new VBox(5);
-                vbox.setPrefSize(240, 300);
-                vbox.getStyleClass().add("vbox");
-                vbox.setMaxHeight(300);
-                vbox.setMaxWidth(240);
-                HBox hbox = new HBox(2);
-
-                vbox.setAlignment(Pos.CENTER);
-                hbox.setAlignment(Pos.CENTER);
-                hbox.setPadding(Insets.EMPTY);
-                JFXButton btndemande = new JFXButton("Demande");
-                btndemande.getStyleClass().add("detail");
-
-                btndemande.setOnAction((ActionEvent e) -> {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Demande.fxml"));
-                    Parent root;
-                    try {
-                        root = loader.load();
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root, 700, 520));
-                        DemandeController controller = loader.<DemandeController>getController();
-                        controller.setData(prestataire);
-                        stage.setTitle("Demander la service ");
-                        stage.show();
-                        stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
-
-                        });
-                    } catch (IOException ex) {
-                        Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
-
-                JFXButton btndetail = new JFXButton("Detail");
-                btndetail.getStyleClass().add("detail");
-
-                /*stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(btn.getScene().getWindow());*/
-                btndetail.setOnAction((ActionEvent e) -> {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Detailprestataire.fxml"));
-                    Parent root;
-                    try {
-                        root = loader.load();
-
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root, 820, 520));
-                        DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
-                        controller.setData(prestataire);
-                        stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
-                        stage.show();
-                        stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
-
-                        });
-                    } catch (IOException ex) {
-                        Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
-
-                hbox.getChildren().addAll(btndemande, btndetail);
-                Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
-                lNom.getStyleClass().add("textd");
-                Label lEmail = new Label(prestataire.getEmail());
-                lEmail.getStyleClass().add("textd");
-                Label lTel = new Label(prestataire.getTel());
-                lTel.getStyleClass().add("textd");
-
-                final Pane cardsPane = new StackPane();
-                ImageView imageView;
-                if (prestataire.getImage() == null) {
-
-                    Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
-                    imageView = new ImageView(image);
-                    imageView.setFitHeight(100);
-                    imageView.setFitWidth(100);
-                    vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
-                } else {
-                    vbox.getChildren().addAll(lNom, hbox);
-                }
-                GridAllUser.setPadding(new Insets(40, 40, 40, 40));
-                GridAllUser.setHgap(20);
-                GridAllUser.setVgap(30);
-                GridAllUser.resize(5000, 1000);
-                GridAllUser.add(vbox, Column, Row);
-
-                if (Column < 2) {
-                    Column++;
-                } else {
-                    Row++;
-                    Column = 0;
-                }
+        if (comboboxservice.getValue() != null) {
+            GridAllUser.getChildren().clear();
+            try {
+                map.clearMarkers();
+            } catch (Exception e) {
             }
-        } catch (Exception ex) {
-            System.out.print(ex.getMessage());
+            try {
+                int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
+                System.out.println(idService);
+
+                PrestataireService prestataireService = new PrestataireService();
+                List<Prestataire> Prestataires = prestataireService.getPrestatairByService(idService);
+                System.out.println(Prestataires);
+
+                if (Prestataires.isEmpty()) {
+                    alertNoData();
+                }
+
+                int Column = 0;
+                int Row = 0;
+                for (Prestataire prestataire : Prestataires) {
+                    try {
+                        addpositions(prestataire);
+                    } catch (Exception e) {
+                    }
+                    VBox vbox = new VBox(5);
+                    vbox.setPrefSize(240, 300);
+                    vbox.getStyleClass().add("vbox");
+                    vbox.setMaxHeight(300);
+                    vbox.setMaxWidth(240);
+                    HBox hbox = new HBox(2);
+
+                    vbox.setAlignment(Pos.CENTER);
+                    hbox.setAlignment(Pos.CENTER);
+                    hbox.setPadding(Insets.EMPTY);
+                    JFXButton btndemande = new JFXButton("Demande");
+                    btndemande.getStyleClass().add("detail");
+
+                    btndemande.setOnAction((ActionEvent e) -> {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Demande.fxml"));
+                        Parent root;
+                        try {
+                            root = loader.load();
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(root, 700, 520));
+                            DemandeController controller = loader.<DemandeController>getController();
+                            controller.setData(prestataire);
+                            stage.setTitle("Demander la service ");
+                            stage.show();
+                            stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
+
+                            });
+                        } catch (IOException ex) {
+                            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+
+                    JFXButton btndetail = new JFXButton("Detail");
+                    btndetail.getStyleClass().add("detail");
+
+                    /*stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(btn.getScene().getWindow());*/
+                    btndetail.setOnAction((ActionEvent e) -> {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Detailprestataire.fxml"));
+                        Parent root;
+                        try {
+                            root = loader.load();
+
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(root, 820, 520));
+                            DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
+                            controller.setData(prestataire);
+                            stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
+                            stage.show();
+                            stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
+
+                            });
+                        } catch (IOException ex) {
+                            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+
+                    hbox.getChildren().addAll(btndemande, btndetail);
+                    Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
+                    lNom.getStyleClass().add("textd");
+                    Label lEmail = new Label(prestataire.getEmail());
+                    lEmail.getStyleClass().add("textd");
+                    Label lTel = new Label(prestataire.getTel());
+                    lTel.getStyleClass().add("textd");
+
+                    final Pane cardsPane = new StackPane();
+                    ImageView imageView;
+                    if (prestataire.getImage() == null) {
+
+                        Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
+                        imageView = new ImageView(image);
+                        imageView.setFitHeight(100);
+                        imageView.setFitWidth(100);
+                        vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
+                    } else {
+                        vbox.getChildren().addAll(lNom, hbox);
+                    }
+                    GridAllUser.setPadding(new Insets(40, 40, 40, 40));
+                    GridAllUser.setHgap(20);
+                    GridAllUser.setVgap(30);
+                    GridAllUser.resize(5000, 1000);
+                    GridAllUser.add(vbox, Column, Row);
+
+                    if (Column < 2) {
+                        Column++;
+                    } else {
+                        Row++;
+                        Column = 0;
+                    }
+                }
+            } catch (Exception ex) {
+                System.out.print(ex.getMessage());
+            }
+        } else {
+            errorsecteur.setVisible(true);
         }
     }
 
     @FXML
     private void recherchePrestataireByAdress(ActionEvent event) {
-
-        GridAllUser.getChildren().clear();
-        try {
-            map.clearMarkers();
-        } catch (Exception e) {
-        }
-        try {
-
-            int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
-            System.out.println(idService);
-
-            PrestataireService prestataireService = new PrestataireService();
-            List<Prestataire> Prestataires = prestataireService.getPrestatairByVilleAndService(Utilis.getKeys(villeMap, comboboxville.getValue()), idService);
-            System.out.println(Prestataires);
-
-            int Column = 0;
-            int Row = 0;
-            for (Prestataire prestataire : Prestataires) {
-                try {
-                    addpositions(prestataire);
-                } catch (Exception e) {
-                }
-                VBox vbox = new VBox(5);
-                vbox.setPrefSize(240, 300);
-                vbox.getStyleClass().add("vbox");
-                vbox.setMaxHeight(300);
-                vbox.setMaxWidth(240);
-                HBox hbox = new HBox(2);
-
-                vbox.setAlignment(Pos.CENTER);
-                hbox.setAlignment(Pos.CENTER);
-                hbox.setPadding(Insets.EMPTY);
-                JFXButton btndemande = new JFXButton("Demande");
-                btndemande.getStyleClass().add("detail");
-
-                btndemande.setOnAction((ActionEvent e) -> {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Demande.fxml"));
-                    Parent root;
-                    try {
-                        root = loader.load();
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root, 700, 520));
-                        DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
-                        controller.setData(prestataire);
-                        stage.setTitle("Demander la service ");
-                        stage.show();
-                        stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
-
-                        });
-                    } catch (IOException ex) {
-                        Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
-
-                JFXButton btndetail = new JFXButton("Detail");
-                btndetail.getStyleClass().add("detail");
-
-                /*stage.initModality(Modality.WINDOW_MODAL);
-                stage.initOwner(btn.getScene().getWindow());*/
-                btndetail.setOnAction((ActionEvent e) -> {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Detailprestataire.fxml"));
-                    Parent root;
-                    try {
-                        root = loader.load();
-
-                        Stage stage = new Stage();
-                        stage.setScene(new Scene(root, 820, 520));
-                        DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
-                        controller.setData(prestataire);
-                        stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
-                        stage.show();
-                        stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
-
-                        });
-                    } catch (IOException ex) {
-                        Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
-
-                hbox.getChildren().addAll(btndemande, btndetail);
-                Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
-                lNom.getStyleClass().add("textd");
-                Label lEmail = new Label(prestataire.getEmail());
-                lEmail.getStyleClass().add("textd");
-                Label lTel = new Label(prestataire.getTel());
-                lTel.getStyleClass().add("textd");
-
-                final Pane cardsPane = new StackPane();
-                ImageView imageView;
-                if (prestataire.getImage() == null) {
-
-                    Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
-                    imageView = new ImageView(image);
-                    imageView.setFitHeight(100);
-                    imageView.setFitWidth(100);
-                    vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
-                } else {
-                    vbox.getChildren().addAll(lNom, hbox);
-                }
-                GridAllUser.setPadding(new Insets(40, 40, 40, 40));
-                GridAllUser.setHgap(20);
-                GridAllUser.setVgap(30);
-                GridAllUser.resize(5000, 1000);
-                GridAllUser.add(vbox, Column, Row);
-
-                if (Column < 2) {
-                    Column++;
-                } else {
-                    Row++;
-                    Column = 0;
-                }
+        if (comboboxservice.getValue() != null && comboboxregion.getValue() != null && comboboxville.getValue() != null) {
+            GridAllUser.getChildren().clear();
+            try {
+                map.clearMarkers();
+            } catch (Exception e) {
             }
+            try {
 
-        } catch (Exception ex) {
-            System.out.print(ex.getMessage());
+                int idService = (int) service.stream().filter(r -> r.getDescription().equals(comboboxservice.getValue())).mapToInt(r -> r.getId()).average().getAsDouble();
+                System.out.println(idService);
+
+                PrestataireService prestataireService = new PrestataireService();
+                List<Prestataire> Prestataires = prestataireService.getPrestatairByVilleAndService(Utilis.getKeys(villeMap, comboboxville.getValue()), idService);
+                System.out.println(Prestataires);
+
+                if (Prestataires.isEmpty()) {
+                    alertNoData();
+                }
+
+                int Column = 0;
+                int Row = 0;
+                for (Prestataire prestataire : Prestataires) {
+                    try {
+                        addpositions(prestataire);
+                    } catch (Exception e) {
+                    }
+                    VBox vbox = new VBox(5);
+                    vbox.setPrefSize(240, 300);
+                    vbox.getStyleClass().add("vbox");
+                    vbox.setMaxHeight(300);
+                    vbox.setMaxWidth(240);
+                    HBox hbox = new HBox(2);
+
+                    vbox.setAlignment(Pos.CENTER);
+                    hbox.setAlignment(Pos.CENTER);
+                    hbox.setPadding(Insets.EMPTY);
+                    JFXButton btndemande = new JFXButton("Demande");
+                    btndemande.getStyleClass().add("detail");
+
+                    btndemande.setOnAction((ActionEvent e) -> {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Demande.fxml"));
+                        Parent root;
+                        try {
+                            root = loader.load();
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(root, 700, 520));
+                            DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
+                            controller.setData(prestataire);
+                            stage.setTitle("Demander la service ");
+                            stage.show();
+                            stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
+
+                            });
+                        } catch (IOException ex) {
+                            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+
+                    JFXButton btndetail = new JFXButton("Detail");
+                    btndetail.getStyleClass().add("detail");
+
+                    /*stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(btn.getScene().getWindow());*/
+                    btndetail.setOnAction((ActionEvent e) -> {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Detailprestataire.fxml"));
+                        Parent root;
+                        try {
+                            root = loader.load();
+
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(root, 820, 520));
+                            DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
+                            controller.setData(prestataire);
+                            stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
+                            stage.show();
+                            stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
+
+                            });
+                        } catch (IOException ex) {
+                            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+
+                    hbox.getChildren().addAll(btndemande, btndetail);
+                    Label lNom = new Label(prestataire.getNom() + " " + prestataire.getPrenom());
+                    lNom.getStyleClass().add("textd");
+                    Label lEmail = new Label(prestataire.getEmail());
+                    lEmail.getStyleClass().add("textd");
+                    Label lTel = new Label(prestataire.getTel());
+                    lTel.getStyleClass().add("textd");
+
+                    final Pane cardsPane = new StackPane();
+                    ImageView imageView;
+                    if (prestataire.getImage() == null) {
+
+                        Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
+                        imageView = new ImageView(image);
+                        imageView.setFitHeight(100);
+                        imageView.setFitWidth(100);
+                        vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
+                    } else {
+                        vbox.getChildren().addAll(lNom, hbox);
+                    }
+                    GridAllUser.setPadding(new Insets(40, 40, 40, 40));
+                    GridAllUser.setHgap(20);
+                    GridAllUser.setVgap(30);
+                    GridAllUser.resize(5000, 1000);
+                    GridAllUser.add(vbox, Column, Row);
+
+                    if (Column < 2) {
+                        Column++;
+                    } else {
+                        Row++;
+                        Column = 0;
+                    }
+                }
+
+            } catch (Exception ex) {
+                System.out.print(ex.getMessage());
+            }
+        } else {
+            if (comboboxservice.getValue() == null) {
+                errorsecteur.setVisible(true);
+            }
+            if (comboboxregion.getValue() == null) {
+                errorregion.setVisible(true);
+            }
+            if (comboboxville.getValue() == null) {
+                errorville.setVisible(true);
+            }
         }
     }
 
@@ -624,6 +661,12 @@ public class AccueilController implements Initializable, MapComponentInitialized
             root = loader.load();
 
             Stage stage = new Stage();
+            try {
+                stage.getIcons().add(new Image("/GUI/img/icon.png"));
+            } catch (Exception e) {
+                System.out.print(e.getMessage());
+            }
+            stage.setTitle("Annonce votre besoin");
             stage.setScene(new Scene(root, 700, 520));
             stage.show();
 
@@ -706,6 +749,15 @@ public class AccueilController implements Initializable, MapComponentInitialized
             Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void alertNoData() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText("Aucun pristataire");
+
+        alert.showAndWait();
     }
 
     private Connection connect() {
