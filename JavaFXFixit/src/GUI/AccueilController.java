@@ -167,6 +167,9 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @FXML
     private TableColumn columnmax;
+    
+    @FXML
+    private TableColumn<Annonce, Void> columnbuttonannonce;
 
     @FXML
     private TableView TableViewlisteannonce;
@@ -636,6 +639,55 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
         colmunpayer.setCellFactory(cellFactory);
     }
+    
+    // Bilel : ajout button details annonce 
+    
+    private void addButtonToTabledetailannonce(TableColumn<Annonce, Void> colmunActiondetails) {
+
+        Callback<TableColumn<Annonce, Void>, TableCell<Annonce, Void>> cellFactory = new Callback<TableColumn<Annonce, Void>, TableCell<Annonce, Void>>() {
+            @Override
+            public TableCell<Annonce, Void> call(final TableColumn<Annonce, Void> param) {
+                final TableCell<Annonce, Void> cell = new TableCell<Annonce, Void>() {
+
+                    private final JFXButton btn = new JFXButton("details");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Annonce data = getTableView().getItems().get(getIndex());
+                            System.out.println("selectedData: " + data);
+                        });
+                        btn.getStyleClass().add("valider");
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colmunActiondetails.setCellFactory(cellFactory);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     @FXML
     private void goprestataire(ActionEvent event) {
@@ -714,6 +766,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
             columnimage.setCellValueFactory(new PropertyValueFactory<>("description"));
             columnmin.setCellValueFactory(new PropertyValueFactory<>("minprix"));
             columnmax.setCellValueFactory(new PropertyValueFactory<>("maxprix"));
+            addButtonToTabledetailannonce(columnbuttonannonce);
             TableViewlisteannonce.setItems(ObservableListAnnonce);
         }
 
