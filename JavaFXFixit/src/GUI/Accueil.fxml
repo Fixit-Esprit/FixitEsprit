@@ -148,9 +148,10 @@
                                             <columns>
                                                 <TableColumn fx:id="columntitle" prefWidth="162.0" text="Title" />                    
                                                 <TableColumn fx:id="columndescription" prefWidth="162.0" text="Description" />
-                                                <TableColumn fx:id="columnimage" prefWidth="167.0" text="Image" />
-                                                <TableColumn fx:id="columnmin" prefWidth="162.0" text="Min (DT)" />
-                                                <TableColumn fx:id="columnmax" prefWidth="165.0" text="Max (DT)" />
+                                                <TableColumn fx:id="columnimage" prefWidth="155.0" text="Image" />
+                                                <TableColumn fx:id="columnmin" prefWidth="114.0" text="Min (DT)" />
+                                                <TableColumn fx:id="columnmax" prefWidth="124.0" text="Max (DT)" />
+                                    <TableColumn fx:id="columnbuttonannonce" prefWidth="163.0" />
                                             </columns>
                                         </TableView>
                                     </children>
