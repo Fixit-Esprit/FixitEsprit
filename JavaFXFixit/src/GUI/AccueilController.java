@@ -28,6 +28,8 @@ import entity.Prestataire;
 import entity.Region;
 import entity.Service;
 import entity.Ville;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -57,6 +59,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -99,6 +102,7 @@ import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import javafxfixit.JavaFXFixit;
+import javax.imageio.ImageIO;
 import netscape.javascript.JSObject;
 import service.AnnonceService;
 import service.DemandeService;
@@ -107,6 +111,7 @@ import service.PrestataireService;
 import service.RegionService;
 import service.ServiceService;
 import service.VilleService;
+import sun.misc.BASE64Decoder;
 import utilis.Utilis;
 
 public class AccueilController implements Initializable, MapComponentInitializedListener {
@@ -142,6 +147,8 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @FXML
     private TableColumn colmunservice;
+    @FXML
+    private TableColumn columntitledemande;
     @FXML
     private TableColumn colmunprestataire;
     @FXML
@@ -376,16 +383,30 @@ public class AccueilController implements Initializable, MapComponentInitialized
                     lTel.getStyleClass().add("textd");
 
                     final Pane cardsPane = new StackPane();
-                    ImageView imageView;
+                    ImageView imageView = new ImageView();
                     if (prestataire.getImage() == null) {
 
                         Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
-                        imageView = new ImageView(image);
+                        imageView.setImage(image);
                         imageView.setFitHeight(100);
                         imageView.setFitWidth(100);
                         vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
                     } else {
-                        vbox.getChildren().addAll(lNom, hbox);
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] imageByte;
+                        imageByte = decoder.decodeBuffer(prestataire.getImage());
+                        ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+                        BufferedImage bufferedImage = ImageIO.read(bis);
+
+                        try {
+                            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                            imageView.setImage(image);
+                            imageView.setFitHeight(120);
+                            imageView.setFitWidth(100);
+                        } catch (Exception ex) {
+                            Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
                     }
                     GridAllUser.setPadding(new Insets(40, 40, 40, 40));
                     GridAllUser.setHgap(20);
@@ -502,16 +523,30 @@ public class AccueilController implements Initializable, MapComponentInitialized
                     lTel.getStyleClass().add("textd");
 
                     final Pane cardsPane = new StackPane();
-                    ImageView imageView;
+                    ImageView imageView = new ImageView();
                     if (prestataire.getImage() == null) {
 
                         Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
-                        imageView = new ImageView(image);
+                        imageView.setImage(image);
                         imageView.setFitHeight(100);
                         imageView.setFitWidth(100);
                         vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
                     } else {
-                        vbox.getChildren().addAll(lNom, hbox);
+                        BASE64Decoder decoder = new BASE64Decoder();
+                        byte[] imageByte;
+                        imageByte = decoder.decodeBuffer(prestataire.getImage());
+                        ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+                        BufferedImage bufferedImage = ImageIO.read(bis);
+
+                        try {
+                            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                            imageView.setImage(image);
+                            imageView.setFitHeight(120);
+                            imageView.setFitWidth(100);
+                        } catch (Exception ex) {
+                            Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        vbox.getChildren().addAll(imageView, lNom, lEmail, lTel, hbox);
                     }
                     GridAllUser.setPadding(new Insets(40, 40, 40, 40));
                     GridAllUser.setHgap(20);
@@ -593,6 +628,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
             ObservableListDemande.addAll(result);
 
             colmunservice.setCellValueFactory(new PropertyValueFactory<>("service"));
+            columntitledemande.setCellValueFactory(new PropertyValueFactory<>("title"));
             colmundescription.setCellValueFactory(new PropertyValueFactory<>("description"));
             colmunprestataire.setCellValueFactory(new PropertyValueFactory<>("nomprestataire"));
             colmundate.setCellValueFactory(new PropertyValueFactory<>("dateFunction"));

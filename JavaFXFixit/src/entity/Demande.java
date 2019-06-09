@@ -7,19 +7,19 @@ package entity;
 
 import java.util.Date;
 
-
-
 /**
  *
  * @author hphqlim
  */
 public class Demande {
+
     private int id;
     private int idpristataire;
     private String nomprestataire;
     private int idclient;
     private String nomclient;
     private String adresseclient;
+    private String title;
     private String description;
     private String service;
     private String image;
@@ -64,6 +64,14 @@ public class Demande {
 
     public void setIdclient(int idclient) {
         this.idclient = idclient;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -161,7 +169,7 @@ public class Demande {
     public void setAdresseclient(String adresseclient) {
         this.adresseclient = adresseclient;
     }
-    
+
     @Override
     public String toString() {
         return "Demande{" + "id=" + id + ", idpristataire=" + idpristataire + ", idclient=" + idclient + ", description=" + description + ", image=" + image + ", dateDemande=" + dateDemande + ", dateFunction=" + dateFunction + ", acceptation_prestataire=" + acceptation_prestataire + ", dateAcceptation=" + dateAcceptation + ", acceptation_client=" + acceptation_client + ", prix=" + prix + '}';
@@ -191,5 +199,5 @@ public class Demande {
         }
         return true;
     }
-    
+
 }

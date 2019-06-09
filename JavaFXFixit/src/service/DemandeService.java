@@ -56,10 +56,11 @@ public class DemandeService {
         try {
             Statement st;
             st = conx.createStatement();
-            ResultSet resultat = st.executeQuery("Select d.id,d.description description, s.description sdescription,u.nom,u.prenom,d.dateFunction,d.prix from utilisateur u INNER JOIN prestataire p INNER JOIN demande d INNER JOIN service s where s.id = p.id and u.id = p.Uti_id and p.Uti_id = d.Uti_id and d.Cli_id = " + idclient + " and d.acceptation_prestataire = 1");
+            ResultSet resultat = st.executeQuery("Select d.id,d.title,d.description description, s.description sdescription,u.nom,u.prenom,d.dateFunction,d.prix from utilisateur u INNER JOIN prestataire p INNER JOIN demande d INNER JOIN service s where s.id = p.id and u.id = p.Uti_id and p.Uti_id = d.Uti_id and d.Cli_id = " + idclient + " and d.acceptation_prestataire = 1");
             while (resultat.next()) {
                 Demande demande = new Demande();
                 demande.setId(resultat.getInt("id"));
+                demande.setTitle(resultat.getString("title"));
                 demande.setDescription(resultat.getString("description"));
                 demande.setService(resultat.getString("sdescription"));
                 demande.setNomprestataire(resultat.getString("nom") + " " + resultat.getString("prenom"));
@@ -78,10 +79,11 @@ public class DemandeService {
         try {
             Statement st;
             st = conx.createStatement();
-            ResultSet resultat = st.executeQuery("Select uc.id idclient,d.id,d.description description,uc.nom,uc.prenom,d.dateFunction,d.image,d.prix from utilisateur u INNER JOIN prestataire p INNER JOIN demande d INNER JOIN client c INNER JOIN utilisateur uc  where uc.id = c.id and c.id = d.Cli_id and p.Uti_id = " + idprestataire + " and u.id = p.Uti_id and d.Uti_id = p.Uti_id and  d.acceptation_prestataire = 0");
+            ResultSet resultat = st.executeQuery("Select uc.id idclient,d.id,d.title,d.description description,uc.nom,uc.prenom,d.dateFunction,d.image,d.prix from utilisateur u INNER JOIN prestataire p INNER JOIN demande d INNER JOIN client c INNER JOIN utilisateur uc  where uc.id = c.id and c.id = d.Cli_id and p.Uti_id = " + idprestataire + " and u.id = p.Uti_id and d.Uti_id = p.Uti_id and  d.acceptation_prestataire = 0");
             while (resultat.next()) {
                 Demande demande = new Demande();
                 demande.setId(resultat.getInt("id"));
+                demande.setTitle(resultat.getString("title"));
                 demande.setImage(resultat.getString("image"));
                 demande.setDescription(resultat.getString("description"));
                 demande.setNomclient(resultat.getString("nom") + " " + resultat.getString("prenom"));
@@ -101,7 +103,7 @@ public class DemandeService {
         return demandes;
     }
 
-    public void ConfirmerDemande(int id,int prix) {
+    public void ConfirmerDemande(int id, int prix) {
         System.out.println("prix: " + prix);
         try {
             Statement st = conx.createStatement();

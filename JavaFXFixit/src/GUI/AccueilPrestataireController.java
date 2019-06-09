@@ -378,8 +378,7 @@ public class AccueilPrestataireController implements Initializable {
                         btn.setOnAction((ActionEvent event) -> {
                             Annonce data = getTableView().getItems().get(getIndex());
                             System.out.println("selectedData: " + data);
-                            demandeService.ConfirmerDemande(data.getId(), data.getPrix());
-                            btn.setDisable(true);
+                            goToAccepte();
                         });
                         btn.getStyleClass().add("valider");
                     }
@@ -399,6 +398,27 @@ public class AccueilPrestataireController implements Initializable {
         };
 
         Column.setCellFactory(cellFactory);
+    }
+
+    private void goToAccepte() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AccepteAnnonce.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+            Stage stage = new Stage();
+            try {
+                stage.getIcons().add(new Image("/GUI/img/icon.png"));
+            } catch (Exception e) {
+                System.out.print(e.getMessage());
+            }
+            stage.setTitle("Accepte l'annonce");
+            stage.setScene(new Scene(root, 900, 560));
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void goToImage(String image) {
