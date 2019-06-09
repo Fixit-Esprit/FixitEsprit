@@ -13,7 +13,7 @@
         <URL value="@detailprestataire.css" />
     </stylesheets>
    <children>
-      <ImageView fx:id="imageprestataire" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imageprestataire" fitHeight="150.0" fitWidth="200.0" layoutX="50.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
       <Label layoutX="33.0" layoutY="269.0" text="Service" textFill="#0d47a1">
          <font>
             <Font size="18.0" />
@@ -45,7 +45,6 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <JFXButton buttonType="RAISED" layoutX="190.0" layoutY="447.0" prefHeight="37.0" prefWidth="176.0" styleClass="demande" text="Demander le service" textFill="#0d47a1" />
-      <JFXButton buttonType="RAISED" layoutX="25.0" layoutY="447.0" prefHeight="27.0" prefWidth="128.0" styleClass="demande" text="Historiques" textFill="#0d47a1" />
+      <JFXButton buttonType="RAISED" layoutX="25.0" layoutY="447.0" prefHeight="27.0" prefWidth="178.0" styleClass="demande" onAction="#goToDemande" text="Demander le service" textFill="#0d47a1" />
    </children>
 </AnchorPane>

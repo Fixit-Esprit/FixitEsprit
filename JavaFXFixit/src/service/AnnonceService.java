@@ -6,6 +6,7 @@
 package service;
 
 import entity.Annonce;
+import entity.AnnonceAccepte;
 import entity.Demande;
 import entity.Position;
 import java.sql.Connection;
@@ -47,7 +48,8 @@ public class AnnonceService {
         return result;
     }
 
-    public List<Annonce> getAnnoncePublier(int idservice) {
+    public List<Annonce> getAnnoncePublier(int idprestataire) {
+        int idservice = getIdServiseByIdPrestataire(idprestataire);
         List<Annonce> annonces = new ArrayList();
         try {
             Statement st;
@@ -118,4 +120,37 @@ public class AnnonceService {
         }
 
     }
+
+    public int getIdServiseByIdPrestataire(int idprestataire) {
+        List<Annonce> annonces = new ArrayList();
+        try {
+            Statement st;
+            st = conx.createStatement();
+            ResultSet resultat = st.executeQuery("Select id from prestataire where  Uti_id =" + idprestataire);
+            while (resultat.next()) {
+                return resultat.getInt("id");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PaysService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public int ajouterAnnonceAccepte(AnnonceAccepte annonceAccepte) {
+        int result = 0;
+        try {
+            PreparedStatement st;
+            st = conx.prepareStatement("insert into accepteannonce(idannonce,idprestataire,prix,date) values(?,?,?,?)");
+            st.setInt(1, annonceAccepte.getIdannonce());
+            st.setInt(2, annonceAccepte.getIdprestataire());
+            st.setInt(3, annonceAccepte.getPrix());
+            st.setString(4, annonceAccepte.getDate());
+            result = st.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DemandeService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
 }

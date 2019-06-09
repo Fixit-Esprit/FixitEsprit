@@ -35,14 +35,15 @@ public class DemandeService {
         int result = 0;
         try {
             PreparedStatement st;
-            st = conx.prepareStatement("insert into demande(Uti_id,Cli_id,description,image,dateDemande,dateFunction,acceptation_prestataire) values(?,?,?,?,?,?,?)");
+            st = conx.prepareStatement("insert into demande(Uti_id,Cli_id,title,description,image,dateDemande,dateFunction,acceptation_prestataire) values(?,?,?,?,?,?,?,?)");
             st.setInt(1, demande.getIdpristataire());
             st.setInt(2, demande.getIdclient());
-            st.setString(3, demande.getDescription());
-            st.setString(4, demande.getImage());
-            st.setString(5, Format.format(demande.getDateDemande()));
-            st.setString(6, demande.getDateFunction());
-            st.setInt(7, 0);
+            st.setString(3, demande.getTitle());
+            st.setString(4, demande.getDescription());
+            st.setString(5, demande.getImage());
+            st.setString(6, Format.format(demande.getDateDemande()));
+            st.setString(7, demande.getDateFunction());
+            st.setInt(8, 0);
             result = st.executeUpdate();
 
         } catch (SQLException ex) {
@@ -103,17 +104,18 @@ public class DemandeService {
         return demandes;
     }
 
-    public void ConfirmerDemande(int id, int prix) {
+    public int ConfirmerDemande(int id, int prix) {
         System.out.println("prix: " + prix);
         try {
             Statement st = conx.createStatement();
 
             String req = "UPDATE demande SET acceptation_prestataire = 1 , prix = " + prix + " where id =" + id;
-            st.executeUpdate(req);
+            return st.executeUpdate(req);
 
         } catch (SQLException ex) {
             Logger.getLogger(ServiceUser.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
 
     }
 }

@@ -340,6 +340,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                             DemandeController controller = loader.<DemandeController>getController();
                             controller.setData(prestataire);
                             stage.setTitle("Demander la service ");
+                            stage.getIcons().add(new Image("/GUI/img/icon.png"));
                             stage.show();
                             stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
 
@@ -365,6 +366,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                             DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
                             controller.setData(prestataire);
                             stage.setTitle("Detail " + prestataire.getNom() + " " + prestataire.getPrenom());
+                            stage.getIcons().add(new Image("/GUI/img/icon.png"));
                             stage.show();
                             stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
 
@@ -480,6 +482,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                             DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
                             controller.setData(prestataire);
                             stage.setTitle("Demander la service ");
+                            stage.getIcons().add(new Image("/GUI/img/icon.png"));
                             stage.show();
                             stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
 

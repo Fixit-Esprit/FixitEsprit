@@ -33,9 +33,10 @@ public class Demande {
     public Demande() {
     }
 
-    public Demande(int idpristataire, int idclient, String description, String image, Date dateDemande, String dateFunction) {
+    public Demande(int idpristataire, int idclient,String title, String description, String image, Date dateDemande, String dateFunction) {
         this.idpristataire = idpristataire;
         this.idclient = idclient;
+        this.title = title;
         this.description = description;
         this.image = image;
         this.dateDemande = dateDemande;

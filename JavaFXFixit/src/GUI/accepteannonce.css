@@ -5,3 +5,6 @@
 .mainFxmlClass {
 
 }
+.jfx-date-picker > .arrow-button > .jfx-svg-glyph{
+    -fx-background-color: WHITE;
+}

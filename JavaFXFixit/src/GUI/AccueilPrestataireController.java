@@ -35,6 +35,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -71,7 +72,8 @@ public class AccueilPrestataireController implements Initializable {
     private TableColumn colmunclient;
     @FXML
     private TableColumn colmunclientannoce;
-
+    @FXML
+    private TableColumn colmuntitledemande;
     @FXML
     private TableColumn colmunadress;
     @FXML
@@ -140,14 +142,14 @@ public class AccueilPrestataireController implements Initializable {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             rs.next();
-            client.setId(rs.getInt(1));
+            client.setId(rs.getInt(2));
             // setLBimg(rs.getString(10));  
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         if (client.getId() != 0) {
             demandeService = new DemandeService();
-            List<Demande> result = demandeService.getAllNewDemande(6);
+            List<Demande> result = demandeService.getAllNewDemande(client.getId());
             System.out.println(result);
             Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
 
@@ -157,6 +159,7 @@ public class AccueilPrestataireController implements Initializable {
 
             colmunclient.setCellValueFactory(new PropertyValueFactory<>("nomclient"));
             colmunadress.setCellValueFactory(new PropertyValueFactory<>("adresseclient"));
+            colmuntitledemande.setCellValueFactory(new PropertyValueFactory<>("title"));
             colmundescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
             colmundate.setCellValueFactory(new PropertyValueFactory<>("dateFunction"));
@@ -177,14 +180,14 @@ public class AccueilPrestataireController implements Initializable {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
             rs.next();
-            client.setId(rs.getInt(1));
-            // setLBimg(rs.getString(10));  
+            client.setId(rs.getInt(2));
+            System.out.println(rs.getInt(2));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         if (client.getId() != 0) {
             annonceService = new AnnonceService();
-            List<Annonce> result = annonceService.getAnnoncePublier(2);
+            List<Annonce> result = annonceService.getAnnoncePublier(client.getId());
             System.out.println(result);
             Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
 
@@ -268,8 +271,16 @@ public class AccueilPrestataireController implements Initializable {
                         btn.setOnAction((ActionEvent event) -> {
                             Demande data = getTableView().getItems().get(getIndex());
                             System.out.println("selectedData: " + data);
-                            demandeService.ConfirmerDemande(data.getId(), data.getPrix());
-                            btn.setDisable(true);
+                            if (data.getPrix() > 0) {
+                                int res = demandeService.ConfirmerDemande(data.getId(), data.getPrix());
+                                if (res == 1) {
+                                    getAllDemande();
+                                    alert();
+                                }
+                            } else {
+                                alertErrorPrix();
+                            }
+
                         });
                         btn.getStyleClass().add("valider");
                     }
@@ -289,6 +300,22 @@ public class AccueilPrestataireController implements Initializable {
         };
 
         Column.setCellFactory(cellFactory);
+    }
+
+    private void alertErrorPrix() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText("Le prix doit être un entier positif supérieur à zéro");
+        alert.showAndWait();
+    }
+
+    private void alert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText("Demande confirmée");
+        alert.showAndWait();
     }
 
     public void addTextFieldColumnDemande(TableColumn<Demande, Number> columnPrix) {
@@ -378,7 +405,7 @@ public class AccueilPrestataireController implements Initializable {
                         btn.setOnAction((ActionEvent event) -> {
                             Annonce data = getTableView().getItems().get(getIndex());
                             System.out.println("selectedData: " + data);
-                            goToAccepte();
+                            goToAccepte(data);
                         });
                         btn.getStyleClass().add("valider");
                     }
@@ -400,7 +427,7 @@ public class AccueilPrestataireController implements Initializable {
         Column.setCellFactory(cellFactory);
     }
 
-    private void goToAccepte() {
+    private void goToAccepte(Annonce annonce) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AccepteAnnonce.fxml"));
         Parent root;
         try {
@@ -411,6 +438,8 @@ public class AccueilPrestataireController implements Initializable {
             } catch (Exception e) {
                 System.out.print(e.getMessage());
             }
+            AccepteAnnonceController controller = loader.<AccepteAnnonceController>getController();
+            controller.setData(annonce);
             stage.setTitle("Accepte l'annonce");
             stage.setScene(new Scene(root, 900, 560));
             stage.show();

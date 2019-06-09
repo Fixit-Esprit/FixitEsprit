@@ -70,15 +70,16 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                               <TableView fx:id="tableviewdemande" prefHeight="562.0" prefWidth="916.0">
+                               <TableView fx:id="tableviewdemande" prefHeight="562.0" prefWidth="976.0">
                                    <columns>
-                                       <TableColumn fx:id="colmunclient" prefWidth="144.0" text="Client" />
-                              <TableColumn fx:id="colmunadress" prefWidth="119.0" text="Adresse" />
-                                       <TableColumn fx:id="colmundescription" prefWidth="182.0" text="Description" />
-                                       <TableColumn fx:id="colmunimage" prefWidth="185.0" text="Image" />
-                                       <TableColumn fx:id="colmundate" prefWidth="81.0" text="Date" />
-                                       <TableColumn fx:id="colmunprix" prefWidth="94.0" text="Prix (DT)" />
-                              <TableColumn fx:id="colmunvalide" prefWidth="185.0" />
+                                       <TableColumn fx:id="colmunclient" prefWidth="113.0" text="Client" />
+                              <TableColumn fx:id="colmunadress" prefWidth="110.0" text="Adresse" />
+                              <TableColumn fx:id="colmuntitledemande" prefWidth="100.0" text="Title" />
+                                       <TableColumn fx:id="colmundescription" prefWidth="141.0" text="Description" />
+                                       <TableColumn fx:id="colmunimage" prefWidth="177.0" text="Image" />
+                                       <TableColumn fx:id="colmundate" prefWidth="111.0" text="Date" />
+                                       <TableColumn fx:id="colmunprix" prefWidth="92.0" text="Prix (DT)" />
+                              <TableColumn fx:id="colmunvalide" prefWidth="221.0" />
                                    </columns>
                                </TableView>
                            </children>

@@ -18,15 +18,28 @@ import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 import entity.Position;
 import entity.Prestataire;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import netscape.javascript.JSObject;
 import service.PrestataireService;
+import sun.misc.BASE64Decoder;
 
 /**
  * FXML Controller class
@@ -66,16 +79,38 @@ public class DetailPrestataireController implements Initializable, MapComponentI
     }
 
     public void setData(Prestataire prestataire) {
-        
+
         this.prestataire = prestataire;
         System.out.println(prestataire);
         nometprenom.setText(prestataire.getNom() + " " + prestataire.getPrenom());
         service.setText(prestataire.getService());
+
         if (prestataire.getImage() == null) {
+
             Image image = new Image(getClass().getResourceAsStream("img/avatar.png"));
             imageprestataire.setImage(image);
             imageprestataire.setFitHeight(100);
             imageprestataire.setFitWidth(100);
+        } else {
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] imageByte;
+            try {
+                imageByte = decoder.decodeBuffer(prestataire.getImage());
+
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+                BufferedImage bufferedImage = ImageIO.read(bis);
+
+                try {
+                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                    imageprestataire.setImage(image);
+                    imageprestataire.setFitHeight(140);
+                    imageprestataire.setFitWidth(100);
+                } catch (Exception ex) {
+                    Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(DetailPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         PrestataireService prestataireService = new PrestataireService();
         position = prestataireService.getPrestatairPosition(prestataire.getId());
@@ -104,7 +139,7 @@ public class DetailPrestataireController implements Initializable, MapComponentI
         if (position != null) {
             markerOptions.position(new LatLong(position.getLatitude(), position.getLongitude()))
                     .visible(Boolean.TRUE)
-                    .title(this.prestataire.getNom()+" "+this.prestataire.getPrenom());
+                    .title(this.prestataire.getNom() + " " + this.prestataire.getPrenom());
 
             Marker marker = new Marker(markerOptions);
             InfoWindowOptions myWindowOptions = new InfoWindowOptions();
@@ -119,5 +154,27 @@ public class DetailPrestataireController implements Initializable, MapComponentI
 
         }
 
+    }
+
+    @FXML
+    private void goToDemande(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Demande.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 700, 520));
+            DemandeController controller = loader.<DemandeController>getController();
+            controller.setData(prestataire);
+            stage.setTitle("Demander la service ");
+            stage.getIcons().add(new Image("/GUI/img/icon.png"));
+            mapView2.getScene().getWindow().hide();
+            stage.show();
+            stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
+
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
