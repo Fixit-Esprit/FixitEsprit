@@ -31,50 +31,50 @@ public class ServiceUser {
 
             Statement st = Conn.createStatement();
 
-            String req = "Select * from `utilisateur`  INNER JOIN client ON client.id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='" + u1.getLogin() + "' and `validation` = 0   ";
+            String req = "Select * from `utilisateur`   INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN client ON client.id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='" + u1.getLogin() + "' and `validation` = 0   ";
             System.out.println("r111" + req);
             st.execute(req);
             ResultSet rs = st.executeQuery(req);
             if (!rs.next()) {
-                System.out.println("no data for normale user");
-                String req2 = "Select * from `utilisateur`   INNER JOIN prestataire ON prestataire.Uti_id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='" + u1.getLogin() + "' and `validation` = 0    ";
+                System.out.println("no data for prestataire");
+                String req2 = "Select * from `utilisateur` INNER JOIN client ON client.id = utilisateur.id INNER JOIN adresse ON adresse.id = utilisateur.Adr_id where login='" + u1.getLogin() + "' and `validation` = 0    ";
                 st.execute(req2);
                 ResultSet rs2 = st.executeQuery(req2);
                 
                 if (!rs2.next()) {
-                    System.out.println("no data for prestataire2");
+                    System.out.println("no data for user");
                     return 0;
                 } else {
 
                     if (checkPassword(u1.getPwd(), rs2.getString("motdepasse"))) {
                         createNewuser();
-                        String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint,type,cin,Pay_id,Reg_id,Vil_id,description)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-                        try (Connection conn = this.connect();
-                                PreparedStatement pstmt = conn.prepareStatement(sqlA)) {
-                            pstmt.setInt(1, rs2.getInt("id"));
-                            pstmt.setInt(2, rs2.getInt("Adr_id"));
-                            pstmt.setString(3, rs2.getString("nom"));
-                            pstmt.setString(4, rs2.getString("prenom"));
-                            pstmt.setString(5, rs2.getString("telephone"));
-                            pstmt.setString(6, rs2.getString("login"));
-                            pstmt.setString(7, rs2.getString("motdepasse"));
-                            pstmt.setString(8, rs2.getString("email"));
-                            pstmt.setString(9, rs2.getString("image"));
-                            pstmt.setInt(10, rs2.getInt("nbPoint"));
-                            pstmt.setInt(11, 2);
-                            pstmt.setString(12, null);
-                            pstmt.setInt(13, rs2.getInt("Pay_id"));
-                            pstmt.setInt(14, rs2.getInt("Reg_id"));
-                            pstmt.setInt(15, rs2.getInt("Vil_id"));
-                            pstmt.setString(16, rs2.getString("description"));
-                            pstmt.executeUpdate();
-
-                            return 2;
-                        } catch (SQLException e) {
-                            System.out.println("execute stement for insert ne marche pas ici");
-                            System.out.println(e.getMessage());
-                        }
+                      String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint,type,cin,Pay_id,Reg_id,Vil_id,description)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    try (Connection conn = this.connect();
+                            PreparedStatement pstmt = conn.prepareStatement(sqlA)) {
+                        System.out.println("user : " +rs2.getInt("id"));
+                        pstmt.setInt(1, rs2.getInt("id"));
+                        pstmt.setInt(2, rs2.getInt("Adr_id"));
+                        pstmt.setString(3, rs2.getString("nom"));
+                        pstmt.setString(4, rs2.getString("prenom"));
+                        pstmt.setString(5, rs2.getString("telephone"));
+                        pstmt.setString(6, rs2.getString("login"));
+                        pstmt.setString(7, rs2.getString("motdepasse"));
+                        pstmt.setString(8, rs2.getString("email"));
+                        pstmt.setString(9, rs2.getString("image"));
+                        pstmt.setInt(10, rs2.getInt("nbPoint"));
+                        pstmt.setInt(11, 2);
+                        pstmt.setString(12, rs2.getString("cin"));
+                        pstmt.setInt(13, rs2.getInt("Pay_id"));
+                        pstmt.setInt(14, rs2.getInt("Reg_id"));
+                        pstmt.setInt(15, rs2.getInt("Vil_id"));
+                        pstmt.setString(16, rs2.getString("description"));
+                        pstmt.executeUpdate();
+                        System.out.println("requetet" + sqlA);
+                        return 1;
+                    } catch (SQLException e) {
+                        System.out.println("execute stement for insert ne marche pas ici");
+                        System.out.println(e.getMessage());
+                    }
                     } else {
                         return 0;
                     }
@@ -84,33 +84,34 @@ public class ServiceUser {
                 System.out.println("pwd/****" + rs.getString("motdepasse"));
                 if (checkPassword(u1.getPwd(), rs.getString("motdepasse"))) {
                     createNewuser();
-                    String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint,type,cin,Pay_id,Reg_id,Vil_id,description)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                    try (Connection conn = this.connect();
-                            PreparedStatement pstmt = conn.prepareStatement(sqlA)) {
-                        System.out.println("user : " +rs.getInt("id"));
-                        pstmt.setInt(1, rs.getInt("id"));
-                        pstmt.setInt(2, rs.getInt("Adr_id"));
-                        pstmt.setString(3, rs.getString("nom"));
-                        pstmt.setString(4, rs.getString("prenom"));
-                        pstmt.setString(5, rs.getString("telephone"));
-                        pstmt.setString(6, rs.getString("login"));
-                        pstmt.setString(7, rs.getString("motdepasse"));
-                        pstmt.setString(8, rs.getString("email"));
-                        pstmt.setString(9, rs.getString("image"));
-                        pstmt.setInt(10, rs.getInt("nbPoint"));
-                        pstmt.setInt(11, 2);
-                        pstmt.setString(12, rs.getString("cin"));
-                        pstmt.setInt(13, rs.getInt("Pay_id"));
-                        pstmt.setInt(14, rs.getInt("Reg_id"));
-                        pstmt.setInt(15, rs.getInt("Vil_id"));
-                        pstmt.setString(16, rs.getString("description"));
-                        pstmt.executeUpdate();
-                        System.out.println("requetet" + sqlA);
-                        return 1;
-                    } catch (SQLException e) {
-                        System.out.println("execute stement for insert ne marche pas ici");
-                        System.out.println(e.getMessage());
-                    }
+                      String sqlA = "INSERT INTO user(id_user,Adr_id,nom,prenom,login,pwd,telephone,email,image,nbPoint,type,cin,Pay_id,Reg_id,Vil_id,description)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                        try (Connection conn = this.connect();
+                                PreparedStatement pstmt = conn.prepareStatement(sqlA)) {
+                            pstmt.setInt(1, rs.getInt("id"));
+                            pstmt.setInt(2, rs.getInt("Adr_id"));
+                            pstmt.setString(3, rs.getString("nom"));
+                            pstmt.setString(4, rs.getString("prenom"));
+                            pstmt.setString(5, rs.getString("telephone"));
+                            pstmt.setString(6, rs.getString("login"));
+                            pstmt.setString(7, rs.getString("motdepasse"));
+                            pstmt.setString(8, rs.getString("email"));
+                            pstmt.setString(9, rs.getString("image"));
+                            pstmt.setInt(10, rs.getInt("nbPoint"));
+                            pstmt.setInt(11, 2);
+                            pstmt.setString(12, null);
+                            pstmt.setInt(13, rs.getInt("Pay_id"));
+                            pstmt.setInt(14, rs.getInt("Reg_id"));
+                            pstmt.setInt(15, rs.getInt("Vil_id"));
+                            pstmt.setString(16, rs.getString("description"));
+                            pstmt.executeUpdate();
+
+                            return 2;
+                        } catch (SQLException e) {
+                            System.out.println("execute stement for insert ne marche pas ici");
+                            System.out.println(e.getMessage());
+                        }
+                    
                 } else {
                     return 0;
 
