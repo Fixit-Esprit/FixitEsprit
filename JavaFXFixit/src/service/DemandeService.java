@@ -57,11 +57,12 @@ public class DemandeService {
         try {
             Statement st;
             st = conx.createStatement();
-            ResultSet resultat = st.executeQuery("Select d.id,d.title,d.description description, s.description sdescription,u.nom,u.prenom,d.dateFunction,d.prix from utilisateur u INNER JOIN prestataire p INNER JOIN demande d INNER JOIN service s where s.id = p.id and u.id = p.Uti_id and p.Uti_id = d.Uti_id and d.Cli_id = " + idclient + " and d.acceptation_prestataire = 1");
+            ResultSet resultat = st.executeQuery("Select d.id,d.title,d.description description,d.image, s.description sdescription,u.nom,u.prenom,d.dateFunction,d.prix from utilisateur u INNER JOIN prestataire p INNER JOIN demande d INNER JOIN service s where s.id = p.id and u.id = p.Uti_id and p.Uti_id = d.Uti_id and d.Cli_id = " + idclient + " and d.acceptation_prestataire = 1");
             while (resultat.next()) {
                 Demande demande = new Demande();
                 demande.setId(resultat.getInt("id"));
                 demande.setTitle(resultat.getString("title"));
+                demande.setImage(resultat.getString("image"));
                 demande.setDescription(resultat.getString("description"));
                 demande.setService(resultat.getString("sdescription"));
                 demande.setNomprestataire(resultat.getString("nom") + " " + resultat.getString("prenom"));

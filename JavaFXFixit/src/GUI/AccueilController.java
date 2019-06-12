@@ -146,7 +146,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
     private GridPane GridAllUser;
 
     @FXML
-    private TableColumn colmunservice;
+    private TableColumn columnimagedemande;
     @FXML
     private TableColumn columntitledemande;
     @FXML
@@ -174,7 +174,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
     @FXML
     private TableColumn columnmax;
-    
+
     @FXML
     private TableColumn<Annonce, Void> columnbuttonannonce;
 
@@ -633,7 +633,6 @@ public class AccueilController implements Initializable, MapComponentInitialized
             ObservableListDemande = FXCollections.observableArrayList();
             ObservableListDemande.addAll(result);
 
-            colmunservice.setCellValueFactory(new PropertyValueFactory<>("service"));
             columntitledemande.setCellValueFactory(new PropertyValueFactory<>("title"));
             colmundescription.setCellValueFactory(new PropertyValueFactory<>("description"));
             colmunprestataire.setCellValueFactory(new PropertyValueFactory<>("nomprestataire"));
@@ -641,6 +640,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
             colmunprix.setCellValueFactory(new PropertyValueFactory<>("prix"));
             TableView.setItems(ObservableListDemande);
             addButtonToTable(colmunpayer);
+            addColumnImageDemande(columnimagedemande);
         }
 
     }
@@ -678,9 +678,8 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
         colmunpayer.setCellFactory(cellFactory);
     }
-    
+
     // Bilel : ajout button details annonce 
-    
     private void addButtonToTabledetailannonce(TableColumn<Annonce, Void> colmunActiondetails) {
 
         Callback<TableColumn<Annonce, Void>, TableCell<Annonce, Void>> cellFactory = new Callback<TableColumn<Annonce, Void>, TableCell<Annonce, Void>>() {
@@ -714,19 +713,132 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
         colmunActiondetails.setCellFactory(cellFactory);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    private void addColumnImageDemande(TableColumn<Demande, Void> ColumnImage) {
+
+        Callback<TableColumn<Demande, Void>, TableCell<Demande, Void>> cellFactory = new Callback<TableColumn<Demande, Void>, TableCell<Demande, Void>>() {
+            @Override
+            public TableCell<Demande, Void> call(final TableColumn<Demande, Void> param) {
+                final TableCell<Demande, Void> cell = new TableCell<Demande, Void>() {
+                    ImageView imageView = new ImageView();
+
+                    {
+
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            Demande demande = getTableView().getItems().get(getIndex());
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] imageByte;
+                            try {
+                                if (demande.getImage() != null) {
+                                    imageByte = decoder.decodeBuffer(demande.getImage());
+                                    ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+                                    BufferedImage bufferedImage = ImageIO.read(bis);
+                                    Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                                    imageView.setImage(image);
+                                    imageView.setFitHeight(100);
+                                    imageView.setFitWidth(180);
+                                }
+                            } catch (IOException ex) {
+                                Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            setGraphic(imageView);
+                        }
+                    }
+                };
+                cell.setOnMouseClicked(event -> {
+                    Demande data = (Demande) cell.getTableRow().getItem();
+                    System.out.println("selectedData: " + data);
+                    goToImage(data.getImage());
+                });
+                return cell;
+            }
+        };
+
+        ColumnImage.setCellFactory(cellFactory);
+    }
+
+    private void addColumnImageAnnonce(TableColumn<Annonce, Void> ColumnImage) {
+
+        Callback<TableColumn<Annonce, Void>, TableCell<Annonce, Void>> cellFactory = new Callback<TableColumn<Annonce, Void>, TableCell<Annonce, Void>>() {
+            @Override
+            public TableCell<Annonce, Void> call(final TableColumn<Annonce, Void> param) {
+                final TableCell<Annonce, Void> cell = new TableCell<Annonce, Void>() {
+                    ImageView imageView = new ImageView();
+
+                    {
+
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            Annonce demande = getTableView().getItems().get(getIndex());
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] imageByte;
+                            try {
+                                if (demande.getImage() != null) {
+                                    imageByte = decoder.decodeBuffer(demande.getImage());
+                                    ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+                                    BufferedImage bufferedImage = ImageIO.read(bis);
+
+                                    try {
+                                        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                                        imageView.setImage(image);
+                                        imageView.setFitHeight(100);
+                                        imageView.setFitWidth(180);
+                                    } catch (Exception ex) {
+                                        Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+
+                                }
+                            } catch (IOException ex) {
+                                Logger.getLogger(AccueilPrestataireController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            setGraphic(imageView);
+                        }
+                    }
+                };
+                cell.setOnMouseClicked(event -> {
+                    Annonce data = (Annonce) cell.getTableRow().getItem();
+                    System.out.println("selectedData: " + data);
+                    goToImage(data.getImage());
+                });
+                return cell;
+            }
+        };
+
+        ColumnImage.setCellFactory(cellFactory);
+    }
+
+    private void goToImage(String image) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ImageProbleme.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root, 720, 480));
+            ImageProblemeController controller = loader.<ImageProblemeController>getController();
+            controller.setData(image);
+            stage.setTitle("Image");
+            stage.show();
+            stage.setOnCloseRequest((javafx.stage.WindowEvent event1) -> {
+
+            });
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @FXML
     private void goprestataire(ActionEvent event) {
@@ -802,9 +914,9 @@ public class AccueilController implements Initializable, MapComponentInitialized
 
             columntitle.setCellValueFactory(new PropertyValueFactory<>("title"));
             columndescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-            columnimage.setCellValueFactory(new PropertyValueFactory<>("description"));
             columnmin.setCellValueFactory(new PropertyValueFactory<>("minprix"));
             columnmax.setCellValueFactory(new PropertyValueFactory<>("maxprix"));
+            addColumnImageAnnonce(columnimage);
             addButtonToTabledetailannonce(columnbuttonannonce);
             TableViewlisteannonce.setItems(ObservableListAnnonce);
         }
