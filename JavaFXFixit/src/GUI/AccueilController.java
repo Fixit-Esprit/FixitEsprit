@@ -482,7 +482,7 @@ public class AccueilController implements Initializable, MapComponentInitialized
                             root = loader.load();
                             Stage stage = new Stage();
                             stage.setScene(new Scene(root, 700, 520));
-                            DetailPrestataireController controller = loader.<DetailPrestataireController>getController();
+                            DemandeController controller = loader.<DemandeController>getController();
                             controller.setData(prestataire);
                             stage.setTitle("Demander la service ");
                             stage.getIcons().add(new Image("/GUI/img/icon.png"));
