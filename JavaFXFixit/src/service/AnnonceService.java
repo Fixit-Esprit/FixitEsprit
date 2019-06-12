@@ -107,6 +107,28 @@ public class AnnonceService {
         return annonces;
     }
 
+    public List<AnnonceAccepte> getAnnonceAccepte(int idannonce) {
+        List<AnnonceAccepte> annonceAcceptes = new ArrayList();
+        try {
+            Statement st;
+            st = conx.createStatement();
+            ResultSet resultat = st.executeQuery("Select acpt.idannonce,acpt.idprestataire,acpt.prix,acpt.date,u.nom,u.prenom from accepteannonce acpt INNER JOIN annonce a  INNER JOIN utilisateur u where acpt.idprestataire = u.id and acpt.idannonce = a.id and acpt.idannonce=" + idannonce);
+            while (resultat.next()) {
+                AnnonceAccepte annonceAccepte = new AnnonceAccepte();
+                annonceAccepte.setIdannonce(resultat.getInt("idannonce"));
+                annonceAccepte.setIdprestataire(resultat.getInt("idprestataire"));
+                annonceAccepte.setPrix(resultat.getInt("prix"));
+                annonceAccepte.setDate(Format.format(resultat.getDate("date")));
+                annonceAccepte.setNomprestataire(resultat.getString("nom") + " " + resultat.getString("prenom"));
+                annonceAcceptes.add(annonceAccepte);
+                System.out.println(annonceAcceptes);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PaysService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return annonceAcceptes;
+    }
+
     public void ConfirmerAnnonce(int id, int prix) {
         System.out.println("prix: " + prix);
         try {

@@ -15,6 +15,7 @@ public class AnnonceAccepte {
 
     private int idannonce;
     private int idprestataire;
+    private String nomprestataire;
     private int prix;
     private String date;
 
@@ -23,6 +24,17 @@ public class AnnonceAccepte {
         this.idprestataire = idprestataire;
         this.prix = prix;
         this.date = date;
+    }
+
+    public AnnonceAccepte(int idannonce, int idprestataire, String nomprestataire, int prix, String date) {
+        this.idannonce = idannonce;
+        this.idprestataire = idprestataire;
+        this.nomprestataire = nomprestataire;
+        this.prix = prix;
+        this.date = date;
+    }
+
+    public AnnonceAccepte() {
     }
 
     public int getIdannonce() {
@@ -55,6 +67,14 @@ public class AnnonceAccepte {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getNomprestataire() {
+        return nomprestataire;
+    }
+
+    public void setNomprestataire(String nomprestataire) {
+        this.nomprestataire = nomprestataire;
     }
 
     @Override
@@ -90,8 +110,8 @@ public class AnnonceAccepte {
 
     @Override
     public String toString() {
-        return "AnnonceAccepte{" + "idannonce=" + idannonce + ", idprestataire=" + idprestataire + ", prix=" + prix + ", date=" + date + '}';
+        return "AnnonceAccepte{" + "idannonce=" + idannonce + ", idprestataire=" + idprestataire + ", nomprestataire=" + nomprestataire + ", prix=" + prix + ", date=" + date + '}';
     }
-    
-    
+
+
 }

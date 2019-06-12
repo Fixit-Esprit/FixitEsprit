@@ -687,12 +687,13 @@ public class AccueilController implements Initializable, MapComponentInitialized
             public TableCell<Annonce, Void> call(final TableColumn<Annonce, Void> param) {
                 final TableCell<Annonce, Void> cell = new TableCell<Annonce, Void>() {
 
-                    private final JFXButton btn = new JFXButton("details");
+                    private final JFXButton btn = new JFXButton("liste des prestataires accepte");
 
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Annonce data = getTableView().getItems().get(getIndex());
                             System.out.println("selectedData: " + data);
+                            goToAnnonceAccepte(data);
                         });
                         btn.getStyleClass().add("valider");
                     }
@@ -951,6 +952,29 @@ public class AccueilController implements Initializable, MapComponentInitialized
             panep.getScene().setRoot(root);
         } catch (IOException ex) {
             Logger.getLogger(ProfileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void goToAnnonceAccepte(Annonce annonce) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ListeAnnonceAccepte.fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+            Stage stage = new Stage();
+            try {
+                stage.getIcons().add(new Image("/GUI/img/icon.png"));
+            } catch (Exception e) {
+                System.out.print(e.getMessage());
+            }
+            ListeAnnonceAccepteController controller = loader.<ListeAnnonceAccepteController>getController();
+            controller.setData(annonce);
+            stage.setTitle("Liste des prestataires accepte l'annonce");
+            stage.setScene(new Scene(root, 700, 510));
+            stage.show();
+
+        } catch (IOException ex) {
+            Logger.getLogger(AccueilController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

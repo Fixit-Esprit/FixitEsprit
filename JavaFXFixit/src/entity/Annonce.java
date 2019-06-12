@@ -138,8 +138,10 @@ public class Annonce {
 
     @Override
     public String toString() {
-        return "Annonce{" + "id=" + id + ", idclient=" + idclient + ", idservice=" + idservice + ", date=" + date + ", description=" + description + ", image=" + image + ", minprix=" + minprix + ", maxprix=" + maxprix + '}';
+        return "Annonce{" + "id=" + id + ", idclient=" + idclient + ", idservice=" + idservice + ", title=" + title + ", date=" + date + ", description=" + description + ", image=" + image + ", minprix=" + minprix + ", maxprix=" + maxprix + ", nomclient=" + nomclient + ", adresseclient=" + adresseclient + ", prix=" + prix + '}';
     }
+
+
 
     @Override
     public int hashCode() {

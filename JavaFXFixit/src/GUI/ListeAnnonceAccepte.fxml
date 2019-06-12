@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="466.0" prefWidth="684.0" stylesheets="@accueil.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ListeAnnonceAccepteController">
+    <stylesheets>
+        <URL value="@listeannonceaccepte.css" />
+    </stylesheets>
+   <children>
+      <AnchorPane prefHeight="496.0" prefWidth="729.0">
+         <children>
+            <TableView fx:id="TableView" layoutX="4.0" layoutY="109.0" prefHeight="387.0" prefWidth="722.0">
+               <columns>
+                  <TableColumn fx:id="colmunprestataire" prefWidth="195.0" text="Prestataires" />
+                  <TableColumn fx:id="colmundate" prefWidth="216.0" text="Date" />
+                  <TableColumn fx:id="colmunprix" prefWidth="171.0" text="Prix (DT)" />
+                  <TableColumn fx:id="colmunpayer" prefWidth="139.0" />
+               </columns>
+            </TableView>
+            <Label layoutX="34.0" layoutY="36.0" prefHeight="17.0" prefWidth="89.0" text="Title" textFill="#2093fa">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="title" layoutX="133.0" layoutY="36.0" prefHeight="20.0" prefWidth="411.0" textFill="#2093fa">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="68.0" prefHeight="20.0" prefWidth="106.0" text="Description" textFill="#2093fa">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="description" layoutX="140.0" layoutY="68.0" prefHeight="20.0" prefWidth="538.0" textFill="#2093fa">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
